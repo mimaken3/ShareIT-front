@@ -12,16 +12,9 @@ class UsersIndex extends Component {
 
   renderEvents() {
     return _.map(this.props.users, user => (
-      <table key={user.user_id}>
-        <tbody>
-          <tr>
-            <td>{user.user_id}</td>
-            <td>{user.user_name}</td>
-            <td>{user.email}</td>
-            <td>{user.interested_topics}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div key={user.user_id}>
+        {user.user_id} {user.user_name} {user.email} {user.interested_topics}
+      </div>
     ));
   }
 

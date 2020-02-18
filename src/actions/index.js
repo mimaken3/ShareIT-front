@@ -2,6 +2,7 @@ import axios from "axios";
 
 //reducerでもimortして使うので
 export const SHOW_ALL_USERS = "SHOW_ALL_USERS";
+export const SHOW_ALL_ARTICLES = "SHOW_ALL_ARTICLES";
 
 // actionを返す関数(actionクリエイター)
 // => viewを担当するcomponentで使う(exportする)
@@ -20,4 +21,10 @@ export const showAllUsers = () => async dispatch => {
   const response = await axios.get(`${ROOT_URL}/users`);
   console.log(response);
   dispatch({ type: SHOW_ALL_USERS, response });
+};
+
+export const showAllArticles = () => async dispatch => {
+  const response = await axios.get(`${ROOT_URL}/articles`);
+  console.log(response);
+  dispatch({ type: SHOW_ALL_ARTICLES, response });
 };
