@@ -7,6 +7,7 @@ import thunk from "redux-thunk";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import UsersIndex from "./components/users_index";
 import ArticlesIndex from "./components/articles_index";
+import ArticleShow from "./components/article_show";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import * as serviceWorker from "./serviceWorker";
@@ -26,6 +27,7 @@ ReactDOM.render(
       <Switch>
         <Route exact path="/users" component={UsersIndex} />
         <Route exact path="/articles" component={ArticlesIndex} />
+        <Route exact path="/article/:articleId" component={ArticleShow} />
       </Switch>
     </BrowserRouter>
   </Provider>,

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { showAllArticles } from "../actions";
+import { Link } from "react-router-dom";
 import _ from "lodash";
 
 class ArticlesIndex extends Component {
@@ -14,7 +15,11 @@ class ArticlesIndex extends Component {
   renderArticles() {
     return _.map(this.props.articles, article => (
       <div key={article.article_id}>
-        {article.article_id} {article.article_title} {article.article_content}
+        {article.article_id}{" "}
+        <Link to={`/article/${article.article_id}`}>
+          {article.article_title}
+        </Link>{" "}
+        {article.article_content}
       </div>
     ));
   }
