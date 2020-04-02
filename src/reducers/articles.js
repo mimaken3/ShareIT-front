@@ -2,7 +2,8 @@ import {
   SHOW_ALL_ARTICLES,
   SHOW_ARTICLE_DETAIL,
   UPDATE_ARTICLE,
-  UPDATE_ARTICLE_EVENT
+  UPDATE_ARTICLE_EVENT,
+  DELETE_ARTICLE_EVENT
 } from "../actions";
 import _ from "lodash";
 
@@ -14,6 +15,7 @@ export default (articles = {}, action) => {
   switch (action.type) {
     case SHOW_ALL_ARTICLES:
       return _.mapKeys(action.response.data, "article_id");
+
     case SHOW_ARTICLE_DETAIL:
     case UPDATE_ARTICLE_EVENT:
       const data = action.response.data;
@@ -22,9 +24,16 @@ export default (articles = {}, action) => {
       // ...articlesでイベントのオブジェクトを展開して、
       // [data.article_id]をkeyとしたdataというオブジェクトを持って、上書きした情報をまるっとわたす
       return { ...articles, [data.article_id]: data };
+
     case UPDATE_ARTICLE:
       const data2 = action.response.data;
       return { ...articles, [data2.artice_id]: data2 };
+
+    case DELETE_ARTICLE_EVENT:
+      delete articles[action.articleId];
+      // スプレット演算子を使用し、更新後の記事一覧を表示
+      return { ...articles };
+
     default:
       return articles;
   }

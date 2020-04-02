@@ -6,6 +6,7 @@ export const SHOW_ALL_ARTICLES = "SHOW_ALL_ARTICLES";
 export const SHOW_ARTICLE_DETAIL = "SHOW_ARTICLE_DETAIL";
 export const UPDATE_ARTICLE = "UPDATE_ARTICLE";
 export const UPDATE_ARTICLE_EVENT = "UPDATE_ARTICLE_EVENT";
+export const DELETE_ARTICLE_EVENT = "DELETE_ARTICLE_EVENT";
 
 // この下で非同期処理イベントを実行(リクエストを投げる)
 // readEvents内で本来ならピュアなオブジェクトを返さないといけない
@@ -43,4 +44,10 @@ export const putEvent = values => async dispatch => {
     values
   );
   dispatch({ type: UPDATE_ARTICLE_EVENT, response });
+};
+
+// 記事を削除
+export const deleteEvent = articleId => async dispatch => {
+  await axios.delete(`${ROOT_URL}/article/${articleId}`);
+  dispatch({ type: DELETE_ARTICLE_EVENT, articleId });
 };

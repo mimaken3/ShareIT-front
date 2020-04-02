@@ -2,11 +2,16 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 // 入力フォーム作成で使う
 import { Field, reduxForm } from "redux-form";
-import { getArticleDetail } from "../actions";
+import { getArticleDetail, deleteEvent } from "../actions";
 import { Link } from "react-router-dom";
 import _ from "lodash";
 
 class ArticleShow extends Component {
+  constructor(props) {
+    super(props);
+    this.onDeleteClick = this.onDeleteClick.bind(this);
+  }
+
   // 入力される値(フィールドの値)が渡ってくる
   renderField(field) {
     const {
@@ -28,6 +33,13 @@ class ArticleShow extends Component {
     if (articleId) this.props.getArticleDetail(articleId);
   }
 
+  // 記事の削除
+  async onDeleteClick() {
+    const article_id = this.props.match.params.articleId;
+    await this.props.deleteEvent(article_id);
+    this.props.history.push("/articles");
+  }
+
   render() {
     if (this.props.article) {
       return (
@@ -44,7 +56,12 @@ class ArticleShow extends Component {
             </Link>
           </div>
           <div>
-            <Link to={`/articles`}>一覧画面へ</Link>
+            <Link to="/" onClick={this.onDeleteClick}>
+              削除
+            </Link>
+            <div>
+              <Link to={`/articles`}>一覧画面へ</Link>
+            </div>
           </div>
         </React.Fragment>
       );
@@ -71,7 +88,7 @@ const mapStateToProps = (state, ownProps) => {
   //return { article: event };
 };
 
-const mapDispatchToProps = { getArticleDetail };
+const mapDispatchToProps = { getArticleDetail, deleteEvent };
 
 // connect 第一引数はcomponentに渡すpropsを制御する
 // 第二引数はreducerを呼び出して、reduxで管理しているstateを更新する
