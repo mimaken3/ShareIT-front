@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 // 入力フォーム作成で使う
 import { Field, reduxForm } from "redux-form";
-import { getArticleDetail, putEvent } from "../actions";
+import { getArticleDetail, putEvent, deleteEvent } from "../actions";
 import { Link } from "react-router-dom";
 // import _ from "lodash";
 
@@ -49,16 +49,18 @@ class ArticleUpdate extends Component {
     );
   }
 
-  //   // 非同期で行う
-  //   async onSubmit(values){
-  //     await this.prop.
-  // }
-
   // 記事を更新
   async onSubmit(values) {
     await this.props.putEvent(values);
     // 更新ボタンを押したとに表示するPATH
     this.props.history.push("/article/" + values.article_id);
+  }
+
+  // 記事の削除
+  async onDeleteClick() {
+    const article_id = this.props.match.params.articleId;
+    await this.props.deleteEvent(article_id);
+    this.props.history.push("/articles");
   }
 
   render() {
@@ -98,12 +100,23 @@ class ArticleUpdate extends Component {
           <div>作成日: {this.props.article.created_date}</div>
           {/* </form> */}
 
-          <input
-            type="submit"
-            value="Submit"
-            disable={pristine || submitting}
-          />
-          <Link to={`/articles`}>一覧画面へ</Link>
+          <div>
+            <input
+              type="submit"
+              value="Submit"
+              disable={pristine || submitting}
+            />
+          </div>
+
+          <div>
+            <Link to="/" onClick={this.onDeleteClick}>
+              削除
+            </Link>
+          </div>
+
+          <div>
+            <Link to={`/articles`}>一覧画面へ</Link>
+          </div>
         </form>
       );
     } else {
@@ -136,7 +149,7 @@ const mapStateToProps = (state, ownProps) => {
   return { initialValues: article, article: article };
 };
 
-const mapDispatchToProps = { getArticleDetail, putEvent };
+const mapDispatchToProps = { getArticleDetail, putEvent, deleteEvent };
 
 // connect 第一引数はcomponentに渡すpropsを制御する
 // 第二引数はreducerを呼び出して、reduxで管理しているstateを更新する
