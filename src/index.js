@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import UsersIndex from "./components/users_index";
 import ArticlesIndex from "./components/articles_index";
 import ArticleShow from "./components/article_show";
+import ArticleUpdate from "./components/article_update";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import * as serviceWorker from "./serviceWorker";
@@ -28,6 +29,11 @@ ReactDOM.render(
         <Route exact path="/users" component={UsersIndex} />
         <Route exact path="/articles" component={ArticlesIndex} />
         <Route exact path="/article/:articleId" component={ArticleShow} />
+        <Route
+          exact
+          path="/article/:articleId/update"
+          component={ArticleUpdate}
+        />
       </Switch>
     </BrowserRouter>
   </Provider>,

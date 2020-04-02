@@ -1,4 +1,9 @@
-import { SHOW_ALL_ARTICLES, SHOW_ARTICLE_DETAIL } from "../actions";
+import {
+  SHOW_ALL_ARTICLES,
+  SHOW_ARTICLE_DETAIL,
+  UPDATE_ARTICLE,
+  UPDATE_ARTICLE_EVENT
+} from "../actions";
 import _ from "lodash";
 
 // reducers/index.jsに渡すためのexport
@@ -10,13 +15,16 @@ export default (articles = {}, action) => {
     case SHOW_ALL_ARTICLES:
       return _.mapKeys(action.response.data, "article_id");
     case SHOW_ARTICLE_DETAIL:
+    case UPDATE_ARTICLE_EVENT:
       const data = action.response.data;
-      console.log("data: " + JSON.stringify(data));
       // {article_id: 5, article_title: "vimでビジュアルモードに変更", created_user_id: 3, article_content: ":q + v or V", article_topics: "3,12,13,20,", …}
       // 他でid5が削除された場合に、最新のid5の記事を更新するため...articlesと記述
       // ...articlesでイベントのオブジェクトを展開して、
       // [data.article_id]をkeyとしたdataというオブジェクトを持って、上書きした情報をまるっとわたす
       return { ...articles, [data.article_id]: data };
+    case UPDATE_ARTICLE:
+      const data2 = action.response.data;
+      return { ...articles, [data2.artice_id]: data2 };
     default:
       return articles;
   }

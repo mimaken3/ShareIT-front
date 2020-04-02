@@ -8,21 +8,20 @@ import _ from "lodash";
 
 class ArticleShow extends Component {
   // 入力される値(フィールドの値)が渡ってくる
-  //   renderField(field) {
-  //     const {
-  //       input,
-  //       label,
-  //       type,
-  //       meta: { touched, error }
-  //     } = field;
-  //     return (
-  //       <div>
-  //         <input {...input} placeholder={label} type={type} />
-  //       </div>
-  //     );
-  //   }
+  renderField(field) {
+    const {
+      input,
+      label,
+      type,
+      meta: { touched, error }
+    } = field;
+    return (
+      <div>
+        <input {...input} placeholder={label} type={type} />
+      </div>
+    );
+  }
 
-  // 外部のAPIに対してイベントを取得する
   componentDidMount() {
     // 複雑な処理はcomponentに書かずに外(action)に記述
     const { articleId } = this.props.match.params;
@@ -39,8 +38,14 @@ class ArticleShow extends Component {
           <div>トピック: {this.props.article.article_topics}</div>
           <div>内容: {this.props.article.article_content}</div>
           <div>作成日: {this.props.article.created_date}</div>
-
-          <Link to={`/articles`}>一覧画面へ</Link>
+          <div>
+            <Link to={`/article/${this.props.article.article_id}/update`}>
+              更新
+            </Link>
+          </div>
+          <div>
+            <Link to={`/articles`}>一覧画面へ</Link>
+          </div>
         </React.Fragment>
       );
     } else {
@@ -58,12 +63,8 @@ class ArticleShow extends Component {
 // ReduxのStoreを第一引数にとる関数で、Componentにpropsとして渡すものをフィルタリングするときに使う。
 const mapStateToProps = (state, ownProps) => {
   // 詳細画面で必要な各種情報を取得
-  console.log(
-    "ownProps.match.params.articleId: " + ownProps.match.params.articleId
-  ); // 5
-  console.log("ownProps: " + JSON.stringify(ownProps));
+
   const article = state.articles[ownProps.match.params.articleId];
-  console.log("article: " + JSON.stringify(article));
 
   // 初期状態でどんな値を表示するかをinitialValuesで設定
   return { initialValues: article, article: article };

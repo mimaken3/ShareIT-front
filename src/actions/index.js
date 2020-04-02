@@ -4,6 +4,8 @@ import axios from "axios";
 export const SHOW_ALL_USERS = "SHOW_ALL_USERS";
 export const SHOW_ALL_ARTICLES = "SHOW_ALL_ARTICLES";
 export const SHOW_ARTICLE_DETAIL = "SHOW_ARTICLE_DETAIL";
+export const UPDATE_ARTICLE = "UPDATE_ARTICLE";
+export const UPDATE_ARTICLE_EVENT = "UPDATE_ARTICLE_EVENT";
 
 // この下で非同期処理イベントを実行(リクエストを投げる)
 // readEvents内で本来ならピュアなオブジェクトを返さないといけない
@@ -13,20 +15,32 @@ const ROOT_URL = "https://shareit-part2-pro.appspot.com";
 // ユーザ一覧
 export const showAllUsers = () => async dispatch => {
   const response = await axios.get(`${ROOT_URL}/users`);
-  console.log(response);
   dispatch({ type: SHOW_ALL_USERS, response });
 };
 
 // 記事一覧
 export const showAllArticles = () => async dispatch => {
   const response = await axios.get(`${ROOT_URL}/articles`);
-  console.log(response);
   dispatch({ type: SHOW_ALL_ARTICLES, response });
 };
 
 // 記事詳細
 export const getArticleDetail = articleId => async dispatch => {
   const response = await axios.get(`${ROOT_URL}/article/${articleId}`);
-  console.log("response: " + response);
   dispatch({ type: SHOW_ARTICLE_DETAIL, response });
+};
+
+// 記事更新画面
+export const updateArticle = articleId => async dispatch => {
+  const response = await axios.get(`${ROOT_URL}/article/${articleId}`);
+  dispatch({ type: UPDATE_ARTICLE, response });
+};
+
+// 記事を更新
+export const putEvent = values => async dispatch => {
+  const response = await axios.put(
+    `${ROOT_URL}/article/${values.article_id}`,
+    values
+  );
+  dispatch({ type: UPDATE_ARTICLE_EVENT, response });
 };
