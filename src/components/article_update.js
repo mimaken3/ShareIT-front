@@ -20,13 +20,14 @@ class ArticleUpdate extends Component {
     this.onDeleteClick = this.onDeleteClick.bind(this);
 
     this.state = {
-      selectedOption: null
+      selectedOption: null,
+      isChosen: false
     };
   }
 
   // 選択されたtopicを設定
   handleChange = selectedOption => {
-    this.setState({ selectedOption });
+    this.setState({ selectedOption, isChosen: true });
   };
 
   // 外部のAPIに対してイベントを取得する
@@ -56,21 +57,28 @@ class ArticleUpdate extends Component {
     );
   }
 
-  // 記事を更新
+  // 記事を更新して送信
   async onSubmit(values) {
-    let TopicsArr = this.state.selectedOption;
     // トピックを更新(送信用)
     let topic = "";
     let sendTopicsStr = "";
+    let choseTopicsArr = "";
 
-    if (!TopicsArr) {
-      sendTopicsStr = "1";
-    } else {
-      for (let i = 0; i < TopicsArr.length; i++) {
-        topic = TopicsArr[i].value.toString();
-        sendTopicsStr += topic + ",";
+    if (this.state.isChosen) {
+      choseTopicsArr = this.state.selectedOption;
+      if (!choseTopicsArr) {
+        sendTopicsStr = "1";
+      } else {
+        for (let i = 0; i < choseTopicsArr.length; i++) {
+          topic = choseTopicsArr[i].value.toString();
+          sendTopicsStr += topic + ",";
+        }
       }
+    } else {
+      // もともとの記事のトピックsを入れる
+      sendTopicsStr = this.props.article.article_topics;
     }
+
     values.article_topics = sendTopicsStr;
 
     await this.props.putEvent(values);
