@@ -7,6 +7,7 @@ export const SHOW_ARTICLE_DETAIL = "SHOW_ARTICLE_DETAIL";
 export const UPDATE_ARTICLE = "UPDATE_ARTICLE";
 export const UPDATE_ARTICLE_EVENT = "UPDATE_ARTICLE_EVENT";
 export const DELETE_ARTICLE_EVENT = "DELETE_ARTICLE_EVENT";
+export const GET_ALL_TOPICS = "GET_ALL_TOPICS";
 
 // この下で非同期処理イベントを実行(リクエストを投げる)
 // readEvents内で本来ならピュアなオブジェクトを返さないといけない
@@ -50,4 +51,10 @@ export const putEvent = values => async dispatch => {
 export const deleteEvent = articleId => async dispatch => {
   await axios.delete(`${ROOT_URL}/article/${articleId}`);
   dispatch({ type: DELETE_ARTICLE_EVENT, articleId });
+};
+
+// 全トピックを取得
+export const getAllTopics = () => async dispatch => {
+  const response = await axios.get(`${ROOT_URL}/topics`);
+  dispatch({ type: GET_ALL_TOPICS, response });
 };

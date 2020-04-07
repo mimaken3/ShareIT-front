@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { getArticleDetail, deleteEvent } from "../actions";
 import { Link } from "react-router-dom";
-import _ from "lodash";
+
+// import _ from "lodash";
 
 class ArticleShow extends Component {
   constructor(props) {
