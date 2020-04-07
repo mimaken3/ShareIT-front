@@ -59,11 +59,11 @@ class ArticleUpdate extends Component {
 
   // 記事を更新して送信
   async onSubmit(values) {
-    // トピックを更新(送信用)
     let topic = "";
     let sendTopicsStr = "";
     let choseTopicsArr = "";
 
+    // トピックを更新(送信用)
     if (this.state.isChosen) {
       choseTopicsArr = this.state.selectedOption;
       if (!choseTopicsArr) {
@@ -80,7 +80,7 @@ class ArticleUpdate extends Component {
     }
 
     values.article_topics = sendTopicsStr;
-
+    console.log(sendTopicsStr);
     await this.props.putEvent(values);
     // 更新ボタンを押したとに表示するPATH
     this.props.history.push("/article/" + values.article_id);
@@ -117,15 +117,15 @@ class ArticleUpdate extends Component {
         label: topicObjArr[0].topic_name
       });
 
-      // トピックの初期値に設定
+      // トピックを初期値に設定
       let articleTopicsStr = this.props.article.article_topics;
       let topicsUserArr = articleTopicsStr.split(",");
       let initTopicsArr = [];
 
-      for (let i = 0; i < allTopicsArr.length; i++) {
-        for (let j = 0; j < topicsUserArr.length; j++) {
-          if (allTopicsArr[i].value === parseInt(topicsUserArr[j])) {
-            initTopicsArr.push(allTopicsArr[i]);
+      for (let i = 0; i < topicsUserArr.length; i++) {
+        for (let j = 0; j < allTopicsArr.length; j++) {
+          if (parseInt(topicsUserArr[i]) === allTopicsArr[j].value) {
+            initTopicsArr.push(allTopicsArr[j]);
           }
         }
       }
