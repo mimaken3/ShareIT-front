@@ -80,7 +80,7 @@ class ArticleUpdate extends Component {
     }
 
     values.article_topics = sendTopicsStr;
-    console.log(sendTopicsStr);
+
     await this.props.putEvent(values);
     // 更新ボタンを押したとに表示するPATH
     this.props.history.push("/article/" + values.article_id);
@@ -106,16 +106,12 @@ class ArticleUpdate extends Component {
       // object to array
       const topicObjArr = Object.values(this.props.allTopics);
 
-      for (let i = 1; i < topicObjArr.length; i++) {
+      for (let i = 0; i < topicObjArr.length; i++) {
         allTopicsArr.push({
           value: topicObjArr[i].topic_id,
           label: topicObjArr[i].topic_name
         });
       }
-      allTopicsArr.push({
-        value: topicObjArr[0].topic_id,
-        label: topicObjArr[0].topic_name
-      });
 
       // トピックを初期値に設定
       let articleTopicsStr = this.props.article.article_topics;
