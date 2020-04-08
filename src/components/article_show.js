@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 // 入力フォーム作成で使う
-import { Field, reduxForm } from "redux-form";
+import { reduxForm } from "redux-form";
 import { getArticleDetail, deleteEvent } from "../actions";
 import { Link } from "react-router-dom";
 
@@ -18,8 +18,8 @@ class ArticleShow extends Component {
     const {
       input,
       label,
-      type,
-      meta: { touched, error }
+      type
+      // meta: { touched, error }
     } = field;
     return (
       <div>

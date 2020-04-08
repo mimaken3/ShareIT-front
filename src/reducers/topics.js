@@ -1,6 +1,6 @@
 import { GET_ALL_TOPICS } from "../actions/";
 // 配列のデータを編集するのが得意なパッケージ
-import _ from "lodash";
+// import _ from "lodash";
 
 // reducers/index.jsに渡すためのexport
 // reducerは関数として定義(引数は2つ)

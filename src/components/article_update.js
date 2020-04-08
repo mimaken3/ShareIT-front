@@ -11,8 +11,6 @@ import {
 import { Link } from "react-router-dom";
 import Select from "react-select";
 
-// import _ from "lodash";
-
 class ArticleUpdate extends Component {
   constructor(props) {
     super(props);
@@ -45,14 +43,14 @@ class ArticleUpdate extends Component {
       input,
       label,
       type,
-      // mata: { touched, error }
+      // mata: { visited, error }
       meta: { error }
     } = field;
     return (
       <div>
         <input {...input} placeholder={label} type={type} />
-        {/* {touched && error && <span>{error}</span>} */}
         {error && <span>{error}</span>}
+        {/* {visited && error && <span>{error}</span>} */}
       </div>
     );
   }
@@ -94,7 +92,10 @@ class ArticleUpdate extends Component {
   }
 
   render() {
-    const { handleSubmit, pristine, submitting, invalid } = this.props;
+    // pristine:
+    // submitting: submitボタンを一度押したら非活性にする
+    // invalid: submitボタンを押したらtrueになる状態
+    const { handleSubmit, submitting, invalid } = this.props;
 
     if (
       this.props.article &&
@@ -163,7 +164,7 @@ class ArticleUpdate extends Component {
             <input
               type="submit"
               value="Submit"
-              disable={pristine || submitting}
+              disabled={submitting || invalid}
             />
           </div>
 
@@ -188,12 +189,15 @@ class ArticleUpdate extends Component {
   }
 }
 
+// バリデーションを行う関数
 const validate = values => {
   const errors = {};
   if (!values.article_title)
     errors.article_title = "タイトルを入力してください";
   if (!values.article_content)
     errors.article_content = "内容を入力してください";
+
+  return errors;
 };
 
 // stateとactionをcomponentに関連付ける実装
@@ -231,6 +235,7 @@ export default connect(
   // 直接詳細画面へアクセスしたとき(本来なら最初に記事一覧を取得して、それらの情報がブラウザのメモリに残った状態で、
   // 詳細へ行くとメモリから詳細を取得する)適宜、該当のイベントをAPIサーバから取得する
   // formにはユニークな名前を渡す
+  // reduxForm()の引数には設定に関するオブジェクトを渡す validataionのルールやformの名前などを渡す
   reduxForm({ validate, form: "articleUpdateForm", enableReinitialize: true })(
     ArticleUpdate
   )
