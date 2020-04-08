@@ -74,7 +74,30 @@ class ArticleUpdate extends Component {
       }
     } else {
       // もともとの記事のトピックsを入れる
-      sendTopicsStr = this.props.article.article_topics;
+
+      // 全トピックをセレクトボックスにセット
+      const allTopicsArr = [];
+
+      // object to array
+      const topicObjArr = Object.values(this.props.allTopics);
+
+      for (let i = 0; i < topicObjArr.length; i++) {
+        allTopicsArr.push({
+          value: topicObjArr[i].topic_id,
+          label: topicObjArr[i].topic_name
+        });
+      }
+
+      const articleTopicsStr = this.props.article.article_topics;
+      const sendTopicNamesArr = articleTopicsStr.split(",");
+
+      for (let i = 0; i < sendTopicNamesArr.length; i++) {
+        for (let j = 0; j < allTopicsArr.length; j++) {
+          if (sendTopicNamesArr[i] === allTopicsArr[j].label) {
+            sendTopicsStr += allTopicsArr[j].value + ",";
+          }
+        }
+      }
     }
 
     values.article_topics = sendTopicsStr;
