@@ -113,14 +113,14 @@ class ArticleUpdate extends Component {
         });
       }
 
-      // トピックを初期値に設定
+      // 興味トピックを初期値に設定
       let articleTopicsStr = this.props.article.article_topics;
       let topicsUserArr = articleTopicsStr.split(",");
       let initTopicsArr = [];
 
       for (let i = 0; i < topicsUserArr.length; i++) {
         for (let j = 0; j < allTopicsArr.length; j++) {
-          if (parseInt(topicsUserArr[i]) === allTopicsArr[j].value) {
+          if (topicsUserArr[i] === allTopicsArr[j].label) {
             initTopicsArr.push(allTopicsArr[j]);
           }
         }
