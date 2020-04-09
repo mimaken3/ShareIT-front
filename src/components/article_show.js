@@ -84,9 +84,11 @@ const mapStateToProps = (state, ownProps) => {
 
   const article = state.articles[ownProps.match.params.articleId];
 
+  console.log("article in mapStateToProps");
+  console.log(article);
+
   // 初期状態でどんな値を表示するかをinitialValuesで設定
   return { initialValues: article, article: article };
-  //return { article: event };
 };
 
 const mapDispatchToProps = { getArticleDetail, deleteEvent };

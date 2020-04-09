@@ -65,10 +65,10 @@ class ArticleUpdate extends Component {
     if (this.state.isChosen) {
       choseTopicsArr = this.state.selectedOption;
       if (!choseTopicsArr) {
-        sendTopicsStr = "1";
+        sendTopicsStr = "その他";
       } else {
         for (let i = 0; i < choseTopicsArr.length; i++) {
-          topic = choseTopicsArr[i].value.toString();
+          topic = choseTopicsArr[i].label;
           sendTopicsStr += topic + ",";
         }
       }
@@ -94,7 +94,7 @@ class ArticleUpdate extends Component {
       for (let i = 0; i < sendTopicNamesArr.length; i++) {
         for (let j = 0; j < allTopicsArr.length; j++) {
           if (sendTopicNamesArr[i] === allTopicsArr[j].label) {
-            sendTopicsStr += allTopicsArr[j].value + ",";
+            sendTopicsStr += allTopicsArr[j].label + ",";
           }
         }
       }
