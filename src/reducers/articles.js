@@ -19,8 +19,6 @@ export default (articles = {}, action) => {
     case SHOW_ARTICLE_DETAIL:
     case UPDATE_ARTICLE_EVENT:
       const data = action.response.data;
-      console.log("reducers");
-      console.log(data);
       // {article_id: 5, article_title: "vimでビジュアルモードに変更", created_user_id: 3, article_content: ":q + v or V", article_topics: "3,12,13,20,", …}
       // 他でid5が削除された場合に、最新のid5の記事を更新するため...articlesと記述
       // ...articlesでイベントのオブジェクトを展開して、

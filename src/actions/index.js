@@ -40,14 +40,10 @@ export const updateArticle = articleId => async dispatch => {
 
 // 記事を更新
 export const putEvent = values => async dispatch => {
-  console.log("1");
-  console.log(values);
   const response = await axios.put(
     `${ROOT_URL}/article/${values.article_id}`,
     values
   );
-  console.log("2");
-  console.log(response);
   dispatch({ type: UPDATE_ARTICLE_EVENT, response });
 };
 
