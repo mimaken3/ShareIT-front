@@ -11,5 +11,4 @@ const ROOT_URL = "https://shareit-part2-pro.appspot.com";
 export const getAllTopics = () => async dispatch => {
   const response = await axios.get(`${ROOT_URL}/topics`);
   dispatch({ type: GET_ALL_TOPICS, response });
-  console.log(response);
 };

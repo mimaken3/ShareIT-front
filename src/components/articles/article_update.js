@@ -65,7 +65,7 @@ class ArticleUpdate extends Component {
       } else {
         for (let i = 0; i < choseTopicsArr.length; i++) {
           topic = choseTopicsArr[i].label;
-          sendTopicsStr += topic + ",";
+          sendTopicsStr += topic + "/";
         }
       }
     } else {
@@ -85,12 +85,12 @@ class ArticleUpdate extends Component {
       }
 
       const articleTopicsStr = this.props.article.article_topics;
-      const sendTopicNamesArr = articleTopicsStr.split(",");
+      const sendTopicNamesArr = articleTopicsStr.split("/");
 
       for (let i = 0; i < sendTopicNamesArr.length; i++) {
         for (let j = 0; j < allTopicsArr.length; j++) {
           if (sendTopicNamesArr[i] === allTopicsArr[j].label) {
-            sendTopicsStr += allTopicsArr[j].label + ",";
+            sendTopicsStr += allTopicsArr[j].label + "/";
           }
         }
       }
@@ -135,7 +135,7 @@ class ArticleUpdate extends Component {
 
       // 興味トピックを初期値に設定
       let articleTopicsStr = this.props.article.article_topics;
-      let topicsUserArr = articleTopicsStr.split(",");
+      let topicsUserArr = articleTopicsStr.split("/");
       let initTopicsArr = [];
 
       for (let i = 0; i < topicsUserArr.length; i++) {
