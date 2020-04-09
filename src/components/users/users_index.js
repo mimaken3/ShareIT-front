@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { showAllUsers } from "../../actions/user";
+import { Link } from "react-router-dom";
 import _ from "lodash";
 
 class UsersIndex extends Component {
@@ -13,18 +14,29 @@ class UsersIndex extends Component {
   renderEvents() {
     return _.map(this.props.users, user => (
       <div key={user.user_id}>
-        {user.user_id} {user.user_name} {user.email} {user.interested_topics}
+        {user.user_id}{" "}
+        <Link to={`/user/${user.user_id}`}>{user.user_name}</Link> {user.email}{" "}
+        {user.interested_topics}
       </div>
     ));
   }
 
   render() {
-    return (
-      <React.Fragment>
-        <div>ユーザ一覧</div>
-        {this.renderEvents()}
-      </React.Fragment>
-    );
+    if (Object.values(this.props.users).length !== 0) {
+      return (
+        <React.Fragment>
+          <div>ユーザ一覧</div>
+          {this.renderEvents()}
+          <Link to={`/articles`}>記事一覧画面へ</Link>
+        </React.Fragment>
+      );
+    } else {
+      return (
+        <React.Fragment>
+          <div>Now loading</div>
+        </React.Fragment>
+      );
+    }
   }
 }
 

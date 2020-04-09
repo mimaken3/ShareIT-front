@@ -25,12 +25,21 @@ class ArticlesIndex extends Component {
   }
 
   render() {
-    return (
-      <React.Fragment>
-        <div>記事一覧</div>
-        {this.renderArticles()}
-      </React.Fragment>
-    );
+    if (Object.values(this.props.articles).length !== 0) {
+      return (
+        <React.Fragment>
+          <div>記事一覧</div>
+          {this.renderArticles()}
+          <Link to={`/users`}>ユーザ一覧画面へ</Link>
+        </React.Fragment>
+      );
+    } else {
+      return (
+        <React.Fragment>
+          <div>Now loading</div>
+        </React.Fragment>
+      );
+    }
   }
 }
 
