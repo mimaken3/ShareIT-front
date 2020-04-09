@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 // 入力フォーム作成で使う
 import { reduxForm } from "redux-form";
-import { getArticleDetail, deleteEvent } from "../actions";
+import { getArticleDetail, deleteEvent } from "../../actions/article";
 import { Link } from "react-router-dom";
 
 // import _ from "lodash";

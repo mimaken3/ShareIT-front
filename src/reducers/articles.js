@@ -4,7 +4,7 @@ import {
   UPDATE_ARTICLE,
   UPDATE_ARTICLE_EVENT,
   DELETE_ARTICLE_EVENT
-} from "../actions";
+} from "../actions/article";
 import _ from "lodash";
 
 // reducers/index.jsに渡すためのexport

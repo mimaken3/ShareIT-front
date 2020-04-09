@@ -1,4 +1,4 @@
-import { GET_ALL_TOPICS } from "../actions/";
+import { GET_ALL_TOPICS } from "../actions/topic";
 // 配列のデータを編集するのが得意なパッケージ
 // import _ from "lodash";
 

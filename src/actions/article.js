@@ -1,24 +1,16 @@
 import axios from "axios";
 
 //reducerでもimortして使うので
-export const SHOW_ALL_USERS = "SHOW_ALL_USERS";
 export const SHOW_ALL_ARTICLES = "SHOW_ALL_ARTICLES";
 export const SHOW_ARTICLE_DETAIL = "SHOW_ARTICLE_DETAIL";
 export const UPDATE_ARTICLE = "UPDATE_ARTICLE";
 export const UPDATE_ARTICLE_EVENT = "UPDATE_ARTICLE_EVENT";
 export const DELETE_ARTICLE_EVENT = "DELETE_ARTICLE_EVENT";
-export const GET_ALL_TOPICS = "GET_ALL_TOPICS";
 
 // この下で非同期処理イベントを実行(リクエストを投げる)
 // readEvents内で本来ならピュアなオブジェクトを返さないといけない
 // redux-thunkを使えばそれが可能
 const ROOT_URL = "https://shareit-part2-pro.appspot.com";
-
-// ユーザ一覧
-export const showAllUsers = () => async dispatch => {
-  const response = await axios.get(`${ROOT_URL}/users`);
-  dispatch({ type: SHOW_ALL_USERS, response });
-};
 
 // 記事一覧
 export const showAllArticles = () => async dispatch => {
@@ -51,10 +43,4 @@ export const putEvent = values => async dispatch => {
 export const deleteEvent = articleId => async dispatch => {
   await axios.delete(`${ROOT_URL}/article/${articleId}`);
   dispatch({ type: DELETE_ARTICLE_EVENT, articleId });
-};
-
-// 全トピックを取得
-export const getAllTopics = () => async dispatch => {
-  const response = await axios.get(`${ROOT_URL}/topics`);
-  dispatch({ type: GET_ALL_TOPICS, response });
 };

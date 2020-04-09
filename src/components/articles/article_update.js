@@ -2,12 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 // 入力フォーム作成で使う
 import { Field, reduxForm } from "redux-form";
-import {
-  getArticleDetail,
-  putEvent,
-  deleteEvent,
-  getAllTopics
-} from "../actions";
+import { getArticleDetail, putEvent, deleteEvent } from "../../actions/article";
+import { getAllTopics } from "../../actions/topic";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 

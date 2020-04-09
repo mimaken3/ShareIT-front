@@ -1,4 +1,4 @@
-import { SHOW_ALL_USERS } from "../actions";
+import { SHOW_ALL_USERS } from "../actions/user";
 import _ from "lodash";
 
 // reducers/index.jsに渡すためexport

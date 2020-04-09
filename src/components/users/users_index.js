@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { showAllUsers } from "../actions";
+import { showAllUsers } from "../../actions/user";
 import _ from "lodash";
 
 class UsersIndex extends Component {
