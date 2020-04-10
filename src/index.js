@@ -6,6 +6,8 @@ import reducer from "./reducers";
 import thunk from "redux-thunk";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import UsersIndex from "./components/users/users_index";
+import UserShow from "./components/users/user_show";
+
 import ArticlesIndex from "./components/articles/articles_index";
 import ArticleShow from "./components/articles/article_show";
 import ArticleUpdate from "./components/articles/article_update";
@@ -27,6 +29,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Switch>
         <Route exact path="/users" component={UsersIndex} />
+        <Route exact path="/user/:userId" component={UserShow} />
         <Route exact path="/articles" component={ArticlesIndex} />
         <Route exact path="/article/:articleId" component={ArticleShow} />
         <Route
