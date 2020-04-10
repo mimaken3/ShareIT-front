@@ -5,7 +5,7 @@ import { Field, reduxForm } from "redux-form";
 import { getArticleDetail, putEvent, deleteEvent } from "../../actions/article";
 import { getAllTopics } from "../../actions/topic";
 import { Link } from "react-router-dom";
-import TopicSelectBox from "../topics/TopicSelectBox";
+import TopicSelectBox from "../topics/topic_select_box";
 
 class ArticleUpdate extends Component {
   constructor(props) {
