@@ -5,7 +5,7 @@ import { Field, reduxForm } from "redux-form";
 import { getArticleDetail, putEvent, deleteEvent } from "../../actions/article";
 import { getAllTopics } from "../../actions/topic";
 import { Link } from "react-router-dom";
-import Select from "react-select";
+import TopicSelectBox from "../topics/TopicSelectBox";
 
 class ArticleUpdate extends Component {
   constructor(props) {
@@ -19,16 +19,12 @@ class ArticleUpdate extends Component {
     };
   }
 
-  // 選択されたtopicを設定
-  handleChange = selectedOption => {
-    this.setState({ selectedOption, isChosen: true });
-  };
-
   // 外部のAPIに対してイベントを取得する
   componentDidMount() {
     // 全トピックの取得
     this.props.getAllTopics();
 
+    // 記事情報を取得
     const { articleId } = this.props.match.params;
     if (articleId) this.props.getArticleDetail(articleId);
   }
@@ -53,50 +49,10 @@ class ArticleUpdate extends Component {
 
   // 記事を更新して送信
   async onSubmit(values) {
-    let topic = "";
-    let sendTopicsStr = "";
-    let choseTopicsArr = "";
-
-    // トピックを更新(送信用)
-    if (this.state.isChosen) {
-      choseTopicsArr = this.state.selectedOption;
-      if (!choseTopicsArr) {
-        sendTopicsStr = "その他";
-      } else {
-        for (let i = 0; i < choseTopicsArr.length; i++) {
-          topic = choseTopicsArr[i].label;
-          sendTopicsStr += topic + "/";
-        }
-      }
-    } else {
-      // もともとの記事のトピックsを入れる
-
-      // 全トピックをセレクトボックスにセット
-      const allTopicsArr = [];
-
-      // object to array
-      const topicObjArr = Object.values(this.props.allTopics);
-
-      for (let i = 0; i < topicObjArr.length; i++) {
-        allTopicsArr.push({
-          value: topicObjArr[i].topic_id,
-          label: topicObjArr[i].topic_name
-        });
-      }
-
-      const articleTopicsStr = this.props.article.article_topics;
-      const sendTopicNamesArr = articleTopicsStr.split("/");
-
-      for (let i = 0; i < sendTopicNamesArr.length; i++) {
-        for (let j = 0; j < allTopicsArr.length; j++) {
-          if (sendTopicNamesArr[i] === allTopicsArr[j].label) {
-            sendTopicsStr += allTopicsArr[j].label + "/";
-          }
-        }
-      }
-    }
-
-    values.article_topics = sendTopicsStr;
+    // 送信するトピックをセット
+    values.article_topics = this.refs.TopicSelectBox.getSendTopics(
+      values.article_topics
+    );
 
     await this.props.putEvent(values);
     // 更新ボタンを押したとに表示するPATH
@@ -120,31 +76,11 @@ class ArticleUpdate extends Component {
       this.props.article &&
       Object.values(this.props.allTopics).length !== 0
     ) {
-      // 全トピックをセレクトボックスにセット
-      const allTopicsArr = [];
+      // 全トピック
+      const allTopics = this.props.allTopics;
 
-      // object to array
-      const topicObjArr = Object.values(this.props.allTopics);
-
-      for (let i = 0; i < topicObjArr.length; i++) {
-        allTopicsArr.push({
-          value: topicObjArr[i].topic_id,
-          label: topicObjArr[i].topic_name
-        });
-      }
-
-      // 興味トピックを初期値に設定
-      let articleTopicsStr = this.props.article.article_topics;
-      let topicsUserArr = articleTopicsStr.split("/");
-      let initTopicsArr = [];
-
-      for (let i = 0; i < topicsUserArr.length; i++) {
-        for (let j = 0; j < allTopicsArr.length; j++) {
-          if (topicsUserArr[i] === allTopicsArr[j].label) {
-            initTopicsArr.push(allTopicsArr[j]);
-          }
-        }
-      }
+      // 初期表示トピック
+      const initTopics = this.props.article.article_topics;
 
       return (
         <form onSubmit={handleSubmit(this.onSubmit)}>
@@ -168,13 +104,10 @@ class ArticleUpdate extends Component {
           </div>
           <div>
             トピック:
-            <Select
-              name="select-test-name"
-              onChange={this.handleChange}
-              options={allTopicsArr}
-              isMulti
-              placeholder="トピックを選択して下さい"
-              defaultValue={initTopicsArr}
+            <TopicSelectBox
+              allTopics={allTopics}
+              initTopics={initTopics}
+              ref="TopicSelectBox"
             />
           </div>
           <div>作成日: {this.props.article.created_date}</div>
@@ -196,6 +129,7 @@ class ArticleUpdate extends Component {
           <div>
             <Link to={`/articles`}>一覧画面へ</Link>
           </div>
+          {/* <TopicSelectBox ref="MyTopicSelectBox" /> */}
         </form>
       );
     } else {

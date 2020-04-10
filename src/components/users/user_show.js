@@ -21,6 +21,7 @@ class UserShow extends Component {
           <div>ユーザ名: {this.props.user.user_name}</div>
           <div>興味のあるトピック: {this.props.user.interested_topics}</div>
           <div>作成日: {this.props.user.created_date}</div>
+          <Link to={`/user/${this.props.user.user_id}/edit`}>編集画面へ</Link>
           <div>
             <Link to={`/users`}>ユーザ一覧画面へ</Link>
           </div>

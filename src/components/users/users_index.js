@@ -43,7 +43,6 @@ class UsersIndex extends Component {
 // stateとactionをcomponentに関連付ける実装
 // このstateは状態のトップレベルを表す
 const mapStateToProps = state => {
-  console.log(state);
   return { users: state.users };
 };
 

@@ -52,8 +52,8 @@ class ArticleShow extends Component {
           <div>内容: {this.props.article.article_content}</div>
           <div>作成日: {this.props.article.created_date}</div>
           <div>
-            <Link to={`/article/${this.props.article.article_id}/update`}>
-              更新
+            <Link to={`/article/${this.props.article.article_id}/edit`}>
+              編集画面へ
             </Link>
           </div>
           <div>
