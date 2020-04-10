@@ -25,7 +25,7 @@ class ArticlesIndex extends Component {
   }
 
   render() {
-    if (Object.values(this.props.articles).length !== 0) {
+    if (Object.values(this.props.articles).length > 1) {
       return (
         <React.Fragment>
           <div>記事一覧</div>

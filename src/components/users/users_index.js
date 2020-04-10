@@ -22,7 +22,7 @@ class UsersIndex extends Component {
   }
 
   render() {
-    if (Object.values(this.props.users).length !== 0) {
+    if (Object.values(this.props.users).length > 1) {
       return (
         <React.Fragment>
           <div>ユーザ一覧</div>
@@ -42,7 +42,10 @@ class UsersIndex extends Component {
 
 // stateとactionをcomponentに関連付ける実装
 // このstateは状態のトップレベルを表す
-const mapStateToProps = state => ({ users: state.users });
+const mapStateToProps = state => {
+  console.log(state);
+  return { users: state.users };
+};
 
 const mapDispatchToProps = { showAllUsers };
 
