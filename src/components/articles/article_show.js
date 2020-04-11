@@ -8,8 +8,7 @@ import ArticleTitle from "../presentational/atoms/articles/title";
 import ArticleContent from "../presentational/atoms/articles/content";
 import CreatedDate from "../presentational/atoms/created_date.js";
 import Topic from "../presentational/atoms/topics/topic";
-
-// import _ from "lodash";
+import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
 
 class ArticleShow extends Component {
   constructor(props) {
@@ -62,7 +61,7 @@ class ArticleShow extends Component {
               削除
             </Link>
             <div>
-              <Link to={`/articles`}>一覧画面へ</Link>
+              <ToAllArticlesButton />
             </div>
           </div>
         </React.Fragment>

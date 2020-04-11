@@ -9,6 +9,7 @@ import TopicSelectBox from "../presentational/atoms/topic_select_box";
 import CreatedDate from "../presentational/atoms/created_date.js";
 // import InputTitle from "../presentational/atoms/articles/input_title";
 // import InputContent from "../presentational/atoms/articles/input_content";
+import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
 
 class ArticleUpdate extends Component {
   constructor(props) {
@@ -135,9 +136,8 @@ class ArticleUpdate extends Component {
           </div>
 
           <div>
-            <Link to={`/articles`}>一覧画面へ</Link>
+            <ToAllArticlesButton />
           </div>
-          {/* <TopicSelectBox ref="MyTopicSelectBox" /> */}
         </form>
       );
     } else {

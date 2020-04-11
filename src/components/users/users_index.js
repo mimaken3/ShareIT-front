@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { showAllUsers } from "../../actions/user";
 import { Link } from "react-router-dom";
 import _ from "lodash";
+import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
 
 class UsersIndex extends Component {
   // 外部のAPIに対してイベントを取得する
@@ -27,7 +28,9 @@ class UsersIndex extends Component {
         <React.Fragment>
           <div>ユーザ一覧</div>
           {this.renderEvents()}
-          <Link to={`/articles`}>記事一覧画面へ</Link>
+          <div>
+            <ToAllArticlesButton />
+          </div>
         </React.Fragment>
       );
     } else {
