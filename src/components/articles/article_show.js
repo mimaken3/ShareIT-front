@@ -5,6 +5,7 @@ import { reduxForm } from "redux-form";
 import { getArticleDetail, deleteEvent } from "../../actions/article";
 import { Link } from "react-router-dom";
 import ArticleTitle from "../presentational/atoms/articles/title";
+import ArticleContent from "../presentational/atoms/articles/content";
 
 // import _ from "lodash";
 
@@ -35,7 +36,7 @@ class ArticleShow extends Component {
           <div>ID: {this.props.article.article_id}</div>
           <ArticleTitle articleTitle={this.props.article.article_title} />
           <div>トピック: {this.props.article.article_topics}</div>
-          <div>内容: {this.props.article.article_content}</div>
+          <ArticleContent articleContent={this.props.article.article_content} />
           <div>作成日: {this.props.article.created_date}</div>
           <div>
             <Link to={`/article/${this.props.article.article_id}/edit`}>
