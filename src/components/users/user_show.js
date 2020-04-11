@@ -5,6 +5,7 @@ import { reduxForm } from "redux-form";
 import { getUserDetail } from "../../actions/user";
 import { Link } from "react-router-dom";
 import ToAllUsersButton from "../presentational/atoms/to_all_users_button";
+import UserName from "../presentational/atoms/users/name";
 
 class UserShow extends Component {
   componentDidMount() {
@@ -19,7 +20,9 @@ class UserShow extends Component {
         <React.Fragment>
           <div>ユーザ詳細</div>
           <div>ユーザID: {this.props.user.user_id}</div>
-          <div>ユーザ名: {this.props.user.user_name}</div>
+          <div>
+            <UserName userName={this.props.user.user_name} />
+          </div>
           <div>興味のあるトピック: {this.props.user.interested_topics}</div>
           <div>作成日: {this.props.user.created_date}</div>
           <Link to={`/user/${this.props.user.user_id}/edit`}>編集画面へ</Link>
