@@ -4,6 +4,7 @@ import { showAllUsers } from "../../actions/user";
 import { Link } from "react-router-dom";
 import _ from "lodash";
 import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
+import Loading from "../presentational/atoms/loading";
 
 class UsersIndex extends Component {
   // 外部のAPIに対してイベントを取得する
@@ -36,7 +37,9 @@ class UsersIndex extends Component {
     } else {
       return (
         <React.Fragment>
-          <div>Now loading</div>
+          <div>
+            <Loading />
+          </div>
         </React.Fragment>
       );
     }

@@ -9,6 +9,7 @@ import ArticleContent from "../presentational/atoms/articles/content";
 import CreatedDate from "../presentational/atoms/created_date.js";
 import Topic from "../presentational/atoms/topics/topic";
 import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
+import Loading from "../presentational/atoms/loading";
 
 class ArticleShow extends Component {
   constructor(props) {
@@ -69,7 +70,9 @@ class ArticleShow extends Component {
     } else {
       return (
         <React.Fragment>
-          <div>Now loading</div>
+          <div>
+            <Loading />
+          </div>
         </React.Fragment>
       );
     }

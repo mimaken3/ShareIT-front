@@ -10,6 +10,7 @@ import CreatedDate from "../presentational/atoms/created_date.js";
 // import InputTitle from "../presentational/atoms/articles/input_title";
 // import InputContent from "../presentational/atoms/articles/input_content";
 import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
+import Loading from "../presentational/atoms/loading";
 
 class ArticleUpdate extends Component {
   constructor(props) {
@@ -143,7 +144,9 @@ class ArticleUpdate extends Component {
     } else {
       return (
         <React.Fragment>
-          <div>Now loading</div>
+          <div>
+            <Loading />
+          </div>
         </React.Fragment>
       );
     }

@@ -8,6 +8,7 @@ import { getUserDetail } from "../../actions/user";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import ToAllUsersButton from "../presentational/atoms/to_all_users_button";
+import Loading from "../presentational/atoms/loading";
 
 class UserUpdateShow extends Component {
   componentDidMount() {
@@ -39,7 +40,9 @@ class UserUpdateShow extends Component {
     } else {
       return (
         <React.Fragment>
-          <div>Now loading</div>
+          <div>
+            <Loading />
+          </div>
         </React.Fragment>
       );
     }

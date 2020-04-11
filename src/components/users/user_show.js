@@ -6,6 +6,9 @@ import { getUserDetail } from "../../actions/user";
 import { Link } from "react-router-dom";
 import ToAllUsersButton from "../presentational/atoms/to_all_users_button";
 import UserName from "../presentational/atoms/users/name";
+import CreatedDate from "../presentational/atoms/created_date.js";
+import Topic from "../presentational/atoms/topics/topic";
+import Loading from "../presentational/atoms/loading";
 
 class UserShow extends Component {
   componentDidMount() {
@@ -23,16 +26,30 @@ class UserShow extends Component {
           <div>
             <UserName userName={this.props.user.user_name} />
           </div>
-          <div>興味のあるトピック: {this.props.user.interested_topics}</div>
-          <div>作成日: {this.props.user.created_date}</div>
+
+          <div>
+            <Topic topic={this.props.user.interested_topics} />
+          </div>
+
+          <div>
+            <CreatedDate createdDate={this.props.user.created_date} />
+          </div>
+
           <Link to={`/user/${this.props.user.user_id}/edit`}>編集画面へ</Link>
+
           <div>
             <ToAllUsersButton />
           </div>
         </React.Fragment>
       );
     } else {
-      return <React.Fragment>Now loading</React.Fragment>;
+      return (
+        <React.Fragment>
+          <div>
+            <Loading />
+          </div>
+        </React.Fragment>
+      );
     }
   }
 }
