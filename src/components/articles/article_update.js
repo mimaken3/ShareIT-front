@@ -5,7 +5,10 @@ import { Field, reduxForm } from "redux-form";
 import { getArticleDetail, putEvent, deleteEvent } from "../../actions/article";
 import { getAllTopics } from "../../actions/topic";
 import { Link } from "react-router-dom";
-import TopicSelectBox from "../topics/topic_select_box";
+import TopicSelectBox from "../presentational/atoms/topic_select_box";
+import CreatedDate from "../presentational/atoms/created_date.js";
+import InputTitle from "../presentational/atoms/articles/input_title";
+// import InputContent from "../presentational/atoms/articles/input_content";
 
 class ArticleUpdate extends Component {
   constructor(props) {
@@ -38,6 +41,7 @@ class ArticleUpdate extends Component {
       // mata: { visited, error }
       meta: { error }
     } = field;
+    // console.log(field);
     return (
       <div>
         <input {...input} placeholder={label} type={type} />
@@ -85,6 +89,7 @@ class ArticleUpdate extends Component {
       return (
         <form onSubmit={handleSubmit(this.onSubmit)}>
           <div>
+            {/* <InputTitle input_title={this.props.article.article_title} /> */}
             タイトル:
             <Field
               label="article_title"
@@ -110,7 +115,10 @@ class ArticleUpdate extends Component {
               ref="TopicSelectBox"
             />
           </div>
-          <div>作成日: {this.props.article.created_date}</div>
+
+          <div>
+            <CreatedDate createdDate={this.props.article.created_date} />
+          </div>
 
           <div>
             <input
