@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 // 入力フォーム作成で使う
-import { Field, reduxForm } from "redux-form";
+import { reduxForm } from "redux-form";
 // import { getArticleDetail, putEvent, deleteEvent } from "../../actions/article";
 import { getAllTopics } from "../../actions/topic";
 import { getUserDetail } from "../../actions/user";
 import { Link } from "react-router-dom";
-import Select from "react-select";
 import ToAllUsersButton from "../presentational/atoms/to_all_users_button";
 import Loading from "../presentational/atoms/loading";
 
