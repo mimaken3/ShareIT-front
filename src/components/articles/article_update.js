@@ -42,7 +42,7 @@ class ArticleUpdate extends Component {
       // mata: { visited, error }
       meta: { error }
     } = field;
-    // console.log(field);
+
     return (
       <div>
         <input {...input} placeholder={label} type={type} />

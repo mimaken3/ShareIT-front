@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-// 作成日
+// 記事一覧へのボタン
 const ToAllArticlesButton = () => {
   return (
     <React.Fragment>

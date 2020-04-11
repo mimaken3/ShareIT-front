@@ -7,6 +7,7 @@ import { getAllTopics } from "../../actions/topic";
 import { getUserDetail } from "../../actions/user";
 import { Link } from "react-router-dom";
 import Select from "react-select";
+import ToAllUsersButton from "../presentational/atoms/to_all_users_button";
 
 class UserUpdateShow extends Component {
   componentDidMount() {
@@ -31,7 +32,7 @@ class UserUpdateShow extends Component {
             <Link to={`/user/${this.props.user.user_id}`}>戻る</Link>
           </div>
           <div>
-            <Link to={`/users`}>ユーザ一覧画面へ</Link>
+            <ToAllUsersButton />
           </div>
         </React.Fragment>
       );
