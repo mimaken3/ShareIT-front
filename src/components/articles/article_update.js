@@ -7,7 +7,7 @@ import { getAllTopics } from "../../actions/topic";
 import { Link } from "react-router-dom";
 import TopicSelectBox from "../presentational/atoms/topic_select_box";
 import CreatedDate from "../presentational/atoms/created_date.js";
-import InputTitle from "../presentational/atoms/articles/input_title";
+// import InputTitle from "../presentational/atoms/articles/input_title";
 // import InputContent from "../presentational/atoms/articles/input_content";
 
 class ArticleUpdate extends Component {

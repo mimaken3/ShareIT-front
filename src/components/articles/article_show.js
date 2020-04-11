@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { getArticleDetail, deleteEvent } from "../../actions/article";
 import { Link } from "react-router-dom";
+import ArticleTitle from "../presentational/atoms/articles/title";
 
 // import _ from "lodash";
 
@@ -11,21 +12,6 @@ class ArticleShow extends Component {
   constructor(props) {
     super(props);
     this.onDeleteClick = this.onDeleteClick.bind(this);
-  }
-
-  // 入力される値(フィールドの値)が渡ってくる
-  renderField(field) {
-    const {
-      input,
-      label,
-      type
-      // meta: { touched, error }
-    } = field;
-    return (
-      <div>
-        <input {...input} placeholder={label} type={type} />
-      </div>
-    );
   }
 
   componentDidMount() {
@@ -47,7 +33,7 @@ class ArticleShow extends Component {
         <React.Fragment>
           <div>記事詳細</div>
           <div>ID: {this.props.article.article_id}</div>
-          <div>タイトル: {this.props.article.article_title}</div>
+          <ArticleTitle articleTitle={this.props.article.article_title} />
           <div>トピック: {this.props.article.article_topics}</div>
           <div>内容: {this.props.article.article_content}</div>
           <div>作成日: {this.props.article.created_date}</div>
