@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 // 入力フォーム作成で使う
 import { reduxForm } from "redux-form";
 import { getArticleDetail, deleteEvent } from "../../actions/article";
-import { Link } from "react-router-dom";
 import ArticleTitle from "../presentational/atoms/articles/title";
 import ArticleContent from "../presentational/atoms/articles/content";
 import CreatedDate from "../presentational/atoms/created_date.js";
 import Topic from "../presentational/atoms/topics/topic";
 import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
 import Loading from "../presentational/atoms/loading";
+import EditButton from "../presentational/atoms/edit_button";
 
 class ArticleShow extends Component {
   constructor(props) {
@@ -53,14 +53,11 @@ class ArticleShow extends Component {
           </div>
 
           <div>
-            <Link to={`/article/${this.props.article.article_id}/edit`}>
-              編集
-            </Link>
+            <EditButton path="article" id={this.props.article.article_id} />
           </div>
+
           <div>
-            <div>
-              <ToAllArticlesButton />
-            </div>
+            <ToAllArticlesButton />
           </div>
         </React.Fragment>
       );

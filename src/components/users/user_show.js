@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 // 入力フォーム作成で使う
 import { reduxForm } from "redux-form";
 import { getUserDetail } from "../../actions/user";
-import { Link } from "react-router-dom";
 import ToAllUsersButton from "../presentational/atoms/to_all_users_button";
 import UserName from "../presentational/atoms/users/name";
 import UserID from "../presentational/atoms/users/id";
 import CreatedDate from "../presentational/atoms/created_date.js";
 import Topic from "../presentational/atoms/topics/topic";
 import Loading from "../presentational/atoms/loading";
+import EditButton from "../presentational/atoms/edit_button";
 
 class UserShow extends Component {
   componentDidMount() {
@@ -40,7 +40,9 @@ class UserShow extends Component {
             <CreatedDate createdDate={this.props.user.created_date} />
           </div>
 
-          <Link to={`/user/${this.props.user.user_id}/edit`}>編集</Link>
+          <div>
+            <EditButton path="user" id={this.props.user.user_id} />
+          </div>
 
           <div>
             <ToAllUsersButton />
