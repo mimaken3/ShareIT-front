@@ -47,7 +47,6 @@ class articleNew extends Component {
     await this.props.postArticleEvent(values);
 
     // ボタンを押したとに表示するPATH
-    // this.props.history.push("/user/" + values.user_id);
     this.props.history.push("/articles");
   }
 

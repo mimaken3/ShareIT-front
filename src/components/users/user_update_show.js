@@ -32,9 +32,10 @@ class UserUpdateShow extends Component {
       values.interested_topics
     );
 
+    // 更新
     await this.props.putUserEvent(values);
 
-    // 更新ボタンを押したとに表示するPATH
+    // 更新ボタンを押した後に遷移するURL
     this.props.history.push("/user/" + values.user_id);
   }
 
