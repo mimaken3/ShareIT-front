@@ -6,6 +6,7 @@ export const SHOW_ARTICLE_DETAIL = "SHOW_ARTICLE_DETAIL";
 export const UPDATE_ARTICLE = "UPDATE_ARTICLE";
 export const UPDATE_ARTICLE_EVENT = "UPDATE_ARTICLE_EVENT";
 export const DELETE_ARTICLE_EVENT = "DELETE_ARTICLE_EVENT";
+export const CREATE_ARTICLE_EVENT = "CREATE_ARTICLE_EVENT";
 
 // この下で非同期処理イベントを実行(リクエストを投げる)
 // readEvents内で本来ならピュアなオブジェクトを返さないといけない
@@ -30,8 +31,30 @@ export const updateArticle = articleId => async dispatch => {
   dispatch({ type: UPDATE_ARTICLE, response });
 };
 
+// 記事を投稿
+export const postArticleEvent = values => async dispatch => {
+  const userID = parseInt(values.created_user_id);
+
+  const sendValues = {
+    article_title: values.article_title,
+    article_content: values.article_content,
+    created_user_id: userID,
+    article_topics: values.article_topics
+  };
+
+  await axios
+    .post(`${ROOT_URL}/user/${userID}/createArticle`, sendValues)
+    .then(response => {
+      dispatch({ type: CREATE_ARTICLE_EVENT, response });
+    })
+    .catch(error => {
+      console.log(error.response);
+    });
+};
+
 // 記事を更新
 export const putEvent = values => async dispatch => {
+  console.log(values);
   const response = await axios.put(
     `${ROOT_URL}/article/${values.article_id}`,
     values

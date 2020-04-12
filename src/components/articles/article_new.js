@@ -1,32 +1,128 @@
-// import React, { Component } from "react";
-// import { postEvent } from "../actions";
-// import { Field, reduxForm } from "redux-form";
-// import { Link } from "react-router-dom";
-// import { connect } from "react-redux";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Field, reduxForm } from "redux-form";
+import Loading from "../presentational/atoms/loading";
+import { getAllTopics } from "../../actions/topic";
+import { postArticleEvent } from "../../actions/article";
+import TopicSelectBox from "../presentational/atoms/topic_select_box";
 
-// class articleNew extends Component {
-//   constructor(props) {
-//     super(props);
+class articleNew extends Component {
+  constructor(props) {
+    super(props);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
 
-//     // クラスのインスタンスでasync onSubmit...のインスタンスが使えす
-//     this.onSubmit = this.onSubmit.bind(this);
-//   }
+  componentDidMount() {
+    // 全トピックの取得
+    this.props.getAllTopics();
+  }
 
-//   render() {
-//     const { handleSubmit } = this.props;
-//     return (
-//       <form onSubmit={handleSubmit(this.onSubmit)}>
-//         <div>
-//           <Field label="Title" />
-//         </div>
-//       </form>
-//     );
-//   }
-// }
+  // タイトルと内容の入力ボックス
+  renderField(field) {
+    const {
+      input,
+      label,
+      type,
+      // mata: { visited, error }
+      meta: { error }
+    } = field;
 
-// const mapDispatchToProps = { postArticle };
+    return (
+      <div>
+        <input {...input} placeholder={label} type={type} />
+        {error && <span>{error}</span>}
+        {/* {visited && error && <span>{error}</span>} */}
+      </div>
+    );
+  }
 
-// export default connect(
-//   null,
-//   mapDispatchToProps
-// )(reduxForm((form: ""))(articleNew));
+  // 記事を送信
+  async onSubmit(values) {
+    // 投稿するユーザのIDをセット
+    values.created_user_id = this.props.userID;
+
+    // 送信するトピックをセット
+    values.article_topics = this.refs.TopicSelectBox.getSendTopics("その他");
+
+    await this.props.postArticleEvent(values);
+
+    // ボタンを押したとに表示するPATH
+    // this.props.history.push("/user/" + values.user_id);
+    this.props.history.push("/articles");
+  }
+
+  render() {
+    const { handleSubmit } = this.props;
+    if (Object.values(this.props.allTopics).length !== 0) {
+      // 全トピック
+      const allTopics = this.props.allTopics;
+
+      // 初期表示トピック
+      const initTopics = "";
+
+      return (
+        <React.Fragment>
+          <form onSubmit={handleSubmit(this.onSubmit)}>
+            <div>記事更新画面</div>
+            <div>
+              タイトル:
+              <Field
+                label="article_title"
+                name="article_title"
+                type="text"
+                component={this.renderField}
+              />
+            </div>
+            <div>
+              内容:
+              <Field
+                label="article_content"
+                name="article_content"
+                type="text"
+                component={this.renderField}
+              />
+            </div>
+
+            <div>
+              興味のあるトピック
+              <TopicSelectBox
+                allTopics={allTopics}
+                initTopics={initTopics}
+                ref="TopicSelectBox"
+              />
+            </div>
+
+            <div>
+              <input type="submit" value="Submit" />
+            </div>
+          </form>
+        </React.Fragment>
+      );
+    } else {
+      return (
+        <React.Fragment>
+          <div>
+            <Loading />
+          </div>
+        </React.Fragment>
+      );
+    }
+  }
+}
+
+const mapStateToProps = (state, ownProps) => {
+  // 全トピック
+  const allTopics = state.topics;
+
+  // 投稿するユーザID
+  const userID = ownProps.match.params.userId;
+
+  return { userID: userID, allTopics: allTopics };
+};
+
+const mapDispatchToProps = { getAllTopics, postArticleEvent };
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(reduxForm({ form: "articleNewForm" })(articleNew));

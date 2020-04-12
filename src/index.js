@@ -12,6 +12,7 @@ import UserUpdateShow from "./components/users/user_update_show";
 import ArticlesIndex from "./components/articles/articles_index";
 import ArticleShow from "./components/articles/article_show";
 import ArticleUpdate from "./components/articles/article_update";
+import ArticleNew from "./components/articles/article_new";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import * as serviceWorker from "./serviceWorker";
@@ -31,6 +32,7 @@ ReactDOM.render(
       <Switch>
         <Route exact path="/users" component={UsersIndex} />
         <Route exact path="/user/:userId" component={UserShow} />
+        <Route exact path="/user/:userId/article" component={ArticleNew} />
         <Route exact path="/articles" component={ArticlesIndex} />
         <Route exact path="/article/:articleId" component={ArticleShow} />
         <Route

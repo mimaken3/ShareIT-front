@@ -3,6 +3,7 @@ import {
   SHOW_ARTICLE_DETAIL,
   UPDATE_ARTICLE,
   UPDATE_ARTICLE_EVENT,
+  CREATE_ARTICLE_EVENT,
   DELETE_ARTICLE_EVENT
 } from "../actions/article";
 import _ from "lodash";
@@ -17,6 +18,7 @@ export default (articles = {}, action) => {
       return _.mapKeys(action.response.data, "article_id");
 
     case SHOW_ARTICLE_DETAIL:
+    case CREATE_ARTICLE_EVENT:
     case UPDATE_ARTICLE_EVENT:
       const data = action.response.data;
       // {article_id: 5, article_title: "vimでビジュアルモードに変更", created_user_id: 3, article_content: ":q + v or V", article_topics: "3,12,13,20,", …}
