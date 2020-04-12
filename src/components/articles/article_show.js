@@ -7,6 +7,7 @@ import ArticleTitle from "../presentational/atoms/articles/title";
 import ArticleContent from "../presentational/atoms/articles/content";
 import CreatedDate from "../presentational/atoms/created_date.js";
 import Topic from "../presentational/atoms/topics/topic";
+import ArticleID from "../presentational/atoms/articles/id";
 import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
 import Loading from "../presentational/atoms/loading";
 import EditButton from "../presentational/atoms/edit_button";
@@ -35,8 +36,13 @@ class ArticleShow extends Component {
       return (
         <React.Fragment>
           <div>記事詳細</div>
-          <div>ID: {this.props.article.article_id}</div>
-          <ArticleTitle articleTitle={this.props.article.article_title} />
+          <div>
+            <ArticleID articleID={this.props.article.article_id} />
+          </div>
+
+          <div>
+            <ArticleTitle articleTitle={this.props.article.article_title} />
+          </div>
 
           <div>
             <Topic topic={this.props.article.article_topics} />

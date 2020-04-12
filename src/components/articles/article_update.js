@@ -11,6 +11,7 @@ import CreatedDate from "../presentational/atoms/created_date.js";
 // import InputContent from "../presentational/atoms/articles/input_content";
 import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
 import Loading from "../presentational/atoms/loading";
+import ArticleID from "../presentational/atoms/articles/id";
 
 class ArticleUpdate extends Component {
   constructor(props) {
@@ -87,6 +88,9 @@ class ArticleUpdate extends Component {
         <form onSubmit={handleSubmit(this.onSubmit)}>
           <div>
             {/* <InputTitle input_title={this.props.article.article_title} /> */}
+            <div>
+              <ArticleID articleID={this.props.article.article_id} />
+            </div>
             タイトル:
             <Field
               label="article_title"
