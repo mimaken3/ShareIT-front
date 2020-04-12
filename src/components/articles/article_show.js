@@ -54,13 +54,10 @@ class ArticleShow extends Component {
 
           <div>
             <Link to={`/article/${this.props.article.article_id}/edit`}>
-              編集画面へ
+              編集
             </Link>
           </div>
           <div>
-            <Link to="/" onClick={this.onDeleteClick}>
-              削除
-            </Link>
             <div>
               <ToAllArticlesButton />
             </div>

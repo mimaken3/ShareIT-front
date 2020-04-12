@@ -35,7 +35,7 @@ class UserShow extends Component {
             <CreatedDate createdDate={this.props.user.created_date} />
           </div>
 
-          <Link to={`/user/${this.props.user.user_id}/edit`}>編集画面へ</Link>
+          <Link to={`/user/${this.props.user.user_id}/edit`}>編集</Link>
 
           <div>
             <ToAllUsersButton />

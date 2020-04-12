@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const ToAllArticlesButton = () => {
   return (
     <React.Fragment>
-      <Link to={`/articles`}>記事一覧画面へ</Link>
+      <Link to={`/articles`}>記事一覧</Link>
     </React.Fragment>
   );
 };

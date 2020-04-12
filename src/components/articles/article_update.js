@@ -17,11 +17,6 @@ class ArticleUpdate extends Component {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
     this.onDeleteClick = this.onDeleteClick.bind(this);
-
-    this.state = {
-      selectedOption: null,
-      isChosen: false
-    };
   }
 
   // 外部のAPIに対してイベントを取得する
@@ -109,6 +104,7 @@ class ArticleUpdate extends Component {
               component={this.renderField}
             />
           </div>
+
           <div>
             トピック:
             <TopicSelectBox
@@ -128,6 +124,10 @@ class ArticleUpdate extends Component {
               value="Submit"
               disabled={submitting || invalid}
             />
+          </div>
+
+          <div>
+            <Link to={`/article/${this.props.article.article_id}`}>戻る</Link>
           </div>
 
           <div>

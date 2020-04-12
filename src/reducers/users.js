@@ -1,4 +1,8 @@
-import { SHOW_ALL_USERS, SHOW_USER_DETAIL } from "../actions/user";
+import {
+  SHOW_ALL_USERS,
+  SHOW_USER_DETAIL,
+  UPDATE_USER_EVENT
+} from "../actions/user";
 import _ from "lodash";
 
 // reducers/index.jsに渡すためexport
@@ -10,6 +14,7 @@ export default (users = {}, action) => {
     case SHOW_ALL_USERS:
       return _.mapKeys(action.response.data, "user_id");
     case SHOW_USER_DETAIL:
+    case UPDATE_USER_EVENT:
       const data = action.response.data;
       // ...users
       // [data.user_id]をkeyとしたdataというオブジェクトを持って、上書きした情報をまるっとわたす

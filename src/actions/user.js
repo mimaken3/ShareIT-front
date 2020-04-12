@@ -3,6 +3,7 @@ import axios from "axios";
 //reducerでもimortして使うので
 export const SHOW_ALL_USERS = "SHOW_ALL_USERS";
 export const SHOW_USER_DETAIL = "SHOW_USER_DETAIL";
+export const UPDATE_USER_EVENT = "UPDATE_USER_EVENT";
 
 // この下で非同期処理イベントを実行(リクエストを投げる)
 // readEvents内で本来ならピュアなオブジェクトを返さないといけない
@@ -19,4 +20,13 @@ export const showAllUsers = () => async dispatch => {
 export const getUserDetail = userId => async dispatch => {
   const response = await axios.get(`${ROOT_URL}/user/${userId}`);
   dispatch({ type: SHOW_USER_DETAIL, response });
+};
+
+// ユーザ情報を更新
+export const putUserEvent = values => async dispatch => {
+  const response = await axios.put(
+    `${ROOT_URL}/user/${values.user_id}`,
+    values
+  );
+  dispatch({ type: UPDATE_USER_EVENT, response });
 };
