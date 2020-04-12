@@ -44,9 +44,10 @@ class articleNew extends Component {
     // 送信するトピックをセット
     values.article_topics = this.refs.TopicSelectBox.getSendTopics("その他");
 
+    // 作成
     await this.props.postArticleEvent(values);
 
-    // ボタンを押したとに表示するPATH
+    // ボタンを押した後に遷移するURL
     this.props.history.push("/articles");
   }
 
