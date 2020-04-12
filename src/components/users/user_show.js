@@ -6,6 +6,7 @@ import { getUserDetail } from "../../actions/user";
 import { Link } from "react-router-dom";
 import ToAllUsersButton from "../presentational/atoms/to_all_users_button";
 import UserName from "../presentational/atoms/users/name";
+import UserID from "../presentational/atoms/users/id";
 import CreatedDate from "../presentational/atoms/created_date.js";
 import Topic from "../presentational/atoms/topics/topic";
 import Loading from "../presentational/atoms/loading";
@@ -22,7 +23,11 @@ class UserShow extends Component {
       return (
         <React.Fragment>
           <div>ユーザ詳細</div>
-          <div>ユーザID: {this.props.user.user_id}</div>
+
+          <div>
+            <UserID userID={this.props.user.user_id} />
+          </div>
+
           <div>
             <UserName userName={this.props.user.user_name} />
           </div>

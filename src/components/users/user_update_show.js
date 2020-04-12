@@ -6,6 +6,7 @@ import { getAllTopics } from "../../actions/topic";
 import { getUserDetail, putUserEvent } from "../../actions/user";
 import { Link } from "react-router-dom";
 import ToAllUsersButton from "../presentational/atoms/to_all_users_button";
+import UserID from "../presentational/atoms/users/id";
 import Loading from "../presentational/atoms/loading";
 import TopicSelectBox from "../presentational/atoms/topic_select_box";
 
@@ -50,7 +51,9 @@ class UserUpdateShow extends Component {
         <React.Fragment>
           <form onSubmit={handleSubmit(this.onSubmit)}>
             ユーザ情報更新画面
-            <div>ユーザID: {this.props.user.user_id}</div>
+            <div>
+              <UserID userID={this.props.user.user_id} />
+            </div>
             <div>ユーザ名: {this.props.user.user_name}</div>
             <div>
               興味のあるトピック
