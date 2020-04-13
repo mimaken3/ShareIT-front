@@ -36,7 +36,7 @@ class UserUpdateShow extends Component {
     await this.props.putUserEvent(values);
 
     // 更新ボタンを押した後に遷移するURL
-    this.props.history.push("/user/" + values.user_id);
+    this.props.history.push("/login" + values.user_id);
   }
 
   render() {

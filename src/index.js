@@ -14,6 +14,7 @@ import ArticleShow from "./components/articles/article_show";
 import ArticleUpdate from "./components/articles/article_update";
 import ArticleNew from "./components/articles/article_new";
 import SignUp from "./components/users/sign_up";
+import Login from "./components/users/login";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import * as serviceWorker from "./serviceWorker";
@@ -32,6 +33,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Switch>
         <Route exact path="/signUp" component={SignUp} />
+        <Route exact path="/login" component={Login} />
         <Route exact path="/users" component={UsersIndex} />
         <Route exact path="/user/:userId" component={UserShow} />
         <Route exact path="/user/:userId/article" component={ArticleNew} />

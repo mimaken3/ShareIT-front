@@ -7,9 +7,7 @@ import { getAllTopics } from "../../actions/topic";
 import TopicSelectBox from "../presentational/atoms/topic_select_box";
 import Loading from "../presentational/atoms/loading";
 import { postUserEvent } from "../../actions/user";
-// import { Form, Icon, Button } from "antd";
-import { SmileOutlined, UserOutlined } from "@ant-design/icons";
-import { Input } from "antd";
+import { Link } from "react-router-dom";
 
 const ROOT_URL = "https://shareit-part2-pro.appspot.com";
 
@@ -200,6 +198,9 @@ class SignUp extends Component {
               />
             </div>
           </form>
+          <div>
+            <Link to={`/login`}>ログイン</Link>
+          </div>
         </React.Fragment>
       );
     } else {
