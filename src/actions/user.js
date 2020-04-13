@@ -1,6 +1,7 @@
 import axios from "axios";
 
 //reducerでもimortして使うので
+export const CREATE_USER_EVENT = "CREATE_USER_EVENT";
 export const SHOW_ALL_USERS = "SHOW_ALL_USERS";
 export const SHOW_USER_DETAIL = "SHOW_USER_DETAIL";
 export const UPDATE_USER_EVENT = "UPDATE_USER_EVENT";
@@ -9,6 +10,12 @@ export const UPDATE_USER_EVENT = "UPDATE_USER_EVENT";
 // readEvents内で本来ならピュアなオブジェクトを返さないといけない
 // redux-thunkを使えばそれが可能
 const ROOT_URL = "https://shareit-part2-pro.appspot.com";
+
+// ユーザ登録
+export const postUserEvent = user => async dispatch => {
+  const response = await axios.post(`${ROOT_URL}/user/signUp`, user);
+  dispatch({ type: CREATE_USER_EVENT, response });
+};
 
 // ユーザ一覧
 export const showAllUsers = () => async dispatch => {

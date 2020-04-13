@@ -1,4 +1,5 @@
 import {
+  CREATE_USER_EVENT,
   SHOW_ALL_USERS,
   SHOW_USER_DETAIL,
   UPDATE_USER_EVENT
@@ -13,6 +14,8 @@ export default (users = {}, action) => {
   switch (action.type) {
     case SHOW_ALL_USERS:
       return _.mapKeys(action.response.data, "user_id");
+
+    case CREATE_USER_EVENT:
     case SHOW_USER_DETAIL:
     case UPDATE_USER_EVENT:
       const data = action.response.data;

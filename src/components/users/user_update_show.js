@@ -40,7 +40,7 @@ class UserUpdateShow extends Component {
   }
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, submitting, invalid } = this.props;
 
     if (this.props.user && Object.values(this.props.allTopics).length !== 0) {
       // 全トピック
@@ -66,7 +66,11 @@ class UserUpdateShow extends Component {
             </div>
             <div>作成日: {this.props.user.created_date}</div>
             <div>
-              <input type="submit" value="Submit" />
+              <input
+                type="submit"
+                value="Submit"
+                disabled={submitting || invalid}
+              />
             </div>
           </form>
           <div>
