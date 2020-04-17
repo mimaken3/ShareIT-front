@@ -41,7 +41,7 @@ ReactDOM.render(
           <Route exact path="/login" component={Login} />
           <Auth>
             <Header />
-            <main>
+            <body>
               <Route exact path="/api/users" component={UsersIndex} />
               <Route exact path="/api/users/:userId" component={UserShow} />
               <Route
@@ -65,7 +65,7 @@ ReactDOM.render(
                 path="/api/users/:userId/edit"
                 component={UserUpdateShow}
               />
-            </main>
+            </body>
             <Footer />
           </Auth>
         </Switch>
