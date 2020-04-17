@@ -10,6 +10,7 @@ import CreatedDate from "../presentational/atoms/created_date.js";
 import Topic from "../presentational/atoms/topics/topic";
 import Loading from "../presentational/atoms/loading";
 import EditButton from "../presentational/atoms/edit_button";
+import CreateArticleButton from "../presentational/atoms/create_article_button";
 import * as JWT from "jwt-decode";
 
 class UserShow extends Component {
@@ -50,6 +51,10 @@ class UserShow extends Component {
           </div>
 
           <div>{AuthorizedEditButton}</div>
+
+          <div>
+            <CreateArticleButton />
+          </div>
 
           <div>
             <ToAllUsersButton />

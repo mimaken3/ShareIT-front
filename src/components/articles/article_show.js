@@ -11,6 +11,7 @@ import ArticleID from "../presentational/atoms/articles/id";
 import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
 import Loading from "../presentational/atoms/loading";
 import EditButton from "../presentational/atoms/edit_button";
+import CreateArticleButton from "../presentational/atoms/create_article_button";
 import * as JWT from "jwt-decode";
 
 class ArticleShow extends Component {
@@ -68,6 +69,10 @@ class ArticleShow extends Component {
           </div>
 
           <div>{AuthorizedEditButton}</div>
+
+          <div>
+            <CreateArticleButton />
+          </div>
 
           <div>
             <ToAllArticlesButton />

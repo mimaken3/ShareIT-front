@@ -7,6 +7,7 @@ import { postArticleEvent } from "../../actions/article";
 import TopicSelectBox from "../presentational/atoms/topic_select_box";
 import * as JWT from "jwt-decode";
 import { Redirect } from "react-router";
+import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
 
 class articleNew extends Component {
   constructor(props) {
@@ -96,6 +97,10 @@ class articleNew extends Component {
 
             <div>
               <input type="submit" value="Submit" />
+            </div>
+
+            <div>
+              <ToAllArticlesButton />
             </div>
           </form>
         </React.Fragment>

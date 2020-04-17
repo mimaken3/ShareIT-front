@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import _ from "lodash";
 import ToAllUsersButton from "../presentational/atoms/to_all_users_button";
 import Loading from "../presentational/atoms/loading";
+import CreateArticleButton from "../presentational/atoms/create_article_button";
 
 class ArticlesIndex extends Component {
   // 外部のAPIに対してイベントを取得する
@@ -32,6 +33,9 @@ class ArticlesIndex extends Component {
         <React.Fragment>
           <div>記事一覧</div>
           {this.renderArticles()}
+          <div>
+            <CreateArticleButton />
+          </div>
           <div>
             <ToAllUsersButton />
           </div>
