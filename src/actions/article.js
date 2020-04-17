@@ -35,16 +35,6 @@ export const getArticleDetail = (articleId) => async (dispatch) => {
   dispatch({ type: SHOW_ARTICLE_DETAIL, response });
 };
 
-// 記事更新画面
-export const updateArticle = (articleId) => async (dispatch) => {
-  const response = await axios.get(`${ROOT_URL}/api/articles/${articleId}`, {
-    headers: {
-      Authorization: "Bearer " + shareIT_token,
-    },
-  });
-  dispatch({ type: UPDATE_ARTICLE, response });
-};
-
 // 記事を投稿
 export const postArticleEvent = (values) => async (dispatch) => {
   const userID = parseInt(values.created_user_id);
