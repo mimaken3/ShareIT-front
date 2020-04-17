@@ -135,9 +135,10 @@ const validate = (values) => {
 
 const mapDispatchToProps = { loginUserEvent };
 
-const mapStateToProps = (state) => {
-  // TODO: ログイン失敗時、入力していたフォームを表示
-};
+const mapStateToProps = "";
+// (state) => {
+// TODO: ログイン失敗時、入力していたフォームを表示?
+// };
 
 // stateとactionをcomponentに関連付ける実装
 // このstatusは状態のトップレベルを表す
