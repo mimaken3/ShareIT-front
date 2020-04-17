@@ -2,20 +2,44 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { loginUserEvent } from "../../actions/user";
 
+let isUserNameCheck = false;
+let isEmailCheck = false;
 class Login extends Component {
   constructor(props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  // ユーザ情報を登録
-  async onSubmit(values) {
-    // ログイン
-    await this.props.loginUserEvent(values);
+  static propTypes = {
+    message: PropTypes.string,
+    dispatch: PropTypes.func.isRequired,
+  };
 
-    // 登録後の遷移先
-    this.props.history.push("/articles");
+  // componentWillReceiveProps(nextProps) {
+  //   console.log("componentWillReceiveProps");
+  //   console.log("nextProps.session: " + nextProps.session);
+  //   if (nextProps.session) {
+  //     this.setState({ session: nextProps.session });
+  //     localStorage.setItem("session", this.state.session);
+  //   } else {
+  //     this.setState({ message: nextProps.message });
+  //   }
+  // }
+
+  // ログイン
+  async onSubmit(values) {
+    const userInfo = {
+      user_name: values.user_name,
+      password: values.password,
+    };
+    // 送信
+    await this.props.loginUserEvent(userInfo);
+
+    //
+    this.props.history.push("/api/articles");
   }
 
   renderField(field) {
@@ -23,7 +47,7 @@ class Login extends Component {
       input,
       label,
       type,
-      meta: { touched, error }
+      meta: { touched, error },
     } = field;
 
     return (
@@ -62,7 +86,11 @@ class Login extends Component {
           </div>
 
           <div>
-            <input type="submit" value="Submit" disabled={submitting} />
+            <input
+              type="submit"
+              value="Submit"
+              disabled={submitting || !isUserNameCheck || !isEmailCheck}
+            />
           </div>
         </form>
         <div>
@@ -73,36 +101,48 @@ class Login extends Component {
   }
 }
 
-const validate = values => {
+const validate = (values) => {
   const errors = {};
 
   // ユーザ名
   if (values.user_name) {
     if (values.user_name.length > 20 || values.user_name.length < 2) {
       errors.user_name = "ユーザ名は2文字以上20文字以内です";
+      isUserNameCheck = false;
+    } else {
+      isUserNameCheck = true;
     }
   } else {
     errors.user_name = "ユーザ名を入力して下さい";
+    isUserNameCheck = false;
   }
 
   // パスワード
   if (values.password) {
     if (values.password.length > 16 || values.password.length < 8) {
       errors.password = "パスワードは8文字以上16文字以内です";
+      isEmailCheck = false;
+    } else {
+      isEmailCheck = true;
     }
   } else {
     errors.password = "パスワードを入力して下さい";
+    isEmailCheck = false;
   }
 
   return errors;
 };
 
-const mapDispatchToProps = "";
+const mapDispatchToProps = { loginUserEvent };
+
+const mapStateToProps = (state) => {
+  // TODO: ログイン失敗時、入力していたフォームを表示
+};
 
 // stateとactionをcomponentに関連付ける実装
 // このstatusは状態のトップレベルを表す
 // ReduxのStoreを第一引数にとる関数で、Componentにpropsとして渡すものをフィルタリングするときに使う。
-const mapStateToProps = "";
+// const mapStateToProps = "";
 
 // connect 第一引数はcomponentに渡すpropsを制御する
 // 第二引数はreducerを呼び出して、reduxで管理しているstateを更新する

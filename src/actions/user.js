@@ -13,30 +13,31 @@ export const UPDATE_USER_EVENT = "UPDATE_USER_EVENT";
 const ROOT_URL = "https://shareit-part2-pro.appspot.com";
 
 // ユーザ作成
-export const postUserEvent = user => async dispatch => {
-  const response = await axios.post(`${ROOT_URL}/user/signUp`, user);
+export const postUserEvent = (user) => async (dispatch) => {
+  const response = await axios.post(`${ROOT_URL}/signUp`, user);
   dispatch({ type: CREATE_USER_EVENT, response });
 };
 
 // ログイン
-// export const loginUserEvent = user => async dispatch => {
-//   console.log(user);
-// };
+export const loginUserEvent = (user) => async (dispatch) => {
+  const response = await axios.post(`${ROOT_URL}/login`, user);
+  dispatch({ type: LOGIN_USER_EVENT, response });
+};
 
 // ユーザ一覧
-export const showAllUsers = () => async dispatch => {
+export const showAllUsers = () => async (dispatch) => {
   const response = await axios.get(`${ROOT_URL}/users`);
   dispatch({ type: SHOW_ALL_USERS, response });
 };
 
 // ユーザ詳細画面
-export const getUserDetail = userId => async dispatch => {
+export const getUserDetail = (userId) => async (dispatch) => {
   const response = await axios.get(`${ROOT_URL}/user/${userId}`);
   dispatch({ type: SHOW_USER_DETAIL, response });
 };
 
 // ユーザ情報を更新
-export const putUserEvent = values => async dispatch => {
+export const putUserEvent = (values) => async (dispatch) => {
   const response = await axios.put(
     `${ROOT_URL}/user/${values.user_id}`,
     values

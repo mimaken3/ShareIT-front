@@ -2,7 +2,7 @@ import {
   CREATE_USER_EVENT,
   SHOW_ALL_USERS,
   SHOW_USER_DETAIL,
-  UPDATE_USER_EVENT
+  UPDATE_USER_EVENT,
 } from "../actions/user";
 import _ from "lodash";
 

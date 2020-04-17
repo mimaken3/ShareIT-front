@@ -15,7 +15,7 @@ class ArticlesIndex extends Component {
 
   // 記事を表示する関数
   renderArticles() {
-    return _.map(this.props.articles, article => (
+    return _.map(this.props.articles, (article) => (
       <div key={article.article_id}>
         {article.article_id}{" "}
         <Link to={`/article/${article.article_id}`}>
@@ -51,7 +51,7 @@ class ArticlesIndex extends Component {
 
 // stateとactionをcomponentに関連付ける実装
 // このstatusは状態のトップレベルを表す
-const mapStateToProps = state => ({ articles: state.articles });
+const mapStateToProps = (state) => ({ articles: state.articles });
 
 const mapDispatchToProps = { showAllArticles };
 

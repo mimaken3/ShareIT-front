@@ -16,6 +16,7 @@ import ArticleNew from "./components/articles/article_new";
 import SignUp from "./components/users/sign_up";
 import Login from "./components/users/login";
 import { composeWithDevTools } from "redux-devtools-extension";
+import Auth from "./auth";
 
 import * as serviceWorker from "./serviceWorker";
 
@@ -34,11 +35,21 @@ ReactDOM.render(
       <Switch>
         <Route exact path="/signUp" component={SignUp} />
         <Route exact path="/login" component={Login} />
-        <Route exact path="/users" component={UsersIndex} />
-        <Route exact path="/user/:userId" component={UserShow} />
-        <Route exact path="/user/:userId/article" component={ArticleNew} />
-        <Route exact path="/articles" component={ArticlesIndex} />
-        <Route exact path="/article/:articleId" component={ArticleShow} />
+        <Auth>
+          <Route exact path="/api/users" component={UsersIndex} />
+          <Route exact path="/api/users/:userId" component={UserShow} />
+          <Route
+            exact
+            path="/api/users/:userId/article"
+            component={ArticleNew}
+          />
+          <Route exact path="/api/articles" component={ArticlesIndex} />
+          <Route
+            exact
+            path="/api/articles/:articleId"
+            component={ArticleShow}
+          />
+        </Auth>
         <Route
           exact
           path="/article/:articleId/edit"

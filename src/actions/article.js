@@ -14,46 +14,56 @@ export const CREATE_ARTICLE_EVENT = "CREATE_ARTICLE_EVENT";
 const ROOT_URL = "https://shareit-part2-pro.appspot.com";
 
 // 記事一覧
-export const showAllArticles = () => async dispatch => {
-  const response = await axios.get(`${ROOT_URL}/articles`);
+export const showAllArticles = () => async (dispatch) => {
+  const shareIT_token = localStorage.getItem("shareIT_token");
+
+  const response = await axios.get(`${ROOT_URL}/api/articles`, {
+    headers: {
+      Authorization: "Bearer " + shareIT_token,
+    },
+  });
   dispatch({ type: SHOW_ALL_ARTICLES, response });
 };
 
 // 記事詳細
-export const getArticleDetail = articleId => async dispatch => {
-  const response = await axios.get(`${ROOT_URL}/article/${articleId}`);
+export const getArticleDetail = (articleId) => async (dispatch) => {
+  const response = await axios.get(`${ROOT_URL}/article/${articleId}`, {
+    headers: {
+      Authorization: "Bearer: xxxxxxxxxx",
+    },
+  });
   dispatch({ type: SHOW_ARTICLE_DETAIL, response });
 };
 
 // 記事更新画面
-export const updateArticle = articleId => async dispatch => {
+export const updateArticle = (articleId) => async (dispatch) => {
   const response = await axios.get(`${ROOT_URL}/article/${articleId}`);
   dispatch({ type: UPDATE_ARTICLE, response });
 };
 
 // 記事を投稿
-export const postArticleEvent = values => async dispatch => {
+export const postArticleEvent = (values) => async (dispatch) => {
   const userID = parseInt(values.created_user_id);
 
   const sendValues = {
     article_title: values.article_title,
     article_content: values.article_content,
     created_user_id: userID,
-    article_topics: values.article_topics
+    article_topics: values.article_topics,
   };
 
   await axios
     .post(`${ROOT_URL}/user/${userID}/createArticle`, sendValues)
-    .then(response => {
+    .then((response) => {
       dispatch({ type: CREATE_ARTICLE_EVENT, response });
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error.response);
     });
 };
 
 // 記事を更新
-export const putEvent = values => async dispatch => {
+export const putEvent = (values) => async (dispatch) => {
   console.log(values);
   const response = await axios.put(
     `${ROOT_URL}/article/${values.article_id}`,
@@ -63,7 +73,7 @@ export const putEvent = values => async dispatch => {
 };
 
 // 記事を削除
-export const deleteEvent = articleId => async dispatch => {
+export const deleteEvent = (articleId) => async (dispatch) => {
   await axios.delete(`${ROOT_URL}/article/${articleId}`);
   dispatch({ type: DELETE_ARTICLE_EVENT, articleId });
 };
