@@ -22,8 +22,12 @@ class UserShow extends Component {
 
   render() {
     if (this.props.user) {
+      const token = localStorage.getItem("shareIT_token");
+      const jwt = JWT(token);
+
+      const loginUserID = jwt.uid;
       var AuthorizedEditButton;
-      if (this.props.loginUserID === this.props.user.user_id) {
+      if (loginUserID === this.props.user.user_id) {
         AuthorizedEditButton = (
           <div>
             <EditButton path="users" id={this.props.user.user_id} />
@@ -82,13 +86,8 @@ const mapStateToProps = (state, ownProps) => {
   // 詳細画面で必要な各種情報を取得
   const user = state.users[ownProps.match.params.userId];
 
-  const token = localStorage.getItem("shareIT_token");
-  const jwt = JWT(token);
-
-  const loginUserID = jwt.uid;
-
   // 初期状態でどんな値を表示するかをinitialValuesで設定
-  return { initialValues: user, user: user, loginUserID: loginUserID };
+  return { initialValues: user, user: user };
 };
 
 // connect 第一引数はcomponentに渡すpropsを制御する

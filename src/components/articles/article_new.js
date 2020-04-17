@@ -56,6 +56,10 @@ class articleNew extends Component {
 
   render() {
     const { handleSubmit } = this.props;
+    const token = localStorage.getItem("shareIT_token");
+    const jwt = JWT(token);
+    const loginUserID = jwt.uid;
+
     if (Object.values(this.props.allTopics).length !== 0) {
       // 全トピック
       const allTopics = this.props.allTopics;
@@ -105,10 +109,10 @@ class articleNew extends Component {
           </form>
         </React.Fragment>
       );
-    } else if (this.props.loginUserID !== this.props.userID) {
+    } else if (loginUserID !== this.props.userID) {
       return (
         <React.Fragment>
-          <Redirect to={"/api/users/" + this.props.loginUserID + "/article"} />
+          <Redirect to={"/api/users/" + loginUserID + "/article"} />
         </React.Fragment>
       );
     } else {
@@ -130,11 +134,7 @@ const mapStateToProps = (state, ownProps) => {
   // 投稿するユーザID
   const userID = ownProps.match.params.userId;
 
-  const token = localStorage.getItem("shareIT_token");
-  const jwt = JWT(token);
-  const loginUserID = jwt.uid;
-
-  return { userID: userID, allTopics: allTopics, loginUserID: loginUserID };
+  return { userID: userID, allTopics: allTopics };
 };
 
 const mapDispatchToProps = { getAllTopics, postArticleEvent };

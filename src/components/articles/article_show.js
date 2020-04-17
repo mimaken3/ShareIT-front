@@ -34,9 +34,13 @@ class ArticleShow extends Component {
   }
 
   render() {
+    const token = localStorage.getItem("shareIT_token");
+    const jwt = JWT(token);
+
+    const loginUserID = jwt.uid;
     if (this.props.article) {
       var AuthorizedEditButton;
-      if (this.props.loginUserID === this.props.article.created_user_id) {
+      if (loginUserID === this.props.article.created_user_id) {
         AuthorizedEditButton = (
           <div>
             <EditButton path="articles" id={this.props.article.article_id} />
@@ -99,13 +103,8 @@ const mapStateToProps = (state, ownProps) => {
 
   const article = state.articles[ownProps.match.params.articleId];
 
-  const token = localStorage.getItem("shareIT_token");
-  const jwt = JWT(token);
-
-  const loginUserID = jwt.uid;
-
   // 初期状態でどんな値を表示するかをinitialValuesで設定
-  return { initialValues: article, article: article, loginUserID: loginUserID };
+  return { initialValues: article, article: article };
 };
 
 const mapDispatchToProps = { getArticleDetail, deleteEvent };

@@ -75,12 +75,14 @@ class ArticleUpdate extends Component {
     // submitting: submitボタンを一度押したら非活性にする
     // invalid: submitボタンを押したらtrueになる状態
     const { handleSubmit, submitting, invalid } = this.props;
-
+    const token = localStorage.getItem("shareIT_token");
+    const jwt = JWT(token);
+    const loginUserID = jwt.uid;
     if (
       this.props.article &&
       Object.values(this.props.allTopics).length !== 0
     ) {
-      if (this.props.loginUserID !== this.props.article.created_user_id) {
+      if (loginUserID !== this.props.article.created_user_id) {
         // 別ユーザがアクセスしようとした場合
         return (
           <React.Fragment>
@@ -192,16 +194,11 @@ const mapStateToProps = (state, ownProps) => {
   // 全トピック
   const allTopics = state.topics;
 
-  const token = localStorage.getItem("shareIT_token");
-  const jwt = JWT(token);
-  const loginUserID = jwt.uid;
-
   // 初期状態でどんな値を表示するかをinitialValuesで設定
   return {
     initialValues: article,
     article: article,
     allTopics: allTopics,
-    loginUserID: loginUserID,
   };
 };
 
