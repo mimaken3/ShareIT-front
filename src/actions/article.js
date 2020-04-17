@@ -13,10 +13,10 @@ export const CREATE_ARTICLE_EVENT = "CREATE_ARTICLE_EVENT";
 // redux-thunkを使えばそれが可能
 const ROOT_URL = "https://shareit-part2-pro.appspot.com";
 
+const shareIT_token = localStorage.getItem("shareIT_token");
+
 // 記事一覧
 export const showAllArticles = () => async (dispatch) => {
-  const shareIT_token = localStorage.getItem("shareIT_token");
-
   const response = await axios.get(`${ROOT_URL}/api/articles`, {
     headers: {
       Authorization: "Bearer " + shareIT_token,
@@ -27,9 +27,9 @@ export const showAllArticles = () => async (dispatch) => {
 
 // 記事詳細
 export const getArticleDetail = (articleId) => async (dispatch) => {
-  const response = await axios.get(`${ROOT_URL}/article/${articleId}`, {
+  const response = await axios.get(`${ROOT_URL}/api/articles/${articleId}`, {
     headers: {
-      Authorization: "Bearer: xxxxxxxxxx",
+      Authorization: "Bearer " + shareIT_token,
     },
   });
   dispatch({ type: SHOW_ARTICLE_DETAIL, response });
@@ -37,7 +37,11 @@ export const getArticleDetail = (articleId) => async (dispatch) => {
 
 // 記事更新画面
 export const updateArticle = (articleId) => async (dispatch) => {
-  const response = await axios.get(`${ROOT_URL}/article/${articleId}`);
+  const response = await axios.get(`${ROOT_URL}/api/articles/${articleId}`, {
+    headers: {
+      Authorization: "Bearer " + shareIT_token,
+    },
+  });
   dispatch({ type: UPDATE_ARTICLE, response });
 };
 
@@ -53,7 +57,11 @@ export const postArticleEvent = (values) => async (dispatch) => {
   };
 
   await axios
-    .post(`${ROOT_URL}/user/${userID}/createArticle`, sendValues)
+    .post(`${ROOT_URL}/api/users/${userID}/createArticle`, sendValues, {
+      headers: {
+        Authorization: "Bearer " + shareIT_token,
+      },
+    })
     .then((response) => {
       dispatch({ type: CREATE_ARTICLE_EVENT, response });
     })
@@ -64,16 +72,24 @@ export const postArticleEvent = (values) => async (dispatch) => {
 
 // 記事を更新
 export const putEvent = (values) => async (dispatch) => {
-  console.log(values);
   const response = await axios.put(
-    `${ROOT_URL}/article/${values.article_id}`,
-    values
+    `${ROOT_URL}/api/articles/${values.article_id}`,
+    values,
+    {
+      headers: {
+        Authorization: "Bearer " + shareIT_token,
+      },
+    }
   );
   dispatch({ type: UPDATE_ARTICLE_EVENT, response });
 };
 
 // 記事を削除
 export const deleteEvent = (articleId) => async (dispatch) => {
-  await axios.delete(`${ROOT_URL}/article/${articleId}`);
+  await axios.delete(`${ROOT_URL}/api/articles/${articleId}`, {
+    headers: {
+      Authorization: "Bearer " + shareIT_token,
+    },
+  });
   dispatch({ type: DELETE_ARTICLE_EVENT, articleId });
 };

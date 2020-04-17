@@ -24,7 +24,7 @@ class articleNew extends Component {
       label,
       type,
       // mata: { visited, error }
-      meta: { error }
+      meta: { error },
     } = field;
 
     return (
@@ -48,7 +48,7 @@ class articleNew extends Component {
     await this.props.postArticleEvent(values);
 
     // ボタンを押した後に遷移するURL
-    this.props.history.push("/articles");
+    this.props.history.push("/api/articles");
   }
 
   render() {

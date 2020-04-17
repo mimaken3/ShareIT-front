@@ -18,7 +18,7 @@ class ArticlesIndex extends Component {
     return _.map(this.props.articles, (article) => (
       <div key={article.article_id}>
         {article.article_id}{" "}
-        <Link to={`/article/${article.article_id}`}>
+        <Link to={`/api/articles/${article.article_id}`}>
           {article.article_title}
         </Link>{" "}
         {article.article_content}

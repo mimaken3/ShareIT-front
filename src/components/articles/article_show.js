@@ -28,7 +28,7 @@ class ArticleShow extends Component {
   async onDeleteClick() {
     const article_id = this.props.match.params.articleId;
     await this.props.deleteEvent(article_id);
-    this.props.history.push("/articles");
+    this.props.history.push("/api/articles");
   }
 
   render() {
@@ -59,7 +59,7 @@ class ArticleShow extends Component {
           </div>
 
           <div>
-            <EditButton path="article" id={this.props.article.article_id} />
+            <EditButton path="articles" id={this.props.article.article_id} />
           </div>
 
           <div>

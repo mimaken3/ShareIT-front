@@ -37,7 +37,7 @@ class ArticleUpdate extends Component {
       label,
       type,
       // mata: { visited, error }
-      meta: { error }
+      meta: { error },
     } = field;
 
     return (
@@ -58,14 +58,14 @@ class ArticleUpdate extends Component {
 
     await this.props.putEvent(values);
     // 更新ボタンを押したとに表示するPATH
-    this.props.history.push("/article/" + values.article_id);
+    this.props.history.push("/api/articles/" + values.article_id);
   }
 
   // 記事の削除
   async onDeleteClick() {
     const article_id = this.props.match.params.articleId;
     await this.props.deleteEvent(article_id);
-    this.props.history.push("/articles");
+    this.props.history.push("/api/articles");
   }
 
   render() {
@@ -131,7 +131,9 @@ class ArticleUpdate extends Component {
           </div>
 
           <div>
-            <Link to={`/article/${this.props.article.article_id}`}>戻る</Link>
+            <Link to={`/api/articles/${this.props.article.article_id}`}>
+              戻る
+            </Link>
           </div>
 
           <div>
@@ -158,7 +160,7 @@ class ArticleUpdate extends Component {
 }
 
 // バリデーションを行う関数
-const validate = values => {
+const validate = (values) => {
   const errors = {};
   if (!values.article_title)
     errors.article_title = "タイトルを入力してください";
@@ -188,7 +190,7 @@ const mapDispatchToProps = {
   getArticleDetail,
   putEvent,
   deleteEvent,
-  getAllTopics
+  getAllTopics,
 };
 
 // connect 第一引数はcomponentに渡すpropsを制御する

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Route, Redirect, withRouter } from "react-router";
 import PropTypes from "prop-types";
-import cookie from "react-cookies";
 
 class Auth extends Component {
   static propTypes = {
@@ -15,9 +14,9 @@ class Auth extends Component {
   }
 
   // 画面が更新されたとき
-  componentWillUpdate(nextProps) {
-    this.userWillTransfer(this.props);
-  }
+  // componentWillUpdate(nextProps) {
+  //   this.userWillTransfer(this.props);
+  // }
 
   // ログイン状態をチェック
   userWillTransfer(props) {

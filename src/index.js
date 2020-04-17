@@ -49,13 +49,13 @@ ReactDOM.render(
             path="/api/articles/:articleId"
             component={ArticleShow}
           />
+          <Route
+            exact
+            path="/api/articles/:articleId/edit"
+            component={ArticleUpdate}
+          />
+          <Route exact path="/user/:userId/edit" component={UserUpdateShow} />
         </Auth>
-        <Route
-          exact
-          path="/article/:articleId/edit"
-          component={ArticleUpdate}
-        />
-        <Route exact path="/user/:userId/edit" component={UserUpdateShow} />
       </Switch>
     </BrowserRouter>
   </Provider>,

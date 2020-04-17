@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const ToAllUsersButton = () => {
   return (
     <React.Fragment>
-      <Link to={`/users`}>ユーザ一覧</Link>
+      <Link to={`/api/users`}>ユーザ一覧</Link>
     </React.Fragment>
   );
 };
