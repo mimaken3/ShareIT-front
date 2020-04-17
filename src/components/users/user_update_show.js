@@ -7,7 +7,7 @@ import { getUserDetail, putUserEvent } from "../../actions/user";
 import { Link } from "react-router-dom";
 import ToAllUsersButton from "../presentational/atoms/to_all_users_button";
 import UserID from "../presentational/atoms/users/id";
-import Loading from "../presentational/atoms/loading";
+import Loading from "../container/templates/loading";
 import TopicSelectBox from "../presentational/atoms/topic_select_box";
 import * as JWT from "jwt-decode";
 import UnauthorizedPage from "../presentational/atoms/unauthorized_page";

@@ -4,7 +4,7 @@ import { showAllArticles } from "../../actions/article";
 import { Link } from "react-router-dom";
 import _ from "lodash";
 import ToAllUsersButton from "../presentational/atoms/to_all_users_button";
-import Loading from "../presentational/atoms/loading";
+import Loading from "../container/templates/loading";
 import CreateArticleButton from "../presentational/atoms/create_article_button";
 
 class ArticlesIndex extends Component {

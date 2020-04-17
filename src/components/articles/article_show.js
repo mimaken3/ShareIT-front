@@ -9,7 +9,7 @@ import CreatedDate from "../presentational/atoms/created_date.js";
 import Topic from "../presentational/atoms/topics/topic";
 import ArticleID from "../presentational/atoms/articles/id";
 import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
-import Loading from "../presentational/atoms/loading";
+import Loading from "../container/templates/loading";
 import EditButton from "../presentational/atoms/edit_button";
 import CreateArticleButton from "../presentational/atoms/create_article_button";
 import * as JWT from "jwt-decode";

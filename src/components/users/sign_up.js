@@ -5,7 +5,7 @@ import axios from "axios";
 import { Field, reduxForm } from "redux-form";
 import { getAllTopics } from "../../actions/topic";
 import TopicSelectBox from "../presentational/atoms/topic_select_box";
-import Loading from "../presentational/atoms/loading";
+import Loading from "../container/templates/loading";
 import { postUserEvent } from "../../actions/user";
 import { Link } from "react-router-dom";
 
@@ -25,7 +25,7 @@ class SignUp extends Component {
       userNameCheckText: "",
       emailCheckText: "",
       result_user_name_num: 1,
-      result_email_num: 1
+      result_email_num: 1,
     };
   }
 
@@ -54,18 +54,18 @@ class SignUp extends Component {
       // フォーカスが外れたときの処理
       const userInfo = {
         user_name: e.target.value,
-        email: ""
+        email: "",
       };
 
       await axios
         .post(`${ROOT_URL}/signUp/check`, userInfo)
-        .then(response => {
+        .then((response) => {
           this.setState({
             userNameCheckText: response.data.result_user_name_text,
-            result_user_name_num: response.data.result_email_num
+            result_user_name_num: response.data.result_email_num,
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error.response);
         });
     }
@@ -77,18 +77,18 @@ class SignUp extends Component {
       // フォーカスが外れたときの処理
       const userInfo = {
         user_name: "",
-        email: e.target.value
+        email: e.target.value,
       };
 
       await axios
         .post(`${ROOT_URL}/signUp/check`, userInfo)
-        .then(response => {
+        .then((response) => {
           this.setState({
             emailCheckText: response.data.result_email_text,
-            result_email_num: response.data.result_email_num
+            result_email_num: response.data.result_email_num,
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error.response);
         });
     }
@@ -99,7 +99,7 @@ class SignUp extends Component {
       input,
       label,
       type,
-      meta: { touched, error }
+      meta: { touched, error },
     } = field;
 
     return (
@@ -144,7 +144,7 @@ class SignUp extends Component {
                 disabled={submitting}
                 type="text"
                 component={this.renderField}
-                onBlur={e => this.onBlurUserName(e)}
+                onBlur={(e) => this.onBlurUserName(e)}
               />
             </div>
 
@@ -155,7 +155,7 @@ class SignUp extends Component {
                 name="email"
                 type="text"
                 component={this.renderField}
-                onBlur={e => this.onBlurEmail(e)}
+                onBlur={(e) => this.onBlurEmail(e)}
               />
             </div>
 
@@ -215,7 +215,7 @@ class SignUp extends Component {
   }
 }
 
-const validate = values => {
+const validate = (values) => {
   const errors = {};
 
   // ユーザ名
@@ -289,7 +289,7 @@ const mapDispatchToProps = { getAllTopics, postUserEvent };
 // stateとactionをcomponentに関連付ける実装
 // このstatusは状態のトップレベルを表す
 // ReduxのStoreを第一引数にとる関数で、Componentにpropsとして渡すものをフィルタリングするときに使う。
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   // 全トピック
   const allTopics = state.topics;
 

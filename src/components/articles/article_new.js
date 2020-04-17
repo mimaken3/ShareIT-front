@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import Loading from "../presentational/atoms/loading";
+import Loading from "../container/templates/loading";
 import { getAllTopics } from "../../actions/topic";
 import { postArticleEvent } from "../../actions/article";
 import TopicSelectBox from "../presentational/atoms/topic_select_box";

@@ -10,7 +10,7 @@ import CreatedDate from "../presentational/atoms/created_date.js";
 // import InputTitle from "../presentational/atoms/articles/input_title";
 // import InputContent from "../presentational/atoms/articles/input_content";
 import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
-import Loading from "../presentational/atoms/loading";
+import Loading from "../container/templates/loading";
 import UnauthorizedPage from "../presentational/atoms/unauthorized_page";
 import ArticleID from "../presentational/atoms/articles/id";
 import * as JWT from "jwt-decode";
