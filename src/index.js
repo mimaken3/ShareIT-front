@@ -17,6 +17,9 @@ import SignUp from "./components/users/sign_up";
 import Login from "./components/users/login";
 import { composeWithDevTools } from "redux-devtools-extension";
 import Auth from "./auth";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import Header from "./components/container/organisms/header";
+import Footer from "./components/container/organisms/footer";
 
 import * as serviceWorker from "./serviceWorker";
 
@@ -30,39 +33,45 @@ const enhancer =
 // thunkを導入するとactionの代わりに関数を返すことが出来るようになす
 const store = createStore(reducer, enhancer);
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/signUp" component={SignUp} />
-        <Route exact path="/login" component={Login} />
-        <Auth>
-          <Route exact path="/api/users" component={UsersIndex} />
-          <Route exact path="/api/users/:userId" component={UserShow} />
-          <Route
-            exact
-            path="/api/users/:userId/article"
-            component={ArticleNew}
-          />
-          <Route exact path="/api/articles" component={ArticlesIndex} />
-          <Route
-            exact
-            path="/api/articles/:articleId"
-            component={ArticleShow}
-          />
-          <Route
-            exact
-            path="/api/articles/:articleId/edit"
-            component={ArticleUpdate}
-          />
-          <Route
-            exact
-            path="/api/users/:userId/edit"
-            component={UserUpdateShow}
-          />
-        </Auth>
-      </Switch>
-    </BrowserRouter>
-  </Provider>,
+  <MuiThemeProvider>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/signUp" component={SignUp} />
+          <Route exact path="/login" component={Login} />
+          <Auth>
+            <Header />
+            <main>
+              <Route exact path="/api/users" component={UsersIndex} />
+              <Route exact path="/api/users/:userId" component={UserShow} />
+              <Route
+                exact
+                path="/api/users/:userId/article"
+                component={ArticleNew}
+              />
+              <Route exact path="/api/articles" component={ArticlesIndex} />
+              <Route
+                exact
+                path="/api/articles/:articleId"
+                component={ArticleShow}
+              />
+              <Route
+                exact
+                path="/api/articles/:articleId/edit"
+                component={ArticleUpdate}
+              />
+              <Route
+                exact
+                path="/api/users/:userId/edit"
+                component={UserUpdateShow}
+              />
+            </main>
+            <Footer />
+          </Auth>
+        </Switch>
+      </BrowserRouter>
+    </Provider>
+  </MuiThemeProvider>,
   document.getElementById("root")
 );
 
