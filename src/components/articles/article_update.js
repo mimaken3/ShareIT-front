@@ -11,8 +11,8 @@ import CreatedDate from "../presentational/atoms/created_date.js";
 // import InputContent from "../presentational/atoms/articles/input_content";
 import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
 import Loading from "../presentational/atoms/loading";
+import UnauthorizedPage from "../presentational/atoms/unauthorized_page";
 import ArticleID from "../presentational/atoms/articles/id";
-import { Redirect } from "react-router";
 import * as JWT from "jwt-decode";
 
 class ArticleUpdate extends Component {
@@ -83,7 +83,7 @@ class ArticleUpdate extends Component {
       if (this.props.loginUserID !== this.props.article.created_user_id) {
         return (
           <React.Fragment>
-            <div>許可されていません</div>
+            <UnauthorizedPage page="articles" />
           </React.Fragment>
         );
       } else {
