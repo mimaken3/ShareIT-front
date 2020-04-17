@@ -11,6 +11,7 @@ import ArticleID from "../presentational/atoms/articles/id";
 import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
 import Loading from "../presentational/atoms/loading";
 import EditButton from "../presentational/atoms/edit_button";
+import * as JWT from "jwt-decode";
 
 class ArticleShow extends Component {
   constructor(props) {
@@ -33,6 +34,14 @@ class ArticleShow extends Component {
 
   render() {
     if (this.props.article) {
+      var AuthorizedEditButton;
+      if (this.props.loginUserID === this.props.article.created_user_id) {
+        AuthorizedEditButton = (
+          <div>
+            <EditButton path="articles" id={this.props.article.article_id} />
+          </div>
+        );
+      }
       return (
         <React.Fragment>
           <div>記事詳細</div>
@@ -58,9 +67,7 @@ class ArticleShow extends Component {
             <CreatedDate createdDate={this.props.article.created_date} />
           </div>
 
-          <div>
-            <EditButton path="articles" id={this.props.article.article_id} />
-          </div>
+          {AuthorizedEditButton}
 
           <div>
             <ToAllArticlesButton />
@@ -87,8 +94,13 @@ const mapStateToProps = (state, ownProps) => {
 
   const article = state.articles[ownProps.match.params.articleId];
 
+  const token = localStorage.getItem("shareIT_token");
+  const jwt = JWT(token);
+
+  const loginUserID = jwt.uid;
+
   // 初期状態でどんな値を表示するかをinitialValuesで設定
-  return { initialValues: article, article: article };
+  return { initialValues: article, article: article, loginUserID: loginUserID };
 };
 
 const mapDispatchToProps = { getArticleDetail, deleteEvent };

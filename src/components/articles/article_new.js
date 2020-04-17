@@ -5,6 +5,8 @@ import Loading from "../presentational/atoms/loading";
 import { getAllTopics } from "../../actions/topic";
 import { postArticleEvent } from "../../actions/article";
 import TopicSelectBox from "../presentational/atoms/topic_select_box";
+import * as JWT from "jwt-decode";
+import { Redirect } from "react-router";
 
 class articleNew extends Component {
   constructor(props) {
@@ -98,6 +100,12 @@ class articleNew extends Component {
           </form>
         </React.Fragment>
       );
+    } else if (this.props.loginUserID !== this.props.userID) {
+      return (
+        <React.Fragment>
+          <Redirect to={"/api/users/" + this.props.loginUserID + "/article"} />
+        </React.Fragment>
+      );
     } else {
       return (
         <React.Fragment>
@@ -117,7 +125,11 @@ const mapStateToProps = (state, ownProps) => {
   // 投稿するユーザID
   const userID = ownProps.match.params.userId;
 
-  return { userID: userID, allTopics: allTopics };
+  const token = localStorage.getItem("shareIT_token");
+  const jwt = JWT(token);
+  const loginUserID = jwt.uid;
+
+  return { userID: userID, allTopics: allTopics, loginUserID: loginUserID };
 };
 
 const mapDispatchToProps = { getAllTopics, postArticleEvent };

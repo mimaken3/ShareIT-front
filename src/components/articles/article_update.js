@@ -12,6 +12,8 @@ import CreatedDate from "../presentational/atoms/created_date.js";
 import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
 import Loading from "../presentational/atoms/loading";
 import ArticleID from "../presentational/atoms/articles/id";
+import { Redirect } from "react-router";
+import * as JWT from "jwt-decode";
 
 class ArticleUpdate extends Component {
   constructor(props) {
@@ -78,75 +80,82 @@ class ArticleUpdate extends Component {
       this.props.article &&
       Object.values(this.props.allTopics).length !== 0
     ) {
-      // 全トピック
-      const allTopics = this.props.allTopics;
+      if (this.props.loginUserID !== this.props.article.created_user_id) {
+        return (
+          <React.Fragment>
+            <div>許可されていません</div>
+          </React.Fragment>
+        );
+      } else {
+        // 全トピック
+        const allTopics = this.props.allTopics;
 
-      // 初期表示トピック
-      const initTopics = this.props.article.article_topics;
+        // 初期表示トピック
+        const initTopics = this.props.article.article_topics;
 
-      return (
-        <form onSubmit={handleSubmit(this.onSubmit)}>
-          <div>
-            {/* <InputTitle input_title={this.props.article.article_title} /> */}
+        return (
+          <form onSubmit={handleSubmit(this.onSubmit)}>
             <div>
-              <ArticleID articleID={this.props.article.article_id} />
+              <div>
+                <ArticleID articleID={this.props.article.article_id} />
+              </div>
+              タイトル:
+              <Field
+                label="article_title"
+                name="article_title"
+                type="text"
+                component={this.renderField}
+              />
             </div>
-            タイトル:
-            <Field
-              label="article_title"
-              name="article_title"
-              type="text"
-              component={this.renderField}
-            />
-          </div>
-          <div>
-            内容:
-            <Field
-              label="article_content"
-              name="article_content"
-              type="text"
-              component={this.renderField}
-            />
-          </div>
+            <div>
+              内容:
+              <Field
+                label="article_content"
+                name="article_content"
+                type="text"
+                component={this.renderField}
+              />
+            </div>
 
-          <div>
-            トピック:
-            <TopicSelectBox
-              allTopics={allTopics}
-              initTopics={initTopics}
-              ref="TopicSelectBox"
-            />
-          </div>
+            <div>
+              トピック:
+              <TopicSelectBox
+                allTopics={allTopics}
+                initTopics={initTopics}
+                ref="TopicSelectBox"
+              />
+            </div>
 
-          <div>
-            <CreatedDate createdDate={this.props.article.created_date} />
-          </div>
+            <div>
+              <CreatedDate createdDate={this.props.article.created_date} />
+            </div>
 
-          <div>
-            <input
-              type="submit"
-              value="Submit"
-              disabled={submitting || invalid}
-            />
-          </div>
+            <div>
+              <input
+                type="submit"
+                value="Submit"
+                disabled={submitting || invalid}
+              />
+            </div>
 
-          <div>
-            <Link to={`/api/articles/${this.props.article.article_id}`}>
-              戻る
-            </Link>
-          </div>
+            <div>
+              <Link to={`/api/articles/${this.props.article.article_id}`}>
+                戻る
+              </Link>
+            </div>
 
-          <div>
-            <Link to="/" onClick={this.onDeleteClick}>
-              削除
-            </Link>
-          </div>
+            <div>
+              <Link to="/" onClick={this.onDeleteClick}>
+                削除
+              </Link>
+            </div>
 
-          <div>
-            <ToAllArticlesButton />
-          </div>
-        </form>
-      );
+            <div>
+              <ToAllArticlesButton />
+            </div>
+          </form>
+        );
+      }
     } else {
       return (
         <React.Fragment>
@@ -182,8 +191,17 @@ const mapStateToProps = (state, ownProps) => {
   // 全トピック
   const allTopics = state.topics;
 
+  const token = localStorage.getItem("shareIT_token");
+  const jwt = JWT(token);
+  const loginUserID = jwt.uid;
+
   // 初期状態でどんな値を表示するかをinitialValuesで設定
-  return { initialValues: article, article: article, allTopics: allTopics };
+  return {
+    initialValues: article,
+    article: article,
+    allTopics: allTopics,
+    loginUserID: loginUserID,
+  };
 };
 
 const mapDispatchToProps = {
