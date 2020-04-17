@@ -81,6 +81,7 @@ class ArticleUpdate extends Component {
       Object.values(this.props.allTopics).length !== 0
     ) {
       if (this.props.loginUserID !== this.props.article.created_user_id) {
+        // 別ユーザがアクセスしようとした場合
         return (
           <React.Fragment>
             <UnauthorizedPage page="articles" />

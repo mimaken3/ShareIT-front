@@ -9,6 +9,8 @@ import ToAllUsersButton from "../presentational/atoms/to_all_users_button";
 import UserID from "../presentational/atoms/users/id";
 import Loading from "../presentational/atoms/loading";
 import TopicSelectBox from "../presentational/atoms/topic_select_box";
+import * as JWT from "jwt-decode";
+import UnauthorizedPage from "../presentational/atoms/unauthorized_page";
 
 class UserUpdateShow extends Component {
   constructor(props) {
@@ -43,44 +45,53 @@ class UserUpdateShow extends Component {
     const { handleSubmit, submitting, invalid } = this.props;
 
     if (this.props.user && Object.values(this.props.allTopics).length !== 0) {
-      // 全トピック
-      const allTopics = this.props.allTopics;
+      if (this.props.loginUserID !== this.props.user.user_id) {
+        // 別ユーザがアクセスしようとした場合
+        return (
+          <React.Fragment>
+            <UnauthorizedPage page="users" />
+          </React.Fragment>
+        );
+      } else {
+        // 全トピック
+        const allTopics = this.props.allTopics;
 
-      // 初期表示トピック
-      const initTopics = this.props.user.interested_topics;
-      return (
-        <React.Fragment>
-          <form onSubmit={handleSubmit(this.onSubmit)}>
-            ユーザ情報更新画面
+        // 初期表示トピック
+        const initTopics = this.props.user.interested_topics;
+        return (
+          <React.Fragment>
+            <form onSubmit={handleSubmit(this.onSubmit)}>
+              ユーザ情報更新画面
+              <div>
+                <UserID userID={this.props.user.user_id} />
+              </div>
+              <div>ユーザ名: {this.props.user.user_name}</div>
+              <div>
+                興味のあるトピック
+                <TopicSelectBox
+                  allTopics={allTopics}
+                  initTopics={initTopics}
+                  ref="TopicSelectBox"
+                />
+              </div>
+              <div>作成日: {this.props.user.created_date}</div>
+              <div>
+                <input
+                  type="submit"
+                  value="Submit"
+                  disabled={submitting || invalid}
+                />
+              </div>
+            </form>
             <div>
-              <UserID userID={this.props.user.user_id} />
+              <Link to={`/api/users/${this.props.user.user_id}`}>戻る</Link>
             </div>
-            <div>ユーザ名: {this.props.user.user_name}</div>
             <div>
-              興味のあるトピック
-              <TopicSelectBox
-                allTopics={allTopics}
-                initTopics={initTopics}
-                ref="TopicSelectBox"
-              />
+              <ToAllUsersButton />
             </div>
-            <div>作成日: {this.props.user.created_date}</div>
-            <div>
-              <input
-                type="submit"
-                value="Submit"
-                disabled={submitting || invalid}
-              />
-            </div>
-          </form>
-          <div>
-            <Link to={`/api/users/${this.props.user.user_id}`}>戻る</Link>
-          </div>
-          <div>
-            <ToAllUsersButton />
-          </div>
-        </React.Fragment>
-      );
+          </React.Fragment>
+        );
+      }
     } else {
       return (
         <React.Fragment>
@@ -100,8 +111,17 @@ const mapStateToProps = (state, ownProps) => {
   // 更新するユーザ情報
   const user = state.users[ownProps.match.params.userId];
 
+  const token = localStorage.getItem("shareIT_token");
+  const jwt = JWT(token);
+  const loginUserID = jwt.uid;
+
   // 初期状態でどんな値を表示するかをinitialValuesで設定
-  return { initialValues: user, user: user, allTopics: allTopics };
+  return {
+    initialValues: user,
+    user: user,
+    allTopics: allTopics,
+    loginUserID: loginUserID,
+  };
 };
 const mapDispatchToProps = { getAllTopics, getUserDetail, putUserEvent };
 

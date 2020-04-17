@@ -67,7 +67,7 @@ class ArticleShow extends Component {
             <CreatedDate createdDate={this.props.article.created_date} />
           </div>
 
-          {AuthorizedEditButton}
+          <div>{AuthorizedEditButton}</div>
 
           <div>
             <ToAllArticlesButton />

@@ -10,6 +10,7 @@ import CreatedDate from "../presentational/atoms/created_date.js";
 import Topic from "../presentational/atoms/topics/topic";
 import Loading from "../presentational/atoms/loading";
 import EditButton from "../presentational/atoms/edit_button";
+import * as JWT from "jwt-decode";
 
 class UserShow extends Component {
   componentDidMount() {
@@ -20,6 +21,14 @@ class UserShow extends Component {
 
   render() {
     if (this.props.user) {
+      var AuthorizedEditButton;
+      if (this.props.loginUserID === this.props.user.user_id) {
+        AuthorizedEditButton = (
+          <div>
+            <EditButton path="users" id={this.props.user.user_id} />
+          </div>
+        );
+      }
       return (
         <React.Fragment>
           <div>ユーザ詳細</div>
@@ -40,9 +49,7 @@ class UserShow extends Component {
             <CreatedDate createdDate={this.props.user.created_date} />
           </div>
 
-          <div>
-            <EditButton path="users" id={this.props.user.user_id} />
-          </div>
+          <div>{AuthorizedEditButton}</div>
 
           <div>
             <ToAllUsersButton />
@@ -70,8 +77,13 @@ const mapStateToProps = (state, ownProps) => {
   // 詳細画面で必要な各種情報を取得
   const user = state.users[ownProps.match.params.userId];
 
+  const token = localStorage.getItem("shareIT_token");
+  const jwt = JWT(token);
+
+  const loginUserID = jwt.uid;
+
   // 初期状態でどんな値を表示するかをinitialValuesで設定
-  return { initialValues: user, user: user };
+  return { initialValues: user, user: user, loginUserID: loginUserID };
 };
 
 // connect 第一引数はcomponentに渡すpropsを制御する
