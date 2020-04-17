@@ -2,6 +2,7 @@ import axios from "axios";
 
 //reducerでもimortして使うので
 export const LOGIN_USER_EVENT = "LOGIN_USER_EVENT";
+export const LOGOUT_USER_EVENT = "LOGOUT_USER_EVENT";
 export const CREATE_USER_EVENT = "CREATE_USER_EVENT";
 export const SHOW_ALL_USERS = "SHOW_ALL_USERS";
 export const SHOW_USER_DETAIL = "SHOW_USER_DETAIL";
@@ -24,6 +25,11 @@ export const postUserEvent = (user) => async (dispatch) => {
 export const loginUserEvent = (user) => async (dispatch) => {
   const response = await axios.post(`${ROOT_URL}/login`, user);
   dispatch({ type: LOGIN_USER_EVENT, response });
+};
+
+// ログアウト
+export const LogoutUserEvent = () => async (dispatch) => {
+  dispatch({ type: LOGOUT_USER_EVENT });
 };
 
 // ユーザ一覧
