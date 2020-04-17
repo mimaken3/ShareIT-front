@@ -41,7 +41,7 @@ class UserShow extends Component {
           </div>
 
           <div>
-            <EditButton path="user" id={this.props.user.user_id} />
+            <EditButton path="users" id={this.props.user.user_id} />
           </div>
 
           <div>

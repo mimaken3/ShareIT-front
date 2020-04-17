@@ -12,6 +12,8 @@ export const UPDATE_USER_EVENT = "UPDATE_USER_EVENT";
 // redux-thunkを使えばそれが可能
 const ROOT_URL = "https://shareit-part2-pro.appspot.com";
 
+const shareIT_token = localStorage.getItem("shareIT_token");
+
 // ユーザ作成
 export const postUserEvent = (user) => async (dispatch) => {
   const response = await axios.post(`${ROOT_URL}/signUp`, user);
@@ -26,21 +28,34 @@ export const loginUserEvent = (user) => async (dispatch) => {
 
 // ユーザ一覧
 export const showAllUsers = () => async (dispatch) => {
-  const response = await axios.get(`${ROOT_URL}/users`);
+  const response = await axios.get(`${ROOT_URL}/api/users`, {
+    headers: {
+      Authorization: "Bearer " + shareIT_token,
+    },
+  });
   dispatch({ type: SHOW_ALL_USERS, response });
 };
 
 // ユーザ詳細画面
 export const getUserDetail = (userId) => async (dispatch) => {
-  const response = await axios.get(`${ROOT_URL}/user/${userId}`);
+  const response = await axios.get(`${ROOT_URL}/api/users/${userId}`, {
+    headers: {
+      Authorization: "Bearer " + shareIT_token,
+    },
+  });
   dispatch({ type: SHOW_USER_DETAIL, response });
 };
 
 // ユーザ情報を更新
 export const putUserEvent = (values) => async (dispatch) => {
   const response = await axios.put(
-    `${ROOT_URL}/user/${values.user_id}`,
-    values
+    `${ROOT_URL}/api/users/${values.user_id}`,
+    values,
+    {
+      headers: {
+        Authorization: "Bearer " + shareIT_token,
+      },
+    }
   );
   dispatch({ type: UPDATE_USER_EVENT, response });
 };

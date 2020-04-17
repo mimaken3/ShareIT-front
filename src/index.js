@@ -54,7 +54,11 @@ ReactDOM.render(
             path="/api/articles/:articleId/edit"
             component={ArticleUpdate}
           />
-          <Route exact path="/user/:userId/edit" component={UserUpdateShow} />
+          <Route
+            exact
+            path="/api/users/:userId/edit"
+            component={UserUpdateShow}
+          />
         </Auth>
       </Switch>
     </BrowserRouter>

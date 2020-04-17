@@ -14,11 +14,11 @@ class UsersIndex extends Component {
   }
 
   renderEvents() {
-    return _.map(this.props.users, user => (
+    return _.map(this.props.users, (user) => (
       <div key={user.user_id}>
         {user.user_id}{" "}
-        <Link to={`/user/${user.user_id}`}>{user.user_name}</Link> {user.email}{" "}
-        {user.interested_topics}
+        <Link to={`/api/users/${user.user_id}`}>{user.user_name}</Link>{" "}
+        {user.email} {user.interested_topics}
       </div>
     ));
   }
@@ -48,7 +48,7 @@ class UsersIndex extends Component {
 
 // stateとactionをcomponentに関連付ける実装
 // このstateは状態のトップレベルを表す
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { users: state.users };
 };
 

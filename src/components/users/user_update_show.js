@@ -36,7 +36,7 @@ class UserUpdateShow extends Component {
     await this.props.putUserEvent(values);
 
     // 更新ボタンを押した後に遷移するURL
-    this.props.history.push("/login" + values.user_id);
+    this.props.history.push("/api/users/" + values.user_id);
   }
 
   render() {
@@ -74,7 +74,7 @@ class UserUpdateShow extends Component {
             </div>
           </form>
           <div>
-            <Link to={`/user/${this.props.user.user_id}`}>戻る</Link>
+            <Link to={`/api/users/${this.props.user.user_id}`}>戻る</Link>
           </div>
           <div>
             <ToAllUsersButton />
