@@ -20,6 +20,7 @@ import Auth from "./auth";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import Header from "./components/container/organisms/header";
 import Footer from "./components/container/organisms/footer";
+import NotFoundPage from "./components/container/templates/NotFoundPage";
 
 import * as serviceWorker from "./serviceWorker";
 
@@ -65,6 +66,7 @@ ReactDOM.render(
                 path="/api/users/:userId/edit"
                 component={UserUpdateShow}
               />
+              <Route path="*" component={NotFoundPage} />
             </main>
             <Footer />
           </Auth>
