@@ -39,7 +39,7 @@ class Login extends Component {
     await this.props.loginUserEvent(userInfo);
 
     //
-    this.props.history.push("/api/articles");
+    // this.props.history.push("/api/articles");
   }
 
   renderField(field) {

@@ -8,30 +8,24 @@ export const UPDATE_ARTICLE_EVENT = "UPDATE_ARTICLE_EVENT";
 export const DELETE_ARTICLE_EVENT = "DELETE_ARTICLE_EVENT";
 export const CREATE_ARTICLE_EVENT = "CREATE_ARTICLE_EVENT";
 
-// この下で非同期処理イベントを実行(リクエストを投げる)
-// readEvents内で本来ならピュアなオブジェクトを返さないといけない
-// redux-thunkを使えばそれが可能
 const ROOT_URL = "https://shareit-part2-pro.appspot.com";
-
-const shareIT_token = localStorage.getItem("shareIT_token");
+let shareIT_token = localStorage.getItem("shareIT_token");
+let config = {
+  headers: { Authorization: "Bearer " + shareIT_token },
+};
 
 // 記事一覧
 export const showAllArticles = () => async (dispatch) => {
-  const response = await axios.get(`${ROOT_URL}/api/articles`, {
-    headers: {
-      Authorization: "Bearer " + shareIT_token,
-    },
-  });
+  const response = await axios.get(`${ROOT_URL}/api/articles`, config);
   dispatch({ type: SHOW_ALL_ARTICLES, response });
 };
 
 // 記事詳細
 export const getArticleDetail = (articleId) => async (dispatch) => {
-  const response = await axios.get(`${ROOT_URL}/api/articles/${articleId}`, {
-    headers: {
-      Authorization: "Bearer " + shareIT_token,
-    },
-  });
+  const response = await axios.get(
+    `${ROOT_URL}/api/articles/${articleId}`,
+    config
+  );
   dispatch({ type: SHOW_ARTICLE_DETAIL, response });
 };
 
@@ -47,11 +41,7 @@ export const postArticleEvent = (values) => async (dispatch) => {
   };
 
   await axios
-    .post(`${ROOT_URL}/api/users/${userID}/createArticle`, sendValues, {
-      headers: {
-        Authorization: "Bearer " + shareIT_token,
-      },
-    })
+    .post(`${ROOT_URL}/api/users/${userID}/createArticle`, sendValues, config)
     .then((response) => {
       dispatch({ type: CREATE_ARTICLE_EVENT, response });
     })
@@ -65,21 +55,13 @@ export const putEvent = (values) => async (dispatch) => {
   const response = await axios.put(
     `${ROOT_URL}/api/articles/${values.article_id}`,
     values,
-    {
-      headers: {
-        Authorization: "Bearer " + shareIT_token,
-      },
-    }
+    config
   );
   dispatch({ type: UPDATE_ARTICLE_EVENT, response });
 };
 
 // 記事を削除
 export const deleteEvent = (articleId) => async (dispatch) => {
-  await axios.delete(`${ROOT_URL}/api/articles/${articleId}`, {
-    headers: {
-      Authorization: "Bearer " + shareIT_token,
-    },
-  });
+  await axios.delete(`${ROOT_URL}/api/articles/${articleId}`, config);
   dispatch({ type: DELETE_ARTICLE_EVENT, articleId });
 };

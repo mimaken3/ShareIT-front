@@ -22,6 +22,9 @@ export default (state = initialState, action) => {
         localStorage.setItem("shareIT_token", action.response.data.token);
       } else {
         // TODO: 失敗時のユーザ情報をstateに格納
+        console.log("失敗...");
+        console.log(action.response.data);
+        return initialState;
       }
       return initialState;
 
