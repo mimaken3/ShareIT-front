@@ -37,40 +37,42 @@ ReactDOM.render(
   <MuiThemeProvider>
     <Provider store={store}>
       <BrowserRouter>
-        <Switch>
-          <Route exact path="/signUp" component={SignUp} />
-          <Route exact path="/login" component={Login} />
-          <Auth>
-            <Header />
-            <main>
-              <Route exact path="/api/users" component={UsersIndex} />
-              <Route exact path="/api/users/:userId" component={UserShow} />
-              <Route
-                exact
-                path="/api/users/:userId/article"
-                component={ArticleNew}
-              />
-              <Route exact path="/api/articles" component={ArticlesIndex} />
-              <Route
-                exact
-                path="/api/articles/:articleId"
-                component={ArticleShow}
-              />
-              <Route
-                exact
-                path="/api/articles/:articleId/edit"
-                component={ArticleUpdate}
-              />
-              <Route
-                exact
-                path="/api/users/:userId/edit"
-                component={UserUpdateShow}
-              />
-              <Route path="*" component={NotFoundPage} />
-            </main>
-            <Footer />
-          </Auth>
-        </Switch>
+        <Header />
+        <main>
+          <Switch>
+            <Route exact path="/signUp" component={SignUp} />
+            <Route exact path="/login" component={Login} />
+            <Auth>
+              <Switch>
+                <Route exact path="/api/users/:userId" component={UserShow} />
+                <Route exact path="/api/users" component={UsersIndex} />
+                <Route
+                  exact
+                  path="/api/users/:userId/article"
+                  component={ArticleNew}
+                />
+                <Route exact path="/api/articles" component={ArticlesIndex} />
+                <Route
+                  exact
+                  path="/api/articles/:articleId"
+                  component={ArticleShow}
+                />
+                <Route
+                  exact
+                  path="/api/articles/:articleId/edit"
+                  component={ArticleUpdate}
+                />
+                <Route
+                  exact
+                  path="/api/users/:userId/edit"
+                  component={UserUpdateShow}
+                />
+                <Route path="*" component={NotFoundPage} />
+              </Switch>
+            </Auth>
+          </Switch>
+        </main>
+        <Footer />
       </BrowserRouter>
     </Provider>
   </MuiThemeProvider>,

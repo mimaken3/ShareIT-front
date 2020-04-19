@@ -9,7 +9,7 @@ class Auth extends Component {
   };
 
   // 画面が表示されるとき
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.userWillTransfer(this.props);
   }
 
