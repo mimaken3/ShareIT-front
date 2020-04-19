@@ -38,8 +38,7 @@ class Login extends Component {
     // 送信
     await this.props.loginUserEvent(userInfo);
 
-    //
-    // this.props.history.push("/api/articles");
+    this.props.history.push("/api/articles");
   }
 
   renderField(field) {

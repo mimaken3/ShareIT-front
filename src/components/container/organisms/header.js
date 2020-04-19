@@ -9,8 +9,29 @@ import { LogoutUserEvent } from "/Users/mimaken/react/share-it-front/src/actions
 // ヘッダー
 const Header = withRouter((props) => {
   const token = localStorage.getItem("shareIT_token");
-  const jwt = JWT(token);
-  const loginUserName = jwt.name;
+  var Display;
+
+  if (token !== null) {
+    // ログイン状態
+    const jwt = JWT(token);
+    const loginUserName = jwt.name;
+    Display = (
+      <div>
+        <Button onClick={toAllArticlesPage}>ShareIT</Button>
+        {loginUserName}さんようこそ
+        <Button onClick={toLogOutage}>Logout</Button>
+      </div>
+    );
+  } else {
+    // 未ログイン状態
+    Display = (
+      <div>
+        <Button onClick={toAllArticlesPage}>ShareIT</Button>
+        ゲストさんようこそ
+        {/* <Button onClick={toLogOutage}>Logout</Button> */}
+      </div>
+    );
+  }
 
   function toAllArticlesPage() {
     props.history.push("/api/articles");
@@ -21,13 +42,7 @@ const Header = withRouter((props) => {
     props.history.push("/login");
   }
 
-  return (
-    <React.Fragment>
-      <Button onClick={toAllArticlesPage}>ShareIT</Button>
-      {loginUserName}さんようこそ
-      <Button onClick={toLogOutage}>Logout</Button>
-    </React.Fragment>
-  );
+  return <React.Fragment>{Display}</React.Fragment>;
 });
 
 const mapDispatchToProps = { LogoutUserEvent };
