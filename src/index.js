@@ -33,8 +33,6 @@ const enhancer =
 // const store = createStore(reducer, enhancer);
 // thunkを導入するとactionの代わりに関数を返すことが出来るようになす
 const store = createStore(reducer, enhancer);
-// localStorage.removeItem("currentPage");
-// console.log("remove!");
 ReactDOM.render(
   <MuiThemeProvider>
     <Provider store={store}>

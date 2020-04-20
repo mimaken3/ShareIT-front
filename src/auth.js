@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Route, Redirect, withRouter } from "react-router";
 import PropTypes from "prop-types";
+import * as JWT from "jwt-decode";
 
 class Auth extends Component {
   static propTypes = {
@@ -21,10 +22,21 @@ class Auth extends Component {
 
   // ログイン状態をチェック
   userWillTransfer(props) {
-    if (!localStorage.getItem("shareIT_token")) {
-      this.setState({ isAuthenticated: false });
+    const token = localStorage.getItem("shareIT_token");
+    if (token !== null) {
+      const jwt = JWT(token);
+      var current_time = new Date().getTime() / 1000;
+      if (current_time > jwt.exp) {
+        // 有効期限切れのため再度ログインさせる
+        this.setState({ isAuthenticated: false });
+        localStorage.removeItem("currentPage");
+      } else {
+        // ログイン済み
+        this.setState({ isAuthenticated: true });
+      }
     } else {
-      this.setState({ isAuthenticated: true });
+      // 未ログイン状態なのでログイン画面へ
+      this.setState({ isAuthenticated: false });
     }
   }
 
