@@ -125,7 +125,7 @@ class SignUp extends Component {
     );
   }
 
-  // テキストボックス
+  // プロフィール
   handleChange(e) {
     if (e.target.value.length > 1000) {
       this.setState({ textBoxFlag: true });
@@ -188,6 +188,7 @@ class SignUp extends Component {
                 <TextareaAutosize
                   aria-label="profile"
                   rowsMin={3}
+                  rowsMax={20}
                   placeholder="1000文字以内"
                   onChange={this.handleChange}
                 />

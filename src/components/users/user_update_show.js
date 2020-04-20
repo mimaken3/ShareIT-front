@@ -11,11 +11,18 @@ import Loading from "../container/templates/loading";
 import TopicSelectBox from "../presentational/atoms/topic_select_box";
 import * as JWT from "jwt-decode";
 import UnauthorizedPage from "../presentational/atoms/unauthorized_page";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 class UserUpdateShow extends Component {
   constructor(props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.state = {
+      textbox: "",
+      textBoxFlag: false,
+      isTouch: false,
+    };
   }
 
   componentDidMount() {
@@ -34,11 +41,27 @@ class UserUpdateShow extends Component {
       values.interested_topics
     );
 
+    if (this.state.isTouch) {
+      values.profile = this.state.textbox;
+    } else {
+      values.profile = this.props.user.profile;
+    }
+
     // 更新
     await this.props.putUserEvent(values);
 
     // 更新ボタンを押した後に遷移するURL
     this.props.history.push("/api/users/" + values.user_id);
+  }
+
+  // プロフィール
+  handleChange(e) {
+    this.setState({ isTouch: true });
+    if (e.target.value.length > 1000) {
+      this.setState({ textBoxFlag: true });
+    } else {
+      this.setState({ textbox: e.target.value, textBoxFlag: false });
+    }
   }
 
   render() {
@@ -76,12 +99,25 @@ class UserUpdateShow extends Component {
                   ref="TopicSelectBox"
                 />
               </div>
+              <div>
+                プロフィール
+                <div>
+                  <TextareaAutosize
+                    aria-label="profile"
+                    rowsMin={3}
+                    rowsMax={20}
+                    placeholder="1000文字以内"
+                    defaultValue={this.props.user.profile}
+                    onChange={this.handleChange}
+                  />
+                </div>
+              </div>
               <div>作成日: {this.props.user.created_date}</div>
               <div>
                 <input
                   type="submit"
                   value="Submit"
-                  disabled={submitting || invalid}
+                  disabled={submitting || invalid || this.state.textBoxFlag}
                 />
               </div>
             </form>
