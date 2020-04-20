@@ -8,6 +8,7 @@ import TopicSelectBox from "../presentational/atoms/topic_select_box";
 import Loading from "../container/templates/loading";
 import { postUserEvent } from "../../actions/user";
 import { Link } from "react-router-dom";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 const ROOT_URL = "https://shareit-part2-pro.appspot.com";
 
@@ -20,8 +21,11 @@ class SignUp extends Component {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
     this.renderField = this.renderField.bind(this);
+    this.handleChange = this.handleChange.bind(this);
 
     this.state = {
+      textbox: "",
+      textBoxFlag: false,
       userNameCheckText: "",
       emailCheckText: "",
       result_user_name_num: 1,
@@ -38,6 +42,7 @@ class SignUp extends Component {
   async onSubmit(values) {
     // 送信するトピックをセット
     values.interested_topics = this.refs.TopicSelectBox.getSendTopics("その他");
+    values.profile = this.state.textbox;
 
     delete values.confirm_password;
 
@@ -120,6 +125,15 @@ class SignUp extends Component {
     );
   }
 
+  // テキストボックス
+  handleChange(e) {
+    if (e.target.value.length > 1000) {
+      this.setState({ textBoxFlag: true });
+    } else {
+      this.setState({ textbox: e.target.value, textBoxFlag: false });
+    }
+  }
+
   render() {
     const { handleSubmit, submitting } = this.props;
 
@@ -139,7 +153,7 @@ class SignUp extends Component {
             <div>
               ユーザ名:
               <Field
-                label="ユーザ名"
+                label="2文字以上20文字以内"
                 name="user_name"
                 disabled={submitting}
                 type="text"
@@ -169,6 +183,18 @@ class SignUp extends Component {
             </div>
 
             <div>
+              プロフィール
+              <div>
+                <TextareaAutosize
+                  aria-label="profile"
+                  rowsMin={3}
+                  placeholder="1000文字以内"
+                  onChange={this.handleChange}
+                />
+              </div>
+            </div>
+
+            <div>
               パスワード
               <Field
                 label="パスワード"
@@ -193,7 +219,11 @@ class SignUp extends Component {
                 type="submit"
                 value="Submit"
                 disabled={
-                  isError || isDuplicateName || isDuplicateEmail || submitting
+                  isError ||
+                  isDuplicateName ||
+                  isDuplicateEmail ||
+                  submitting ||
+                  this.state.textBoxFlag
                 }
               />
             </div>

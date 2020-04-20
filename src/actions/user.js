@@ -15,6 +15,7 @@ let config = {
 
 // ユーザ作成
 export const postUserEvent = (user) => async (dispatch) => {
+  console.log(user);
   const response = await axios.post(`${ROOT_URL}/signUp`, user);
   dispatch({ type: CREATE_USER_EVENT, response });
 };
