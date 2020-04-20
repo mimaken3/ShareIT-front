@@ -29,7 +29,11 @@ class ArticlesIndex extends Component {
   }
 
   render() {
-    if (this.props.articles && Object.values(this.props.articles).length > 1) {
+    if (
+      this.props.articles &&
+      this.props.refPg &&
+      Object.values(this.props.articles).length > 1
+    ) {
       return (
         <React.Fragment>
           <div>記事一覧</div>
