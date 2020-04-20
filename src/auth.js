@@ -14,6 +14,7 @@ class Auth extends Component {
   }
 
   // 画面が更新されたとき
+  // componentWillUpdate: v17で廃止
   // componentWillUpdate(nextProps) {
   //   this.userWillTransfer(this.props);
   // }

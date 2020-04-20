@@ -101,8 +101,7 @@ class ArticleShow extends Component {
 const mapStateToProps = (state, ownProps) => {
   // 詳細画面で必要な各種情報を取得
 
-  const article = state.articles[ownProps.match.params.articleId];
-
+  const article = state.articles.articles[ownProps.match.params.articleId];
   // 初期状態でどんな値を表示するかをinitialValuesで設定
   return { initialValues: article, article: article };
 };

@@ -189,7 +189,7 @@ const mapStateToProps = (state, ownProps) => {
   // 詳細画面で必要な各種情報を取得
 
   // 更新する記事情報
-  const article = state.articles[ownProps.match.params.articleId];
+  const article = state.articles.articles[ownProps.match.params.articleId];
 
   // 全トピック
   const allTopics = state.topics;

@@ -3,7 +3,6 @@ import axios from "axios";
 //reducerでもimortして使うので
 export const SHOW_ALL_ARTICLES = "SHOW_ALL_ARTICLES";
 export const SHOW_ARTICLE_DETAIL = "SHOW_ARTICLE_DETAIL";
-export const UPDATE_ARTICLE = "UPDATE_ARTICLE";
 export const UPDATE_ARTICLE_EVENT = "UPDATE_ARTICLE_EVENT";
 export const DELETE_ARTICLE_EVENT = "DELETE_ARTICLE_EVENT";
 export const CREATE_ARTICLE_EVENT = "CREATE_ARTICLE_EVENT";
@@ -15,8 +14,11 @@ let config = {
 };
 
 // 記事一覧
-export const showAllArticles = () => async (dispatch) => {
-  const response = await axios.get(`${ROOT_URL}/api/articles`, config);
+export const showAllArticles = (pageNum) => async (dispatch) => {
+  const response = await axios.get(
+    `${ROOT_URL}/api/articles?ref_pg=${pageNum}`,
+    config
+  );
   dispatch({ type: SHOW_ALL_ARTICLES, response });
 };
 
