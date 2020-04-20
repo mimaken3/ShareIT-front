@@ -6,6 +6,7 @@ import { getUserDetail } from "../../actions/user";
 import ToAllUsersButton from "../presentational/atoms/to_all_users_button";
 import UserName from "../presentational/atoms/users/name";
 import UserID from "../presentational/atoms/users/id";
+import Profile from "../presentational/atoms/users/profile";
 import CreatedDate from "../presentational/atoms/created_date.js";
 import Topic from "../presentational/atoms/topics/topic";
 import Loading from "../container/templates/loading";
@@ -48,6 +49,10 @@ class UserShow extends Component {
 
           <div>
             <Topic topic={this.props.user.interested_topics} />
+          </div>
+
+          <div>
+            <Profile profile={this.props.user.profile} />
           </div>
 
           <div>
