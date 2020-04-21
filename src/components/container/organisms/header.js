@@ -15,10 +15,15 @@ const Header = withRouter((props) => {
     // ログイン状態
     const jwt = JWT(token);
     const loginUserName = jwt.name;
+    const loginUserID = jwt.uid;
+
     Display = (
       <div>
         <Button onClick={toAllArticlesPage}>ShareIT</Button>
-        {loginUserName}さんようこそ
+        <Button onClick={() => toUserShowPage(loginUserID)}>
+          {loginUserName}
+        </Button>
+        さんようこそ
         <Button onClick={toLogOutage}>Logout</Button>
       </div>
     );
@@ -26,15 +31,22 @@ const Header = withRouter((props) => {
     // 未ログイン状態
     Display = (
       <div>
-        <Button onClick={toAllArticlesPage}>ShareIT</Button>
-        ゲストさんようこそ
-        {/* <Button onClick={toLogOutage}>Logout</Button> */}
+        SHAREIT ゲストさんようこそ
+        <Button onClick={toLoginPage}>Login</Button>
       </div>
     );
   }
 
   function toAllArticlesPage() {
     props.history.push("/api/articles");
+  }
+
+  function toLoginPage() {
+    props.history.push("/login");
+  }
+
+  function toUserShowPage(loginUserID) {
+    props.history.push("/api/users/" + loginUserID);
   }
 
   function toLogOutage() {
