@@ -132,7 +132,7 @@ const mapStateToProps = (state, ownProps) => {
   const allTopics = state.topics;
 
   // 投稿するユーザID
-  const userID = ownProps.match.params.userId;
+  const userID = parseInt(ownProps.match.params.userId);
 
   return { userID: userID, allTopics: allTopics };
 };
