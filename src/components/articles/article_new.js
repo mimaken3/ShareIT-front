@@ -60,7 +60,13 @@ class articleNew extends Component {
     const jwt = JWT(token);
     const loginUserID = jwt.uid;
 
-    if (Object.values(this.props.allTopics).length !== 0) {
+    if (loginUserID !== this.props.userID) {
+      return (
+        <React.Fragment>
+          <Redirect to={"/api/users/" + loginUserID + "/article"} />
+        </React.Fragment>
+      );
+    } else if (Object.values(this.props.allTopics).length !== 0) {
       // 全トピック
       const allTopics = this.props.allTopics;
 
@@ -107,12 +113,6 @@ class articleNew extends Component {
               <ToAllArticlesButton />
             </div>
           </form>
-        </React.Fragment>
-      );
-    } else if (loginUserID !== this.props.userID) {
-      return (
-        <React.Fragment>
-          <Redirect to={"/api/users/" + loginUserID + "/article"} />
         </React.Fragment>
       );
     } else {

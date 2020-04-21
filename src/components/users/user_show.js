@@ -89,7 +89,7 @@ const mapDispatchToProps = { getUserDetail };
 // ReduxのStoreを第一引数にとる関数で、Componentにpropsとして渡すものをフィルタリングするときに使う。
 const mapStateToProps = (state, ownProps) => {
   // 詳細画面で必要な各種情報を取得
-  const user = state.users[ownProps.match.params.userId];
+  const user = state.users.users[ownProps.match.params.userId];
 
   // 初期状態でどんな値を表示するかをinitialValuesで設定
   return { initialValues: user, user: user };

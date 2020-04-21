@@ -6,12 +6,13 @@ import _ from "lodash";
 import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
 import Loading from "../container/templates/loading";
 import CreateArticleButton from "../presentational/atoms/create_article_button";
+import Paging from "../presentational/atoms/paging";
 
 class UsersIndex extends Component {
   // 外部のAPIに対してイベントを取得する
   componentDidMount() {
     // 複雑な処理はcomponentに書かずに外(action)に書く
-    this.props.showAllUsers();
+    this.props.showAllUsers(1);
   }
 
   renderEvents() {
@@ -25,7 +26,11 @@ class UsersIndex extends Component {
   }
 
   render() {
-    if (Object.values(this.props.users).length > 1) {
+    if (
+      this.props.users &&
+      this.props.refPg &&
+      Object.values(this.props.users).length > 1
+    ) {
       return (
         <React.Fragment>
           <div>ユーザ一覧</div>
@@ -37,6 +42,14 @@ class UsersIndex extends Component {
 
           <div>
             <ToAllArticlesButton />
+          </div>
+
+          <div>
+            <Paging
+              refName="users"
+              refPg={this.props.refPg}
+              allPagingNum={this.props.allPagingNum}
+            />
           </div>
         </React.Fragment>
       );
@@ -55,7 +68,11 @@ class UsersIndex extends Component {
 // stateとactionをcomponentに関連付ける実装
 // このstateは状態のトップレベルを表す
 const mapStateToProps = (state) => {
-  return { users: state.users };
+  return {
+    users: state.users.users,
+    refPg: state.users.ref_pg,
+    allPagingNum: state.users.all_paging_num,
+  };
 };
 
 const mapDispatchToProps = { showAllUsers };

@@ -40,8 +40,11 @@ export const LogoutUserEvent = () => async (dispatch) => {
 };
 
 // ユーザ一覧
-export const showAllUsers = () => async (dispatch) => {
-  const response = await axios.get(`${ROOT_URL}/api/users`, config);
+export const showAllUsers = (pageNum) => async (dispatch) => {
+  const response = await axios.get(
+    `${ROOT_URL}/api/users?ref_pg=${pageNum}`,
+    config
+  );
   dispatch({ type: SHOW_ALL_USERS, response });
 };
 

@@ -147,7 +147,7 @@ const mapStateToProps = (state, ownProps) => {
   const allTopics = state.topics;
 
   // 更新するユーザ情報
-  const user = state.users[ownProps.match.params.userId];
+  const user = state.users.users[ownProps.match.params.userId];
 
   // 初期状態でどんな値を表示するかをinitialValuesで設定
   return {
