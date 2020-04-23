@@ -24,6 +24,7 @@ class SignUp extends Component {
     this.handleChange = this.handleChange.bind(this);
 
     this.state = {
+      selectedIconImage: "",
       textbox: "",
       textBoxFlag: false,
       userNameCheckText: "",
@@ -44,13 +45,21 @@ class SignUp extends Component {
     values.interested_topics = this.refs.TopicSelectBox.getSendTopics("その他");
     values.profile = this.state.textbox;
 
+    // アイコン画像をセット
+    let iconImage = null;
+    if (this.state.selectedIconImage) {
+      iconImage = this.state.selectedIconImage;
+    } else {
+      iconImage = "default.jpg";
+    }
+
     delete values.confirm_password;
 
     // 登録
-    await this.props.postUserEvent(values);
+    await this.props.postUserEvent(values, iconImage);
 
     // 登録後の遷移先
-    this.props.history.push("/users");
+    // this.props.history.push("/users");
   }
 
   // ユーザ名の重複チェック
@@ -134,6 +143,12 @@ class SignUp extends Component {
     }
   }
 
+  // アップロードされた画像をセット
+  fileSelectedHandler = (event) => {
+    console.log(event.target.files[0]);
+    this.setState({ selectedIconImage: event.target.files[0] });
+  };
+
   render() {
     const { handleSubmit, submitting } = this.props;
 
@@ -150,6 +165,9 @@ class SignUp extends Component {
         <React.Fragment>
           <form onSubmit={handleSubmit(this.onSubmit)}>
             <div>ユーザ登録</div>
+            <div>
+              <input type="file" onChange={this.fileSelectedHandler} />
+            </div>
             <div>
               ユーザ名:
               <Field
