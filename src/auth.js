@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Route, Redirect, withRouter } from "react-router";
+import { Route, withRouter } from "react-router";
+import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import * as JWT from "jwt-decode";
 
