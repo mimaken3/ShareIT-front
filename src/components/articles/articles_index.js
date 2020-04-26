@@ -32,7 +32,7 @@ class ArticlesIndex extends Component {
     if (
       this.props.articles &&
       this.props.refPg &&
-      Object.values(this.props.articles).length > 1
+      Object.values(this.props.articles).length >= 1
     ) {
       return (
         <React.Fragment>

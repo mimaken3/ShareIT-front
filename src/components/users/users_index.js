@@ -29,7 +29,7 @@ class UsersIndex extends Component {
     if (
       this.props.users &&
       this.props.refPg &&
-      Object.values(this.props.users).length > 1
+      Object.values(this.props.users).length >= 1
     ) {
       return (
         <React.Fragment>
