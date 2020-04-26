@@ -1,4 +1,5 @@
 import axios from "axios";
+import S3 from "react-aws-s3";
 
 export const LOGIN_USER_EVENT = "LOGIN_USER_EVENT";
 export const LOGOUT_USER_EVENT = "LOGOUT_USER_EVENT";
@@ -7,15 +8,36 @@ export const SHOW_ALL_USERS = "SHOW_ALL_USERS";
 export const SHOW_USER_DETAIL = "SHOW_USER_DETAIL";
 export const UPDATE_USER_EVENT = "UPDATE_USER_EVENT";
 
-const ROOT_URL = "https://shareit-part2-pro.appspot.com";
+const ROOT_URL = process.env.REACT_APP_ROOT_URL;
+
+const iconImageConfig = {
+  bucketName: process.env.REACT_APP_AWS_S3_BUCKET_NAME,
+  dirName: "user-icons",
+  region: "ap-northeast-1",
+  accessKeyId: process.env.REACT_APP_AWS_S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.REACT_APP_AWS_S3_SECRET_ACCESS_KEY,
+};
+
 let shareIT_token = localStorage.getItem("shareIT_token");
 let config = {
   headers: { Authorization: "Bearer " + shareIT_token },
 };
 
 // ユーザ作成
-export const postUserEvent = (user) => async (dispatch) => {
+export const postUserEvent = (user, iconImage) => async (dispatch) => {
   const response = await axios.post(`${ROOT_URL}/signUp`, user);
+
+  // ユーザのアイコンをアップロード
+  if (iconImage) {
+    const ReactS3Client = new S3(iconImageConfig);
+
+    const newFileName = response.data.user_id;
+
+    ReactS3Client.uploadFile(iconImage, newFileName)
+      .then((data) => console.log(data))
+      .catch((err) => console.error(err));
+  }
+
   dispatch({ type: CREATE_USER_EVENT, response });
 };
 // ログイン

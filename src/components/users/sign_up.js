@@ -24,6 +24,8 @@ class SignUp extends Component {
     this.handleChange = this.handleChange.bind(this);
 
     this.state = {
+      selectedIconImage: null,
+      defaultIconUrl: null,
       textbox: "",
       textBoxFlag: false,
       userNameCheckText: "",
@@ -36,7 +38,28 @@ class SignUp extends Component {
   componentDidMount() {
     // 全トピックの取得
     this.props.getAllTopics();
+
+    // デフォルトアイコンのURLを取得
+    this.getDefaultIconURL();
   }
+
+  getDefaultIconURL = () => {
+    var AWS = require("aws-sdk");
+    var s3 = new AWS.S3({
+      accessKeyId: process.env.REACT_APP_AWS_S3_ACCESS_KEY_ID,
+      secretAccessKey: process.env.REACT_APP_AWS_S3_SECRET_ACCESS_KEY,
+      region: "ap-northeast-1",
+    });
+
+    var params = {
+      Bucket: "share-it-test",
+      Key: "user-icons/default.png",
+    };
+
+    s3.getSignedUrl("getObject", params, (err, url) => {
+      this.setState({ defaultIconUrl: url });
+    });
+  };
 
   // ユーザ情報を登録
   async onSubmit(values) {
@@ -44,10 +67,14 @@ class SignUp extends Component {
     values.interested_topics = this.refs.TopicSelectBox.getSendTopics("その他");
     values.profile = this.state.textbox;
 
-    delete values.confirm_password;
+    // ユーザのアイコンをセット
+    let iconImage = null;
+    if (this.state.selectedIconImage) {
+      iconImage = this.state.selectedIconImage;
+    }
 
     // 登録
-    await this.props.postUserEvent(values);
+    await this.props.postUserEvent(values, iconImage);
 
     // 登録後の遷移先
     this.props.history.push("/users");
@@ -134,15 +161,57 @@ class SignUp extends Component {
     }
   }
 
+  // 画像をアップロード
+  fileSelectedHandler = (e) => {
+    this.setState({ selectedIconImage: e.target.files[0] });
+
+    var reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onloadend = (e) => {
+      this.setState({
+        selectedIconImage: [reader.result],
+      });
+      console.log(e);
+    };
+  };
+
   render() {
     const { handleSubmit, submitting } = this.props;
 
     let isDuplicateName = this.state.result_user_name_num;
     let isDuplicateEmail = this.state.result_email_num;
 
-    if (Object.values(this.props.allTopics).length !== 0) {
+    if (
+      Object.values(this.props.allTopics).length !== 0 &&
+      this.state.defaultIconUrl
+    ) {
       // 全トピック
       const allTopics = this.props.allTopics;
+
+      var Icon;
+      if (this.state.selectedIconImage) {
+        Icon = (
+          <div>
+            <img
+              src={this.state.selectedIconImage}
+              alt="img-user"
+              width="100"
+              height="100"
+            />
+          </div>
+        );
+      } else {
+        Icon = (
+          <div>
+            <img
+              src={this.state.defaultIconUrl}
+              alt="img-default"
+              width="100"
+              height="100"
+            />
+          </div>
+        );
+      }
 
       // 初期表示トピック
       const initTopics = "";
@@ -150,6 +219,18 @@ class SignUp extends Component {
         <React.Fragment>
           <form onSubmit={handleSubmit(this.onSubmit)}>
             <div>ユーザ登録</div>
+            <div>
+              アイコン
+              {Icon}
+            </div>
+            <div>
+              <input
+                type="file"
+                onChange={this.fileSelectedHandler}
+                accept="image/*"
+              />
+            </div>
+
             <div>
               ユーザ名:
               <Field
