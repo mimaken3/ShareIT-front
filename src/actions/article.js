@@ -7,7 +7,7 @@ export const UPDATE_ARTICLE_EVENT = "UPDATE_ARTICLE_EVENT";
 export const DELETE_ARTICLE_EVENT = "DELETE_ARTICLE_EVENT";
 export const CREATE_ARTICLE_EVENT = "CREATE_ARTICLE_EVENT";
 
-const ROOT_URL = "https://shareit-part2-pro.appspot.com";
+const ROOT_URL = process.env.REACT_APP_ROOT_URL;
 let shareIT_token = localStorage.getItem("shareIT_token");
 let config = {
   headers: { Authorization: "Bearer " + shareIT_token },

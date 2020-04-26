@@ -10,7 +10,7 @@ import { postUserEvent } from "../../actions/user";
 import { Link } from "react-router-dom";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
-const ROOT_URL = "https://shareit-part2-pro.appspot.com";
+const ROOT_URL = process.env.REACT_APP_ROOT_URL;
 
 let isUserNameCheck = false;
 let isEmailCheck = false;
