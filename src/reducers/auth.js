@@ -18,8 +18,12 @@ export default (state = initialState, action) => {
       // If login was successful, set the token in local storage
       if (action.response.data.message === "success") {
         // TODO: deprecated
-        // Local Storageにtokenをセット
+        // Local Storageにtokenとアイコン名をセット
         localStorage.setItem("shareIT_token", action.response.data.token);
+        localStorage.setItem(
+          "login_user_icon_name",
+          action.response.data.user.icon_name
+        );
       } else {
         // TODO: 失敗時のユーザ情報をstateに格納
         console.log("失敗...");
