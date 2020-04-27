@@ -9,6 +9,7 @@ import Loading from "../container/templates/loading";
 import { postUserEvent } from "../../actions/user";
 import { Link } from "react-router-dom";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import EditUserIcon from "../presentational/molecules/edit_user_icon";
 
 const ROOT_URL = process.env.REACT_APP_ROOT_URL;
 
@@ -24,8 +25,7 @@ class SignUp extends Component {
     this.handleChange = this.handleChange.bind(this);
 
     this.state = {
-      selectedIconImage: null,
-      defaultIconUrl: null,
+      defaultIconURL: null,
       textbox: "",
       textBoxFlag: false,
       userNameCheckText: "",
@@ -57,7 +57,7 @@ class SignUp extends Component {
     };
 
     s3.getSignedUrl("getObject", params, (err, url) => {
-      this.setState({ defaultIconUrl: url });
+      this.setState({ defaultIconURL: url });
     });
   };
 
@@ -68,10 +68,7 @@ class SignUp extends Component {
     values.profile = this.state.textbox;
 
     // ユーザのアイコンをセット
-    let iconImage = null;
-    if (this.state.selectedIconImage) {
-      iconImage = this.state.selectedIconImage;
-    }
+    let iconImage = this.refs.EditUserIcon.getUserIcon();
 
     // 登録
     await this.props.postUserEvent(values, iconImage);
@@ -161,20 +158,6 @@ class SignUp extends Component {
     }
   }
 
-  // 画像をアップロード
-  fileSelectedHandler = (e) => {
-    this.setState({ selectedIconImage: e.target.files[0] });
-
-    var reader = new FileReader();
-    reader.readAsDataURL(e.target.files[0]);
-    reader.onloadend = (e) => {
-      this.setState({
-        selectedIconImage: [reader.result],
-      });
-      console.log(e);
-    };
-  };
-
   render() {
     const { handleSubmit, submitting } = this.props;
 
@@ -183,35 +166,10 @@ class SignUp extends Component {
 
     if (
       Object.values(this.props.allTopics).length !== 0 &&
-      this.state.defaultIconUrl
+      this.state.defaultIconURL
     ) {
       // 全トピック
       const allTopics = this.props.allTopics;
-
-      var Icon;
-      if (this.state.selectedIconImage) {
-        Icon = (
-          <div>
-            <img
-              src={this.state.selectedIconImage}
-              alt="img-user"
-              width="100"
-              height="100"
-            />
-          </div>
-        );
-      } else {
-        Icon = (
-          <div>
-            <img
-              src={this.state.defaultIconUrl}
-              alt="img-default"
-              width="100"
-              height="100"
-            />
-          </div>
-        );
-      }
 
       // 初期表示トピック
       const initTopics = "";
@@ -219,17 +177,12 @@ class SignUp extends Component {
         <React.Fragment>
           <form onSubmit={handleSubmit(this.onSubmit)}>
             <div>ユーザ登録</div>
-            <div>
-              アイコン
-              {Icon}
-            </div>
-            <div>
-              <input
-                type="file"
-                onChange={this.fileSelectedHandler}
-                accept="image/*"
-              />
-            </div>
+
+            <EditUserIcon
+              defaultIconURL=""
+              icon={this.state.defaultIconURL}
+              ref="EditUserIcon"
+            />
 
             <div>
               ユーザ名:

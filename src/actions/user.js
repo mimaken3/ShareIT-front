@@ -25,6 +25,13 @@ let config = {
 
 // ユーザ作成
 export const postUserEvent = (user, iconImage) => async (dispatch) => {
+  if (iconImage) {
+    // 画像の形式をセット
+    user.icon_name = iconImage.type.split("/")[1];
+  } else {
+    // デフォルト画像をセット
+    user.icon_name = "default.png";
+  }
   const response = await axios.post(`${ROOT_URL}/signUp`, user);
 
   // ユーザのアイコンをアップロード
