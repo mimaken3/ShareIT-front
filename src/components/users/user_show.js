@@ -13,16 +13,37 @@ import Loading from "../container/templates/loading";
 import EditButton from "../presentational/atoms/edit_button";
 import CreateArticleButton from "../presentational/atoms/create_article_button";
 import * as JWT from "jwt-decode";
+import UserIcon from "../presentational/atoms/user_icon";
+import getIconURL from "../common/getIconURL";
 
 class UserShow extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userIconURL: null,
+    };
+  }
+
   componentDidMount() {
     // 複雑な処理はcomponentに書かずに外(action)に記述
     const { userId } = this.props.match.params;
-    if (userId) this.props.getUserDetail(userId);
+    if (userId) {
+      this.props.getUserDetail(userId).then(() => {
+        // デフォルトアイコンのURLを取得
+        getIconURL(this.props.user.icon_name).then(
+          (userIconURL) => {
+            this.setState({ userIconURL: userIconURL });
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      });
+    }
   }
 
   render() {
-    if (this.props.user) {
+    if (this.props.user && this.state.userIconURL) {
       const token = localStorage.getItem("shareIT_token");
       const jwt = JWT(token);
 
@@ -35,9 +56,12 @@ class UserShow extends Component {
           </div>
         );
       }
+
       return (
         <React.Fragment>
           <div>ユーザ詳細</div>
+
+          <UserIcon iconData={this.state.userIconURL} />
 
           <div>
             <UserID userID={this.props.user.user_id} />
