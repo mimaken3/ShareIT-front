@@ -10,6 +10,7 @@ import { postUserEvent } from "../../actions/user";
 import { Link } from "react-router-dom";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import EditUserIcon from "../presentational/molecules/edit_user_icon";
+import getIconURL from "../function/getIconURL";
 
 const ROOT_URL = process.env.REACT_APP_ROOT_URL;
 
@@ -40,26 +41,15 @@ class SignUp extends Component {
     this.props.getAllTopics();
 
     // デフォルトアイコンのURLを取得
-    this.getDefaultIconURL();
+    getIconURL("default.png").then(
+      (defaultIconURL) => {
+        this.setState({ defaultIconURL: defaultIconURL });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
-
-  getDefaultIconURL = () => {
-    var AWS = require("aws-sdk");
-    var s3 = new AWS.S3({
-      accessKeyId: process.env.REACT_APP_AWS_S3_ACCESS_KEY_ID,
-      secretAccessKey: process.env.REACT_APP_AWS_S3_SECRET_ACCESS_KEY,
-      region: "ap-northeast-1",
-    });
-
-    var params = {
-      Bucket: "share-it-test",
-      Key: "user-icons/default.png",
-    };
-
-    s3.getSignedUrl("getObject", params, (err, url) => {
-      this.setState({ defaultIconURL: url });
-    });
-  };
 
   // ユーザ情報を登録
   async onSubmit(values) {
@@ -351,9 +341,6 @@ const validate = (values) => {
 
 const mapDispatchToProps = { getAllTopics, postUserEvent };
 
-// stateとactionをcomponentに関連付ける実装
-// このstatusは状態のトップレベルを表す
-// ReduxのStoreを第一引数にとる関数で、Componentにpropsとして渡すものをフィルタリングするときに使う。
 const mapStateToProps = (state) => {
   // 全トピック
   const allTopics = state.topics;
@@ -361,17 +348,7 @@ const mapStateToProps = (state) => {
   return { allTopics: allTopics };
 };
 
-// connect 第一引数はcomponentに渡すpropsを制御する
-// 第二引数はreducerを呼び出して、reduxで管理しているstateを更新する
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(
-  // enableReinitialize: When set to true, the form will reinitialize
-  // every time the initialValues prop change. Defaults to false.
-  // titleとbody属性を表示するときに使う
-  // 直接詳細画面へアクセスしたとき(本来なら最初に記事一覧を取得して、それらの情報がブラウザのメモリに残った状態で、
-  // 詳細へ行くとメモリから詳細を取得する)適宜、該当のイベントをAPIサーバから取得する
-  // formにはユニークな名前を渡す
-  reduxForm({ validate, form: "signUpForm", enableReinitialize: true })(SignUp)
-);
+)(reduxForm({ validate, form: "signUpForm" })(SignUp));
