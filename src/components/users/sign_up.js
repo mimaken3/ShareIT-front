@@ -10,7 +10,7 @@ import { postUserEvent } from "../../actions/user";
 import { Link } from "react-router-dom";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import EditUserIcon from "../presentational/molecules/edit_user_icon";
-import getIconURL from "../function/getIconURL";
+import getIconURL from "../common/getIconURL";
 
 const ROOT_URL = process.env.REACT_APP_ROOT_URL;
 
