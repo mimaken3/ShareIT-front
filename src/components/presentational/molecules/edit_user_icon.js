@@ -18,15 +18,19 @@ class EditUserIcon extends Component {
 
   // 画像をアップロード
   fileSelectedHandler = (e) => {
-    this.setState({ selectedIconImage: e.target.files[0] });
+    if (e.target.files.length === 1) {
+      // 画像がちゃんとセットされたとき
 
-    var reader = new FileReader();
-    reader.readAsDataURL(e.target.files[0]);
-    reader.onloadend = (e) => {
-      this.setState({
-        displayIconImage: [reader.result],
-      });
-    };
+      this.setState({ selectedIconImage: e.target.files[0] });
+
+      var reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onloadend = (e) => {
+        this.setState({
+          displayIconImage: [reader.result],
+        });
+      };
+    }
   };
 
   render() {
