@@ -64,7 +64,7 @@ class SignUp extends Component {
     await this.props.postUserEvent(values, iconImage);
 
     // 登録後の遷移先
-    this.props.history.push("/users");
+    this.props.history.push("/login");
   }
 
   // ユーザ名の重複チェック

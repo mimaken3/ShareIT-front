@@ -1,5 +1,6 @@
 import axios from "axios";
-import S3 from "react-aws-s3";
+import deleteIcon from "../components/common/deleteIcon";
+import uploadIcon from "../components/common/uploadIcon";
 
 export const LOGIN_USER_EVENT = "LOGIN_USER_EVENT";
 export const LOGOUT_USER_EVENT = "LOGOUT_USER_EVENT";
@@ -9,14 +10,6 @@ export const SHOW_USER_DETAIL = "SHOW_USER_DETAIL";
 export const UPDATE_USER_EVENT = "UPDATE_USER_EVENT";
 
 const ROOT_URL = process.env.REACT_APP_ROOT_URL;
-
-const iconImageConfig = {
-  bucketName: process.env.REACT_APP_AWS_S3_BUCKET_NAME,
-  dirName: "user-icons",
-  region: "ap-northeast-1",
-  accessKeyId: process.env.REACT_APP_AWS_S3_ACCESS_KEY_ID,
-  secretAccessKey: process.env.REACT_APP_AWS_S3_SECRET_ACCESS_KEY,
-};
 
 let shareIT_token = localStorage.getItem("shareIT_token");
 let config = {
@@ -36,13 +29,8 @@ export const postUserEvent = (user, iconImage) => async (dispatch) => {
 
   // ユーザのアイコンをアップロード
   if (iconImage) {
-    const ReactS3Client = new S3(iconImageConfig);
-
     const newFileName = response.data.user_id;
-
-    ReactS3Client.uploadFile(iconImage, newFileName)
-      .then((data) => console.log(data))
-      .catch((err) => console.error(err));
+    uploadIcon(iconImage, newFileName);
   }
 
   dispatch({ type: CREATE_USER_EVENT, response });
@@ -84,10 +72,20 @@ export const getUserDetail = (userId) => async (dispatch) => {
 };
 
 // ユーザ情報を更新
-export const putUserEvent = (values) => async (dispatch) => {
+export const putUserEvent = (user, iconImage) => async (dispatch) => {
+  if (iconImage) {
+    let preSignedURL = user.icon_name.split("/")[4];
+    const deleteFileName = preSignedURL.split("?")[0];
+
+    if (deleteFileName !== "default.png") {
+      deleteIcon(deleteFileName).then(() => {
+        uploadIcon(iconImage, user.user_id);
+      });
+    }
+  }
   const response = await axios.put(
-    `${ROOT_URL}/api/users/${values.user_id}`,
-    values,
+    `${ROOT_URL}/api/users/${user.user_id}`,
+    user,
     config
   );
   dispatch({ type: UPDATE_USER_EVENT, response });

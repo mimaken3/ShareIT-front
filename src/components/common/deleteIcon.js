@@ -16,11 +16,17 @@ export default async function deleteIcon(deleteFileName) {
   };
 
   // Call S3 to delete the bucket
-  s3.deleteObject(params, function (err, data) {
-    if (err) {
-      console.log("Error", err);
-    } else {
-      console.log("Success delete", data);
-    }
-  });
+  try {
+    await new Promise((resolve, reject) => {
+      s3.deleteObject(params, function (err, data) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  } catch (err) {
+    throw err;
+  }
 }

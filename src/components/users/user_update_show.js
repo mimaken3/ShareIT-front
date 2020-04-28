@@ -12,6 +12,7 @@ import TopicSelectBox from "../presentational/atoms/topic_select_box";
 import * as JWT from "jwt-decode";
 import UnauthorizedPage from "../presentational/atoms/unauthorized_page";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import EditUserIcon from "../presentational/molecules/edit_user_icon";
 
 class UserUpdateShow extends Component {
   constructor(props) {
@@ -47,8 +48,11 @@ class UserUpdateShow extends Component {
       values.profile = this.props.user.profile;
     }
 
+    // ユーザのアイコンをセット
+    let iconImage = this.refs.EditUserIcon.getUserIcon();
+
     // 更新
-    await this.props.putUserEvent(values);
+    await this.props.putUserEvent(values, iconImage);
 
     // 更新ボタンを押した後に遷移するURL
     this.props.history.push("/api/users/" + values.user_id);
@@ -90,6 +94,11 @@ class UserUpdateShow extends Component {
               <div>
                 <UserID userID={this.props.user.user_id} />
               </div>
+              <EditUserIcon
+                defaultIconURL=""
+                icon={this.props.user.icon_name}
+                ref="EditUserIcon"
+              />
               <div>ユーザ名: {this.props.user.user_name}</div>
               <div>
                 興味のあるトピック
