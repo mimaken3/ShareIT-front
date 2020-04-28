@@ -21,21 +21,22 @@ class EditUserIcon extends Component {
     if (e.target.files.length === 1) {
       // 画像がちゃんとセットされたとき
 
-      this.setState({ selectedIconImage: e.target.files[0] });
-
       var reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
+
       reader.onloadend = (e) => {
         this.setState({
           displayIconImage: [reader.result],
         });
       };
+
+      this.setState({ selectedIconImage: e.target.files[0] });
     }
   };
 
   render() {
     var Icon;
-    if (this.state.selectedIconImage) {
+    if (this.state.selectedIconImage && this.state.displayIconImage) {
       Icon = (
         <div>
           <UserIcon iconData={this.state.displayIconImage} />
