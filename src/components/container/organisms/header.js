@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { LogoutUserEvent } from "/Users/mimaken/react/share-it-front/src/actions/user.js";
+import UserIcon from "../../container/../presentational/atoms/user_icon";
 
 // ヘッダー
 const Header = withRouter((props) => {
@@ -16,14 +17,16 @@ const Header = withRouter((props) => {
     const jwt = JWT(token);
     const loginUserName = jwt.name;
     const loginUserID = jwt.uid;
+    const loginUserIconURL = localStorage.getItem("login_user_icon_URL");
 
     Display = (
       <div>
         <Button onClick={toAllArticlesPage}>ShareIT</Button>
         <Button onClick={() => toUserShowPage(loginUserID)}>
+          <UserIcon iconData={loginUserIconURL} />
           {loginUserName}
         </Button>
-        さんようこそ
+
         <Button onClick={toLogOutage}>Logout</Button>
       </div>
     );
