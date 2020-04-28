@@ -7,6 +7,7 @@ import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button"
 import Loading from "../container/templates/loading";
 import CreateArticleButton from "../presentational/atoms/create_article_button";
 import Paging from "../presentational/atoms/paging";
+import UserIcon from "../presentational/atoms/user_icon";
 
 class UsersIndex extends Component {
   // 外部のAPIに対してイベントを取得する
@@ -18,7 +19,7 @@ class UsersIndex extends Component {
   renderEvents() {
     return _.map(this.props.users, (user) => (
       <div key={user.user_id}>
-        {user.user_id}{" "}
+        {user.user_id} <UserIcon iconData={user.icon_name} />
         <Link to={`/api/users/${user.user_id}`}>{user.user_name}</Link>{" "}
         {user.email} {user.interested_topics}
       </div>
