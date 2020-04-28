@@ -2,6 +2,7 @@ import axios from "axios";
 
 //reducerでもimortして使うので
 export const SHOW_ALL_ARTICLES = "SHOW_ALL_ARTICLES";
+export const SHOW_ALL_ARTICLES_BY_USER_ID = "SHOW_ALL_ARTICLES_BY_USER_ID";
 export const SHOW_ARTICLE_DETAIL = "SHOW_ARTICLE_DETAIL";
 export const UPDATE_ARTICLE_EVENT = "UPDATE_ARTICLE_EVENT";
 export const DELETE_ARTICLE_EVENT = "DELETE_ARTICLE_EVENT";
@@ -24,8 +25,16 @@ export const showAllArticles = (pageNum) => async (dispatch) => {
     `${ROOT_URL}/api/articles?ref_pg=${pageNum}`,
     config
   );
-
   dispatch({ type: SHOW_ALL_ARTICLES, response });
+};
+
+// ユーザIDの全記事を取得
+export const getAllArticlesByUserID = (userID, pageNum) => async (dispatch) => {
+  const response = await axios.get(
+    `${ROOT_URL}/api/users/${userID}/articles?ref_pg=${pageNum}`,
+    config
+  );
+  dispatch({ type: SHOW_ALL_ARTICLES_BY_USER_ID, response });
 };
 
 // 記事詳細

@@ -1,5 +1,6 @@
 import {
   SHOW_ALL_ARTICLES,
+  SHOW_ALL_ARTICLES_BY_USER_ID,
   SHOW_ARTICLE_DETAIL,
   UPDATE_ARTICLE_EVENT,
   CREATE_ARTICLE_EVENT,
@@ -14,10 +15,12 @@ let initialState = { ref_pg: 0, all_paging_num: 0, articles: {} };
 export default (articles = initialState, action) => {
   switch (action.type) {
     case SHOW_ALL_ARTICLES:
+    case SHOW_ALL_ARTICLES_BY_USER_ID:
       localStorage.removeItem("currentPage");
       localStorage.setItem("currentPage", action.response.data.ref_pg);
 
       return Object.assign({}, articles, {
+        is_empty: action.response.data.is_empty,
         ref_pg: action.response.data.ref_pg,
         all_paging_num: action.response.data.all_paging_num,
         articles: _.mapKeys(action.response.data.articles, "article_id"),

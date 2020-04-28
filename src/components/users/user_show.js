@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 // 入力フォーム作成で使う
 import { reduxForm } from "redux-form";
 import { getUserDetail } from "../../actions/user";
+import { getAllArticlesByUserID } from "../../actions/article";
 import ToAllUsersButton from "../presentational/atoms/to_all_users_button";
 import UserName from "../presentational/atoms/users/name";
 import UserID from "../presentational/atoms/users/id";
@@ -15,17 +16,20 @@ import CreateArticleButton from "../presentational/atoms/create_article_button";
 import * as JWT from "jwt-decode";
 import UserIcon from "../presentational/atoms/user_icon";
 
+import AllArticles from "../container/organisms/all_articles";
+
 class UserShow extends Component {
   componentDidMount() {
     // 複雑な処理はcomponentに書かずに外(action)に記述
     const { userId } = this.props.match.params;
     if (userId) {
       this.props.getUserDetail(userId);
+      this.props.getAllArticlesByUserID(userId, 1);
     }
   }
 
   render() {
-    if (this.props.user) {
+    if (this.props.user && this.props.allPagingNum) {
       const token = localStorage.getItem("shareIT_token");
       const jwt = JWT(token);
 
@@ -74,6 +78,11 @@ class UserShow extends Component {
           <div>
             <ToAllUsersButton />
           </div>
+
+          <AllArticles
+            refName="userArticles"
+            userID={this.props.user.user_id}
+          />
         </React.Fragment>
       );
     } else {
@@ -88,7 +97,7 @@ class UserShow extends Component {
   }
 }
 
-const mapDispatchToProps = { getUserDetail };
+const mapDispatchToProps = { getUserDetail, getAllArticlesByUserID };
 
 // stateとactionをcomponentに関連付ける実装
 // このstatusは状態のトップレベルを表す
@@ -98,7 +107,11 @@ const mapStateToProps = (state, ownProps) => {
   const user = state.users.users[ownProps.match.params.userId];
 
   // 初期状態でどんな値を表示するかをinitialValuesで設定
-  return { initialValues: user, user: user };
+  return {
+    initialValues: user,
+    user: user,
+    allPagingNum: state.articles.all_paging_num,
+  };
 };
 
 // connect 第一引数はcomponentに渡すpropsを制御する

@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { showAllArticles } from "../../../actions/article";
 import { showAllUsers } from "../../../actions/user";
+import { getAllArticlesByUserID } from "../../../actions/article";
 import Pagination from "@material-ui/lab/Pagination";
 
 // ページング
@@ -11,6 +12,8 @@ const Paging = ({
   refName,
   showAllArticles,
   showAllUsers,
+  getAllArticlesByUserID,
+  userID,
 }) => {
   return (
     <React.Fragment>
@@ -25,6 +28,8 @@ const Paging = ({
             showAllArticles(page);
           } else if (refName === "users") {
             showAllUsers(page);
+          } else if (refName === "userArticles") {
+            getAllArticlesByUserID(userID, page);
           }
         }}
       />
@@ -33,6 +38,10 @@ const Paging = ({
 };
 
 const mapStateToProps = "";
-const mapDispatchToProps = { showAllArticles, showAllUsers };
+const mapDispatchToProps = {
+  showAllArticles,
+  showAllUsers,
+  getAllArticlesByUserID,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Paging);
