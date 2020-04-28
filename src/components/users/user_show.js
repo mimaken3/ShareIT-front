@@ -15,7 +15,6 @@ import EditButton from "../presentational/atoms/edit_button";
 import CreateArticleButton from "../presentational/atoms/create_article_button";
 import * as JWT from "jwt-decode";
 import UserIcon from "../presentational/atoms/user_icon";
-
 import AllArticles from "../container/organisms/all_articles";
 
 class UserShow extends Component {
