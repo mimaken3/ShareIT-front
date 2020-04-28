@@ -31,6 +31,8 @@ class Auth extends Component {
         // 有効期限切れのため再度ログインさせる
         this.setState({ isAuthenticated: false });
         localStorage.removeItem("currentPage");
+        localStorage.removeItem("login_user_icon_URL");
+        localStorage.removeItem("shareIT_token");
       } else {
         // ログイン済み
         this.setState({ isAuthenticated: true });

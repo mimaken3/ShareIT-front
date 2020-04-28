@@ -21,9 +21,10 @@ export default (state = initialState, action) => {
         // Local Storageにtokenとアイコン名をセット
         localStorage.setItem("shareIT_token", action.response.data.token);
         localStorage.setItem(
-          "login_user_icon_name",
+          "login_user_icon_URL",
           action.response.data.user.icon_name
         );
+        localStorage.setItem("currentPage", 1);
       } else {
         // TODO: 失敗時のユーザ情報をstateに格納
         console.log("失敗...");
