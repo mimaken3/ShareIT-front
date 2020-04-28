@@ -15,10 +15,16 @@ let config = {
 
 // 記事一覧
 export const showAllArticles = (pageNum) => async (dispatch) => {
+  let shareIT_token = localStorage.getItem("shareIT_token");
+  let config = {
+    headers: { Authorization: "Bearer " + shareIT_token },
+  };
+
   const response = await axios.get(
     `${ROOT_URL}/api/articles?ref_pg=${pageNum}`,
     config
   );
+
   dispatch({ type: SHOW_ALL_ARTICLES, response });
 };
 
