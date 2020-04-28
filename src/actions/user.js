@@ -78,7 +78,9 @@ export const putUserEvent = (user, iconImage) => async (dispatch) => {
     const deleteFileName = preSignedURL.split("?")[0];
 
     if (deleteFileName !== "default.png") {
+      // デフォ画像でないならs3にあるアイコンを削除
       deleteIcon(deleteFileName).then(() => {
+        // 新しいアイコンをアップロード
         uploadIcon(iconImage, user.user_id);
       });
     }
