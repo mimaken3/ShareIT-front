@@ -1,20 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import _ from "lodash";
-import { Link } from "react-router-dom";
 import { reduxForm } from "redux-form";
 import Paging from "../../presentational/atoms/paging";
+import Article from "../../presentational/molecules/articles/article";
 
 class AllArticles extends Component {
   // 記事を表示する関数
   renderArticles() {
     return _.map(this.props.articles, (article) => (
       <div key={article.article_id}>
-        {article.article_id}{" "}
-        <Link to={`/api/articles/${article.article_id}`}>
-          {article.article_title}
-        </Link>{" "}
-        {article.article_content}
+        <Article article={article} />
       </div>
     ));
   }
