@@ -10,24 +10,15 @@ export const DELETE_ARTICLE_EVENT = "DELETE_ARTICLE_EVENT";
 export const CREATE_ARTICLE_EVENT = "CREATE_ARTICLE_EVENT";
 
 const ROOT_URL = process.env.REACT_APP_ROOT_URL;
-let shareIT_token = localStorage.getItem("shareIT_token");
-let config = {
-  headers: { Authorization: "Bearer " + shareIT_token },
-};
 
 // 記事一覧
 export const showAllArticles = (pageNum) => async (dispatch) => {
   const loginUserInfo = getLoginUserInfo();
-  const shareIT_token = loginUserInfo.shareITToken;
   const loginUserID = loginUserInfo.userID;
-
-  let config = {
-    headers: { Authorization: "Bearer " + shareIT_token },
-  };
 
   const response = await axios.get(
     `${ROOT_URL}/api/articles?ref_pg=${pageNum}&user_id=${loginUserID}`,
-    config
+    loginUserInfo.sendConfig
   );
   dispatch({ type: SHOW_ALL_ARTICLES, response });
 };
@@ -39,7 +30,7 @@ export const getAllArticlesByUserID = (userID, pageNum) => async (dispatch) => {
 
   const response = await axios.get(
     `${ROOT_URL}/api/users/${userID}/articles?ref_pg=${pageNum}&user_id=${loginUserID}`,
-    config
+    loginUserInfo.sendConfig
   );
   dispatch({ type: SHOW_ALL_ARTICLES_BY_USER_ID, response });
 };
@@ -51,13 +42,14 @@ export const getArticleDetail = (articleId) => async (dispatch) => {
 
   const response = await axios.get(
     `${ROOT_URL}/api/articles/${articleId}?user_id=${loginUserID}`,
-    config
+    loginUserInfo.sendConfig
   );
   dispatch({ type: SHOW_ARTICLE_DETAIL, response });
 };
 
 // 記事を投稿
 export const postArticleEvent = (values) => async (dispatch) => {
+  const loginUserInfo = getLoginUserInfo();
   const userID = parseInt(values.created_user_id);
 
   const sendValues = {
@@ -71,7 +63,7 @@ export const postArticleEvent = (values) => async (dispatch) => {
     .post(
       `${ROOT_URL}/api/users/${userID}/createArticle?user_id=${userID}`,
       sendValues,
-      config
+      loginUserInfo.sendConfig
     )
     .then((response) => {
       dispatch({ type: CREATE_ARTICLE_EVENT, response });
@@ -89,13 +81,17 @@ export const putEvent = (values) => async (dispatch) => {
   const response = await axios.put(
     `${ROOT_URL}/api/articles/${values.article_id}?user_id=${loginUserID}`,
     values,
-    config
+    loginUserInfo.sendConfig
   );
   dispatch({ type: UPDATE_ARTICLE_EVENT, response });
 };
 
 // 記事を削除
 export const deleteEvent = (articleId) => async (dispatch) => {
-  await axios.delete(`${ROOT_URL}/api/articles/${articleId}`, config);
+  const loginUserInfo = getLoginUserInfo();
+  await axios.delete(
+    `${ROOT_URL}/api/articles/${articleId}`,
+    loginUserInfo.sendConfig
+  );
   dispatch({ type: DELETE_ARTICLE_EVENT, articleId });
 };

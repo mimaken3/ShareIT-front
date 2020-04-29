@@ -4,6 +4,7 @@ import { reduxForm } from "redux-form";
 
 class Like extends Component {
   render() {
+    console.log(this.props.loginUserID);
     var isLiked;
     if (this.props.isLiked) {
       isLiked = <div>いいね済み！</div>;

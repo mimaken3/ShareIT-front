@@ -1,6 +1,6 @@
 import * as JWT from "jwt-decode";
 
-// ログインユーザの情報(IDとユーザ名)を取得
+// ログインユーザの情報を取得
 export default function getLoginUserInfo() {
   let shareIT_token = localStorage.getItem("shareIT_token");
   if (shareIT_token == null) {
@@ -12,10 +12,16 @@ export default function getLoginUserInfo() {
   if (current_time > jwt.exp) {
     return "jwt expires";
   }
+
+  let sendConfig = {
+    headers: { Authorization: "Bearer " + shareIT_token },
+  };
+
   var user = {
     userID: jwt.uid,
     userName: jwt.name,
     shareITToken: shareIT_token,
+    sendConfig: sendConfig,
   };
 
   return user;
