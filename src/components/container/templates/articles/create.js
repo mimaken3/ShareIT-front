@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import Loading from "../container/templates/loading";
-import { getAllTopics } from "../../actions/topic";
-import { postArticleEvent } from "../../actions/article";
-import TopicSelectBox from "../presentational/atoms/topic_select_box";
+import Loading from "../loading";
+import { getAllTopics } from "../../../../actions/topic";
+import { postArticleEvent } from "../../../../actions/article";
+import TopicSelectBox from "../../../presentational/atoms/topic_select_box";
 import * as JWT from "jwt-decode";
 import { Redirect } from "react-router-dom";
-import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
+import ToAllArticlesButton from "../../../presentational/atoms/to_all_articles_button";
 
 class articleNew extends Component {
   constructor(props) {

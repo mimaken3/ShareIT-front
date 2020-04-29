@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { showAllArticles } from "../../actions/article";
-import ToAllUsersButton from "../presentational/atoms/to_all_users_button";
-import Loading from "../container/templates/loading";
-import CreateArticleButton from "../presentational/atoms/create_article_button";
-import AllArticles from "../container/organisms/all_articles";
+import { showAllArticles } from "../../../../actions/article";
+import ToAllUsersButton from "../../../presentational/atoms/to_all_users_button";
+import Loading from "../loading";
+import CreateArticleButton from "../../../presentational/atoms/create_article_button";
+import AllArticles from "../../organisms/all_articles";
 
 class ArticlesIndex extends Component {
   constructor(props) {

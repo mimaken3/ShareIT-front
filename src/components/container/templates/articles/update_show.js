@@ -2,17 +2,21 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 // 入力フォーム作成で使う
 import { Field, reduxForm } from "redux-form";
-import { getArticleDetail, putEvent, deleteEvent } from "../../actions/article";
-import { getAllTopics } from "../../actions/topic";
+import {
+  getArticleDetail,
+  putEvent,
+  deleteEvent,
+} from "../../../../actions/article";
+import { getAllTopics } from "../../../../actions/topic";
 import { Link } from "react-router-dom";
-import TopicSelectBox from "../presentational/atoms/topic_select_box";
-import CreatedDate from "../presentational/atoms/created_date.js";
+import TopicSelectBox from "../../../presentational/atoms/topic_select_box";
+import CreatedDate from "../../../presentational/atoms/created_date.js";
 // import InputTitle from "../presentational/atoms/articles/input_title";
 // import InputContent from "../presentational/atoms/articles/input_content";
-import ToAllArticlesButton from "../presentational/atoms/to_all_articles_button";
-import Loading from "../container/templates/loading";
-import UnauthorizedPage from "../presentational/atoms/unauthorized_page";
-import ArticleID from "../presentational/atoms/articles/id";
+import ToAllArticlesButton from "../../../presentational/atoms/to_all_articles_button";
+import Loading from "../loading";
+import UnauthorizedPage from "../../../presentational/atoms/unauthorized_page";
+import ArticleID from "../../../presentational/atoms/articles/id";
 import * as JWT from "jwt-decode";
 
 class ArticleUpdate extends Component {

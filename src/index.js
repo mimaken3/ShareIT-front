@@ -10,10 +10,10 @@ import UsersIndex from "./components/users/index";
 import UserShow from "./components/users/detail_show";
 import UserUpdateShow from "./components/users/update_show";
 
-import ArticlesIndex from "./components/articles/index";
-import ArticleShow from "./components/articles/detail_show";
-import ArticleUpdate from "./components/articles/update_show";
-import ArticleNew from "./components/articles/create";
+import ArticlesIndex from "./components/container/templates/articles/index";
+import ArticleShow from "./components/container/templates/articles/detail_show";
+import ArticleUpdate from "./components/container/templates/articles/update_show";
+import ArticleNew from "./components/container/templates/articles/create";
 import SignUp from "./components/users/sign_up";
 import Login from "./components/users/login";
 import { composeWithDevTools } from "redux-devtools-extension";
