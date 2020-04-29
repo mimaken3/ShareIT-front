@@ -1,4 +1,5 @@
 import axios from "axios";
+import getLoginUserInfo from "../modules/getLoginUserInfo";
 
 //reducerでもimortして使うので
 export const SHOW_ALL_ARTICLES = "SHOW_ALL_ARTICLES";
@@ -16,13 +17,16 @@ let config = {
 
 // 記事一覧
 export const showAllArticles = (pageNum) => async (dispatch) => {
-  let shareIT_token = localStorage.getItem("shareIT_token");
+  const loginUserInfo = getLoginUserInfo();
+  const shareIT_token = loginUserInfo.shareITToken;
+  const loginUserID = loginUserInfo.userID;
+
   let config = {
     headers: { Authorization: "Bearer " + shareIT_token },
   };
 
   const response = await axios.get(
-    `${ROOT_URL}/api/articles?ref_pg=${pageNum}`,
+    `${ROOT_URL}/api/articles?ref_pg=${pageNum}&user_id=${loginUserID}`,
     config
   );
   dispatch({ type: SHOW_ALL_ARTICLES, response });
@@ -30,8 +34,11 @@ export const showAllArticles = (pageNum) => async (dispatch) => {
 
 // ユーザIDの全記事を取得
 export const getAllArticlesByUserID = (userID, pageNum) => async (dispatch) => {
+  const loginUserInfo = getLoginUserInfo();
+  const loginUserID = loginUserInfo.userID;
+
   const response = await axios.get(
-    `${ROOT_URL}/api/users/${userID}/articles?ref_pg=${pageNum}`,
+    `${ROOT_URL}/api/users/${userID}/articles?ref_pg=${pageNum}&user_id=${loginUserID}`,
     config
   );
   dispatch({ type: SHOW_ALL_ARTICLES_BY_USER_ID, response });
@@ -39,8 +46,11 @@ export const getAllArticlesByUserID = (userID, pageNum) => async (dispatch) => {
 
 // 記事詳細
 export const getArticleDetail = (articleId) => async (dispatch) => {
+  const loginUserInfo = getLoginUserInfo();
+  const loginUserID = loginUserInfo.userID;
+
   const response = await axios.get(
-    `${ROOT_URL}/api/articles/${articleId}`,
+    `${ROOT_URL}/api/articles/${articleId}?user_id=${loginUserID}`,
     config
   );
   dispatch({ type: SHOW_ARTICLE_DETAIL, response });
@@ -58,7 +68,11 @@ export const postArticleEvent = (values) => async (dispatch) => {
   };
 
   await axios
-    .post(`${ROOT_URL}/api/users/${userID}/createArticle`, sendValues, config)
+    .post(
+      `${ROOT_URL}/api/users/${userID}/createArticle?user_id=${userID}`,
+      sendValues,
+      config
+    )
     .then((response) => {
       dispatch({ type: CREATE_ARTICLE_EVENT, response });
     })
@@ -69,8 +83,11 @@ export const postArticleEvent = (values) => async (dispatch) => {
 
 // 記事を更新
 export const putEvent = (values) => async (dispatch) => {
+  const loginUserInfo = getLoginUserInfo();
+  const loginUserID = loginUserInfo.userID;
+
   const response = await axios.put(
-    `${ROOT_URL}/api/articles/${values.article_id}`,
+    `${ROOT_URL}/api/articles/${values.article_id}?user_id=${loginUserID}`,
     values,
     config
   );

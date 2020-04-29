@@ -4,13 +4,14 @@ import _ from "lodash";
 import { reduxForm } from "redux-form";
 import Paging from "../../presentational/atoms/paging";
 import Article from "../../presentational/molecules/articles/article";
+import getLoginUserInfo from "../../../modules/getLoginUserInfo";
 
 class AllArticles extends Component {
   // 記事を表示する関数
-  renderArticles() {
+  renderArticles(loginUserID) {
     return _.map(this.props.articles, (article) => (
       <div key={article.article_id}>
-        <Article article={article} />
+        <Article article={article} loginUserID={loginUserID} />
       </div>
     ));
   }
@@ -32,10 +33,11 @@ class AllArticles extends Component {
         </React.Fragment>
       );
     } else {
+      let loginUser = getLoginUserInfo();
       return (
         <React.Fragment>
           <div>記事一覧</div>
-          {this.renderArticles()}
+          {this.renderArticles(loginUser.userID)}
 
           <div>
             <Paging

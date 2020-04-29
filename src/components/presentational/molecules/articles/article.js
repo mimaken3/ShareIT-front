@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { reduxForm } from "redux-form";
+import Like from "./like";
 
 class Article extends Component {
   render() {
@@ -12,6 +13,12 @@ class Article extends Component {
           {this.props.article.article_title}
         </Link>{" "}
         {this.props.article.article_content}
+        <Like
+          articleID={this.props.article.article_id}
+          isLiked={this.props.article.is_liked}
+          likeNum={this.props.article.like_num}
+          loginUserID={this.props.loginUserID}
+        />
       </React.Fragment>
     );
   }
