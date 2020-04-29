@@ -4,6 +4,7 @@ import { showAllArticles } from "../../../actions/article";
 import { showAllUsers } from "../../../actions/user";
 import { getAllArticlesByUserID } from "../../../actions/article";
 import Pagination from "@material-ui/lab/Pagination";
+import { ScrollTo } from "react-scroll-to";
 
 // ページング
 const Paging = ({
@@ -17,22 +18,29 @@ const Paging = ({
 }) => {
   return (
     <React.Fragment>
-      <Pagination
-        count={allPagingNum}
-        defaultPage={1}
-        variant="outlined"
-        color="primary"
-        page={refPg}
-        onChange={(event, page) => {
-          if (refName === "articles") {
-            showAllArticles(page);
-          } else if (refName === "users") {
-            showAllUsers(page);
-          } else if (refName === "userArticles") {
-            getAllArticlesByUserID(userID, page);
-          }
-        }}
-      />
+      <ScrollTo>
+        {({ scroll }) => (
+          <Pagination
+            count={allPagingNum}
+            defaultPage={1}
+            variant="outlined"
+            color="primary"
+            page={refPg}
+            onChange={(event, page) => {
+              if (refName === "articles") {
+                showAllArticles(page);
+                scroll({ x: 0, y: 0 });
+              } else if (refName === "users") {
+                showAllUsers(page);
+                scroll({ x: 0, y: 0 });
+              } else if (refName === "userArticles") {
+                getAllArticlesByUserID(userID, page);
+                scroll({ x: 0, y: 0 });
+              }
+            }}
+          />
+        )}
+      </ScrollTo>
     </React.Fragment>
   );
 };
