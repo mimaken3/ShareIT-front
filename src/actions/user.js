@@ -1,6 +1,6 @@
 import axios from "axios";
-import deleteIcon from "../components/common/deleteIcon";
-import uploadIcon from "../components/common/uploadIcon";
+import deleteIcon from "../modules/deleteIcon";
+import uploadIcon from "../modules/uploadIcon";
 
 export const LOGIN_USER_EVENT = "LOGIN_USER_EVENT";
 export const LOGOUT_USER_EVENT = "LOGOUT_USER_EVENT";
