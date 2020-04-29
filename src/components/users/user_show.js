@@ -18,14 +18,21 @@ import UserIcon from "../presentational/atoms/user_icon";
 import AllArticles from "../container/organisms/all_articles";
 
 class UserShow extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+    };
+  }
   // 初回読み込み用
   componentDidMount() {
-    console.log("componentDidMount");
     // 複雑な処理はcomponentに書かずに外(action)に記述
     const { userId } = this.props.match.params;
     if (userId) {
       this.props.getUserDetail(userId);
-      this.props.getAllArticlesByUserID(userId, 1);
+      this.props.getAllArticlesByUserID(userId, 1).then(() => {
+        this.setState({ loading: false });
+      });
     }
   }
 
@@ -40,7 +47,7 @@ class UserShow extends Component {
   }
 
   render() {
-    if (this.props.user && this.props.allPagingNum) {
+    if (this.props.user && this.props.allPagingNum && !this.state.loading) {
       const token = localStorage.getItem("shareIT_token");
       const jwt = JWT(token);
 
