@@ -3,14 +3,14 @@ import { connect } from "react-redux";
 import axios from "axios";
 // 入力フォーム作成で使う
 import { Field, reduxForm } from "redux-form";
-import { getAllTopics } from "../../actions/topic";
-import TopicSelectBox from "../presentational/atoms/topic_select_box";
-import Loading from "../container/templates/loading";
-import { postUserEvent } from "../../actions/user";
+import { getAllTopics } from "../../../../actions/topic";
+import TopicSelectBox from "../../../presentational/atoms/topic_select_box";
+import Loading from "../../../container/templates/loading";
+import { postUserEvent } from "../../../../actions/user";
 import { Link } from "react-router-dom";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-import EditUserIcon from "../presentational/molecules/edit_user_icon";
-import getIconURL from "../../modules/getIconURL";
+import EditUserIcon from "../../../presentational/molecules/edit_user_icon";
+import getIconURL from "../../../../modules/getIconURL";
 
 const ROOT_URL = process.env.REACT_APP_ROOT_URL;
 

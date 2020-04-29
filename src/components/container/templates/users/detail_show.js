@@ -2,20 +2,20 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 // 入力フォーム作成で使う
 import { reduxForm } from "redux-form";
-import { getUserDetail } from "../../actions/user";
-import { getAllArticlesByUserID } from "../../actions/article";
-import ToAllUsersButton from "../presentational/atoms/to_all_users_button";
-import UserName from "../presentational/atoms/users/name";
-import UserID from "../presentational/atoms/users/id";
-import Profile from "../presentational/atoms/users/profile";
-import CreatedDate from "../presentational/atoms/created_date.js";
-import Topic from "../presentational/atoms/topics/topic";
-import Loading from "../container/templates/loading";
-import EditButton from "../presentational/atoms/edit_button";
-import CreateArticleButton from "../presentational/atoms/create_article_button";
+import { getUserDetail } from "../../../../actions/user";
+import { getAllArticlesByUserID } from "../../../../actions/article";
+import ToAllUsersButton from "../../../presentational/atoms/to_all_users_button";
+import UserName from "../../../presentational/atoms/users/name";
+import UserID from "../../../presentational/atoms/users/id";
+import Profile from "../../../presentational/atoms/users/profile";
+import CreatedDate from "../../../presentational/atoms/created_date.js";
+import Topic from "../../../presentational/atoms/topics/topic";
+import Loading from "../loading";
+import EditButton from "../../../presentational/atoms/edit_button";
+import CreateArticleButton from "../../../presentational/atoms/create_article_button";
 import * as JWT from "jwt-decode";
-import UserIcon from "../presentational/atoms/user_icon";
-import AllArticles from "../container/organisms/all_articles";
+import UserIcon from "../../../presentational/atoms/user_icon";
+import AllArticles from "../../organisms/all_articles";
 
 class UserShow extends Component {
   constructor(props) {
