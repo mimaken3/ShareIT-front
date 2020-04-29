@@ -11,7 +11,12 @@ import _ from "lodash";
 // reducerは関数として定義(引数は2つ)
 // 第一引数の初期値はないので{}
 // 受け取ったactionのtypeに応じて状態を変更して、その結果を返す
-let initialState = { ref_pg: 0, all_paging_num: 0, articles: {} };
+let initialState = {
+  is_empty: true,
+  ref_pg: 0,
+  all_paging_num: 0,
+  articles: {},
+};
 export default (articles = initialState, action) => {
   switch (action.type) {
     case SHOW_ALL_ARTICLES:
@@ -31,6 +36,7 @@ export default (articles = initialState, action) => {
     case UPDATE_ARTICLE_EVENT:
       const data = action.response.data;
       return Object.assign({}, articles, {
+        is_empty: false,
         ref_pg: 0,
         all_paging_num: 0,
         articles: { ...articles.articles, [data.article_id]: data },
@@ -40,6 +46,7 @@ export default (articles = initialState, action) => {
       delete articles.articles[action.articleId];
       // スプレット演算子を使用し、更新後の記事一覧を表示
       return Object.assign({}, articles, {
+        is_empty: false,
         ref_pg: 0,
         all_paging_num: 0,
         articles: { ...articles.articles },

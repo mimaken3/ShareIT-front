@@ -4,17 +4,16 @@ import _ from "lodash";
 import { Link } from "react-router-dom";
 import { reduxForm } from "redux-form";
 import Paging from "../../presentational/atoms/paging";
+import UserIcon from "../../presentational/atoms/user_icon";
 
-class AllArticles extends Component {
-  // 記事を表示する関数
-  renderArticles() {
-    return _.map(this.props.articles, (article) => (
-      <div key={article.article_id}>
-        {article.article_id}{" "}
-        <Link to={`/api/articles/${article.article_id}`}>
-          {article.article_title}
-        </Link>{" "}
-        {article.article_content}
+class AllUsers extends Component {
+  // ユーザ一覧を表示する関数
+  renderUsers() {
+    return _.map(this.props.users, (user) => (
+      <div key={user.user_id}>
+        {user.user_id} <UserIcon iconData={user.icon_name} />
+        <Link to={`/api/users/${user.user_id}`}>{user.user_name}</Link>{" "}
+        {user.email} {user.interested_topics}
       </div>
     ));
   }
@@ -23,12 +22,11 @@ class AllArticles extends Component {
     if (this.props.isEmpty) {
       return (
         <React.Fragment>
-          <div>記事一覧</div>
-          <div>記事はありません</div>
+          <div>ユーザ一覧</div>
+          <div>ユーザはいません</div>
           <div>
             <Paging
               refName={this.props.refName}
-              userID={this.props.userID}
               refPg={this.props.refPg}
               allPagingNum={this.props.allPagingNum}
             />
@@ -38,13 +36,12 @@ class AllArticles extends Component {
     } else {
       return (
         <React.Fragment>
-          <div>記事一覧</div>
-          {this.renderArticles()}
+          <div>ユーザ一覧</div>
+          {this.renderUsers()}
 
           <div>
             <Paging
               refName={this.props.refName}
-              userID={this.props.userID}
               refPg={this.props.refPg}
               allPagingNum={this.props.allPagingNum}
             />
@@ -59,10 +56,10 @@ const mapDispatchToProps = "";
 
 const mapStateToProps = (state) => {
   return {
-    isEmpty: state.articles.is_empty,
-    articles: state.articles.articles,
-    refPg: state.articles.ref_pg,
-    allPagingNum: state.articles.all_paging_num,
+    isEmpty: state.users.is_empty,
+    users: state.users.users,
+    refPg: state.users.ref_pg,
+    allPagingNum: state.users.all_paging_num,
   };
 };
 
@@ -71,4 +68,4 @@ const mapStateToProps = (state) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(reduxForm({ form: "userShowArticlesForm" })(AllArticles));
+)(reduxForm({ form: "allUsersForm" })(AllUsers));
