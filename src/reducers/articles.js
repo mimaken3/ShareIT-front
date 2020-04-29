@@ -48,7 +48,7 @@ export default (articles = initialState, action) => {
       return Object.assign({}, articles, {
         is_empty: false,
         ref_pg: 0,
-        all_paging_num: 0,
+        all_paging_num: 1,
         articles: { ...articles.articles },
       });
     default:

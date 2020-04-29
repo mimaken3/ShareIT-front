@@ -70,8 +70,8 @@ class ArticleUpdate extends Component {
   // 記事の削除
   async onDeleteClick() {
     const article_id = this.props.match.params.articleId;
+
     await this.props.deleteEvent(article_id);
-    this.props.history.push("/api/articles");
   }
 
   render() {
@@ -152,7 +152,7 @@ class ArticleUpdate extends Component {
             </div>
 
             <div>
-              <Link to="/" onClick={this.onDeleteClick}>
+              <Link to="/api/articles" onClick={this.onDeleteClick}>
                 削除
               </Link>
             </div>
