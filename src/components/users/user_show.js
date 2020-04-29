@@ -18,8 +18,20 @@ import UserIcon from "../presentational/atoms/user_icon";
 import AllArticles from "../container/organisms/all_articles";
 
 class UserShow extends Component {
+  // 初回読み込み用
   componentDidMount() {
+    console.log("componentDidMount");
     // 複雑な処理はcomponentに書かずに外(action)に記述
+    const { userId } = this.props.match.params;
+    if (userId) {
+      this.props.getUserDetail(userId);
+      this.props.getAllArticlesByUserID(userId, 1);
+    }
+  }
+
+  // propsの値が変わったら呼ばれる
+  // 主にヘッダーから用
+  componentDidUpdate() {
     const { userId } = this.props.match.params;
     if (userId) {
       this.props.getUserDetail(userId);
