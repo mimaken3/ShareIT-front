@@ -6,9 +6,9 @@ import reducer from "./reducers";
 import thunk from "redux-thunk";
 import { BrowserRouter, Switch } from "react-router-dom";
 import { Route } from "react-router";
-import UsersIndex from "./components/users/users_index";
-import UserShow from "./components/users/user_show";
-import UserUpdateShow from "./components/users/user_update_show";
+import UsersIndex from "./components/users/index";
+import UserShow from "./components/users/detail_show";
+import UserUpdateShow from "./components/users/update_show";
 
 import ArticlesIndex from "./components/articles/articles_index";
 import ArticleShow from "./components/articles/article_show";
