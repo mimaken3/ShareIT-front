@@ -6,25 +6,22 @@ import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { LogoutUserEvent } from "/Users/mimaken/react/share-it-front/src/actions/user.js";
 import UserIcon from "../../container/../presentational/atoms/user_icon";
+import getLoginUserInfo from "../../../modules/getLoginUserInfo";
 
 // ヘッダー
 const Header = withRouter((props) => {
-  const token = localStorage.getItem("shareIT_token");
+  const loginUser = getLoginUserInfo();
   var Display;
-
-  if (token !== null) {
+  if (loginUser !== null) {
     // ログイン状態
-    const jwt = JWT(token);
-    const loginUserName = jwt.name;
-    const loginUserID = jwt.uid;
     const loginUserIconURL = localStorage.getItem("login_user_icon_URL");
 
     Display = (
       <div>
         <Button onClick={toAllArticlesPage}>ShareIT</Button>
-        <Button onClick={() => toUserShowPage(loginUserID)}>
+        <Button onClick={() => toUserShowPage(loginUser.userID)}>
           <UserIcon iconData={loginUserIconURL} />
-          {loginUserName}
+          {loginUser.userName}
         </Button>
 
         <Button onClick={toLogOutage}>Logout</Button>
