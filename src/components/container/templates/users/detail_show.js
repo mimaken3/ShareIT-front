@@ -16,6 +16,7 @@ import CreateArticleButton from "../../../presentational/atoms/create_article_bu
 import * as JWT from "jwt-decode";
 import UserIcon from "../../../presentational/atoms/user_icon";
 import AllArticles from "../../organisms/all_articles";
+import getLoginUserInfo from "../../../../modules/getLoginUserInfo";
 
 class UserShow extends Component {
   constructor(props) {
@@ -48,10 +49,8 @@ class UserShow extends Component {
 
   render() {
     if (this.props.user && this.props.allPagingNum && !this.state.loading) {
-      const token = localStorage.getItem("shareIT_token");
-      const jwt = JWT(token);
-
-      const loginUserID = jwt.uid;
+      const loginUser = getLoginUserInfo();
+      const loginUserID = loginUser.userID;
       var AuthorizedEditButton;
       if (loginUserID === this.props.user.user_id) {
         AuthorizedEditButton = (
