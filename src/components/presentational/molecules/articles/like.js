@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import Button from "@material-ui/core/Button";
 import { toggleLike } from "../../../../actions/like";
+import LikeNum from "../../atoms/likes/sum_num";
 
 class Like extends Component {
   constructor(props) {
@@ -58,7 +59,9 @@ class Like extends Component {
     }
     return (
       <React.Fragment>
-        <div>いいね数 {this.state.likeNum}</div>
+        <div>
+          <LikeNum likeNum={this.state.likeNum} />
+        </div>
         <div>{isLiked}</div>
       </React.Fragment>
     );
