@@ -1,13 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import * as JWT from "jwt-decode";
+import getLoginUserInfo from "../../../modules/getLoginUserInfo";
 
 // 投稿ボタン
 const CreateArticleButton = () => {
-  const token = localStorage.getItem("shareIT_token");
-  const jwt = JWT(token);
-
-  const loginUserID = jwt.uid;
+  const loginUserInfo = getLoginUserInfo();
+  const loginUserID = loginUserInfo.userID;
   return (
     <React.Fragment>
       <Link to={`/api/users/${loginUserID}/article`}>投稿</Link>

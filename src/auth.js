@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Route, withRouter } from "react-router";
 import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import * as JWT from "jwt-decode";
+import getLoginUserInfo from "./modules/getLoginUserInfo";
 
 class Auth extends Component {
   static propTypes = {
@@ -23,11 +23,9 @@ class Auth extends Component {
 
   // ログイン状態をチェック
   userWillTransfer(props) {
-    const token = localStorage.getItem("shareIT_token");
-    if (token !== null) {
-      const jwt = JWT(token);
-      var current_time = new Date().getTime() / 1000;
-      if (current_time > jwt.exp) {
+    const loginUserInfo = getLoginUserInfo();
+    if (loginUserInfo !== null) {
+      if (loginUserInfo === "jwt expires") {
         // 有効期限切れのため再度ログインさせる
         this.setState({ isAuthenticated: false });
         localStorage.removeItem("currentPage");

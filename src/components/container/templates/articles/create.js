@@ -5,9 +5,9 @@ import Loading from "../loading";
 import { getAllTopics } from "../../../../actions/topic";
 import { postArticleEvent } from "../../../../actions/article";
 import TopicSelectBox from "../../../presentational/atoms/topic_select_box";
-import * as JWT from "jwt-decode";
 import { Redirect } from "react-router-dom";
 import ToAllArticlesButton from "../../../presentational/atoms/to_all_articles_button";
+import getLoginUserInfo from "../../../../modules/getLoginUserInfo";
 
 class articleNew extends Component {
   constructor(props) {
@@ -56,9 +56,8 @@ class articleNew extends Component {
 
   render() {
     const { handleSubmit } = this.props;
-    const token = localStorage.getItem("shareIT_token");
-    const jwt = JWT(token);
-    const loginUserID = jwt.uid;
+    const loginUserInfo = getLoginUserInfo();
+    const loginUserID = loginUserInfo.userID;
 
     if (loginUserID !== this.props.userID) {
       return (

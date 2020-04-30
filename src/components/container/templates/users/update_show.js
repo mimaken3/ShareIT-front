@@ -9,10 +9,10 @@ import ToAllUsersButton from "../../../presentational/atoms/to_all_users_button"
 import UserID from "../../../presentational/atoms/users/id";
 import Loading from "../../../container/templates/loading";
 import TopicSelectBox from "../../../presentational/atoms/topic_select_box";
-import * as JWT from "jwt-decode";
 import UnauthorizedPage from "../../../presentational/atoms/unauthorized_page";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import EditUserIcon from "../../../presentational/molecules/edit_user_icon";
+import getLoginUserInfo from "../../../../modules/getLoginUserInfo";
 
 class UserUpdateShow extends Component {
   constructor(props) {
@@ -70,9 +70,8 @@ class UserUpdateShow extends Component {
 
   render() {
     const { handleSubmit, submitting, invalid } = this.props;
-    const token = localStorage.getItem("shareIT_token");
-    const jwt = JWT(token);
-    const loginUserID = jwt.uid;
+    const loginUserInfo = getLoginUserInfo();
+    const loginUserID = loginUserInfo.userID;
     if (this.props.user && Object.values(this.props.allTopics).length !== 0) {
       if (loginUserID !== this.props.user.user_id) {
         // 別ユーザがアクセスしようとした場合

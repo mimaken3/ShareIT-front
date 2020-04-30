@@ -6,6 +6,7 @@ import {
   CREATE_ARTICLE_EVENT,
   DELETE_ARTICLE_EVENT,
 } from "../actions/article";
+import { TOGGLE_LIKE } from "../actions/like";
 import _ from "lodash";
 
 // reducerは関数として定義(引数は2つ)
@@ -34,11 +35,12 @@ export default (articles = initialState, action) => {
     case SHOW_ARTICLE_DETAIL:
     case CREATE_ARTICLE_EVENT:
     case UPDATE_ARTICLE_EVENT:
+    case TOGGLE_LIKE:
       const data = action.response.data;
       return Object.assign({}, articles, {
         is_empty: false,
-        ref_pg: 0,
-        all_paging_num: 0,
+        ref_pg: articles.ref_pg,
+        all_paging_num: articles.all_paging_num,
         articles: { ...articles.articles, [data.article_id]: data },
       });
 

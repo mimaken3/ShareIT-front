@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-// 入力フォーム作成で使う
 import { reduxForm } from "redux-form";
 import { getArticleDetail, deleteEvent } from "../../../../actions/article";
 import ArticleTitle from "../../../presentational/atoms/articles/title";
@@ -12,7 +11,8 @@ import ToAllArticlesButton from "../../../presentational/atoms/to_all_articles_b
 import Loading from "../loading";
 import EditButton from "../../../presentational/atoms/edit_button";
 import CreateArticleButton from "../../../presentational/atoms/create_article_button";
-import * as JWT from "jwt-decode";
+import Like from "../../../presentational/molecules/likes/like";
+import getLoginUserInfo from "../../../../modules/getLoginUserInfo";
 
 class ArticleShow extends Component {
   constructor(props) {
@@ -34,10 +34,8 @@ class ArticleShow extends Component {
   }
 
   render() {
-    const token = localStorage.getItem("shareIT_token");
-    const jwt = JWT(token);
-
-    const loginUserID = jwt.uid;
+    const loginUser = getLoginUserInfo();
+    const loginUserID = loginUser.userID;
     if (this.props.article) {
       var AuthorizedEditButton;
       if (loginUserID === this.props.article.created_user_id) {
@@ -47,6 +45,7 @@ class ArticleShow extends Component {
           </div>
         );
       }
+
       return (
         <React.Fragment>
           <div>記事詳細</div>
@@ -67,6 +66,13 @@ class ArticleShow extends Component {
               articleContent={this.props.article.article_content}
             />
           </div>
+
+          <Like
+            articleID={this.props.article.article_id}
+            isLiked={this.props.article.is_liked}
+            likeNum={this.props.article.like_num}
+            loginUserID={loginUserID}
+          />
 
           <div>
             <CreatedDate createdDate={this.props.article.created_date} />

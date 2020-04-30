@@ -1,6 +1,7 @@
 import axios from "axios";
 import deleteIcon from "../modules/deleteIcon";
 import uploadIcon from "../modules/uploadIcon";
+import getLoginUserInfo from "../modules/getLoginUserInfo";
 
 export const LOGIN_USER_EVENT = "LOGIN_USER_EVENT";
 export const LOGOUT_USER_EVENT = "LOGOUT_USER_EVENT";
@@ -10,11 +11,6 @@ export const SHOW_USER_DETAIL = "SHOW_USER_DETAIL";
 export const UPDATE_USER_EVENT = "UPDATE_USER_EVENT";
 
 const ROOT_URL = process.env.REACT_APP_ROOT_URL;
-
-let shareIT_token = localStorage.getItem("shareIT_token");
-let config = {
-  headers: { Authorization: "Bearer " + shareIT_token },
-};
 
 // ユーザ作成
 export const postUserEvent = (user, iconImage) => async (dispatch) => {
@@ -58,21 +54,27 @@ export const LogoutUserEvent = () => async (dispatch) => {
 
 // ユーザ一覧
 export const showAllUsers = (pageNum) => async (dispatch) => {
+  const loginUserInfo = getLoginUserInfo();
   const response = await axios.get(
     `${ROOT_URL}/api/users?ref_pg=${pageNum}`,
-    config
+    loginUserInfo.sendConfig
   );
   dispatch({ type: SHOW_ALL_USERS, response });
 };
 
 // ユーザ詳細画面
 export const getUserDetail = (userId) => async (dispatch) => {
-  const response = await axios.get(`${ROOT_URL}/api/users/${userId}`, config);
+  const loginUserInfo = getLoginUserInfo();
+  const response = await axios.get(
+    `${ROOT_URL}/api/users/${userId}`,
+    loginUserInfo.sendConfig
+  );
   dispatch({ type: SHOW_USER_DETAIL, response });
 };
 
 // ユーザ情報を更新
 export const putUserEvent = (user, iconImage) => async (dispatch) => {
+  const loginUserInfo = getLoginUserInfo();
   if (iconImage) {
     let preSignedURL = user.icon_name.split("/")[4];
     const deleteFileName = preSignedURL.split("?")[0];
@@ -88,7 +90,7 @@ export const putUserEvent = (user, iconImage) => async (dispatch) => {
   const response = await axios.put(
     `${ROOT_URL}/api/users/${user.user_id}`,
     user,
-    config
+    loginUserInfo.sendConfig
   );
   dispatch({ type: UPDATE_USER_EVENT, response });
 };
