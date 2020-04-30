@@ -39,8 +39,8 @@ export default (articles = initialState, action) => {
       const data = action.response.data;
       return Object.assign({}, articles, {
         is_empty: false,
-        ref_pg: 0,
-        all_paging_num: 1,
+        ref_pg: articles.ref_pg,
+        all_paging_num: articles.all_paging_num,
         articles: { ...articles.articles, [data.article_id]: data },
       });
 
