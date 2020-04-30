@@ -5,33 +5,60 @@ import Button from "@material-ui/core/Button";
 import { toggleLike } from "../../../../actions/like";
 
 class Like extends Component {
-  toggleLikeInfo() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLiked: this.props.isLiked,
+      likeNum: this.props.likeNum,
+    };
+  }
+
+  // いいね済みに
+  onLike() {
     const likeArticle = {
       userID: this.props.loginUserID,
       articleID: this.props.articleID,
-      isLiked: !this.props.isLiked,
+      isLiked: !this.state.isLiked,
     };
+    this.setState({
+      isLiked: this.state.isLiked + 1,
+      likeNum: this.state.likeNum + 1,
+    });
+    this.props.toggleLike(likeArticle);
+  }
+
+  // 未いいねに
+  offLike() {
+    const likeArticle = {
+      userID: this.props.loginUserID,
+      articleID: this.props.articleID,
+      isLiked: !this.state.isLiked,
+    };
+    this.setState({
+      isLiked: this.state.isLiked - 1,
+      likeNum: this.state.likeNum - 1,
+    });
     this.props.toggleLike(likeArticle);
   }
 
   render() {
     var isLiked;
-    if (this.props.isLiked) {
+    if (this.state.isLiked) {
       isLiked = (
         <div>
-          <Button onClick={() => this.toggleLikeInfo()}>いいね済み！</Button>
+          <Button onClick={() => this.offLike()}>いいね済み！</Button>
         </div>
       );
     } else {
       isLiked = (
         <div>
-          <Button onClick={() => this.toggleLikeInfo()}>未いいね</Button>
+          <Button onClick={() => this.onLike()}>未いいね</Button>
         </div>
       );
     }
     return (
       <React.Fragment>
-        <div>いいね数 {this.props.likeNum}</div>
+        <div>いいね数 {this.state.likeNum}</div>
         <div>{isLiked}</div>
       </React.Fragment>
     );
