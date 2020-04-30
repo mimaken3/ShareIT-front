@@ -71,7 +71,7 @@ class ArticleShow extends Component {
             articleID={this.props.article.article_id}
             isLiked={this.props.article.is_liked}
             likeNum={this.props.article.like_num}
-            loginUserID={loginUser}
+            loginUserID={loginUserID}
           />
 
           <div>
