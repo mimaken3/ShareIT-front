@@ -13,7 +13,6 @@ import Topic from "../../../presentational/atoms/topics/topic";
 import Loading from "../loading";
 import EditButton from "../../../presentational/atoms/edit_button";
 import CreateArticleButton from "../../../presentational/atoms/create_article_button";
-import * as JWT from "jwt-decode";
 import UserIcon from "../../../presentational/atoms/user_icon";
 import AllArticles from "../../organisms/all_articles";
 import getLoginUserInfo from "../../../../modules/getLoginUserInfo";
