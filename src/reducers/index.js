@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import users from "./users";
 import articles from "./articles";
 import topics from "./topics";
+import comments from "./comments";
 import auth from "./auth";
 import { reducer as form } from "redux-form";
 
@@ -9,6 +10,7 @@ const appReducer = combineReducers({
   users,
   articles,
   topics,
+  comments,
   auth,
   form,
 });
