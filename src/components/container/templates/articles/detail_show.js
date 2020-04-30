@@ -11,7 +11,7 @@ import ToAllArticlesButton from "../../../presentational/atoms/to_all_articles_b
 import Loading from "../loading";
 import EditButton from "../../../presentational/atoms/edit_button";
 import CreateArticleButton from "../../../presentational/atoms/create_article_button";
-import Like from "../../../presentational/molecules/articles/like";
+import Like from "../../../presentational/molecules/likes/like";
 import getLoginUserInfo from "../../../../modules/getLoginUserInfo";
 
 class ArticleShow extends Component {

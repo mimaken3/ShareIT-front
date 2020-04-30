@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { reduxForm } from "redux-form";
-import Like from "./like";
+import Like from "../likes/like";
 
 class Article extends Component {
   render() {
