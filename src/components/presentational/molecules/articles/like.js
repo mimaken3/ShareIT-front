@@ -4,6 +4,7 @@ import { reduxForm } from "redux-form";
 import Button from "@material-ui/core/Button";
 import { toggleLike } from "../../../../actions/like";
 import LikeNum from "../../atoms/likes/sum_num";
+import LikeObj from "../../atoms/likes/obj";
 
 class Like extends Component {
   constructor(props) {
@@ -47,13 +48,17 @@ class Like extends Component {
     if (this.state.isLiked) {
       isLiked = (
         <div>
-          <Button onClick={() => this.offLike()}>いいね済み！</Button>
+          <Button onClick={() => this.offLike()}>
+            <LikeObj obj={true} />
+          </Button>
         </div>
       );
     } else {
       isLiked = (
         <div>
-          <Button onClick={() => this.onLike()}>未いいね</Button>
+          <Button onClick={() => this.onLike()}>
+            <LikeObj obj={false} />
+          </Button>
         </div>
       );
     }
