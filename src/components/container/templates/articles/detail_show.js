@@ -20,6 +20,7 @@ class ArticleShow extends Component {
   constructor(props) {
     super(props);
     this.onDeleteClick = this.onDeleteClick.bind(this);
+    this.state = { loading: true };
   }
 
   componentDidMount() {
@@ -28,6 +29,7 @@ class ArticleShow extends Component {
     if (articleId) {
       this.props.getAllComments(articleId).then(() => {
         this.props.getArticleDetail(articleId);
+        this.setState({ loading: false });
       });
     }
   }
@@ -42,7 +44,7 @@ class ArticleShow extends Component {
   render() {
     const loginUser = getLoginUserInfo();
     const loginUserID = loginUser.userID;
-    if (this.props.article) {
+    if (this.props.article && !this.state.loading) {
       var AuthorizedEditButton;
       if (loginUserID === this.props.article.created_user_id) {
         AuthorizedEditButton = (
