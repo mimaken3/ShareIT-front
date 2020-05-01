@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { reduxForm } from "redux-form";
-import Like from "../likes/like";
 import UserIcon from "../../../presentational/atoms/user_icon";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router";
@@ -21,7 +19,6 @@ class Comment extends Component {
     return (
       <React.Fragment>
         <div>
-          <div>コメントID {this.props.comment.comment_id}</div>
           <Button
             onClick={() => this.toUserShowPage(this.props.comment.user_id)}
           >

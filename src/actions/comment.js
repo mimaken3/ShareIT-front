@@ -19,14 +19,23 @@ export const getAllComments = (articleID) => async (dispatch) => {
 };
 
 // 記事のコメント投稿
-export const postComment = (comment) => async (dispatch) => {
+export const postComment = (commentObj) => async (dispatch) => {
   const loginUserInfo = getLoginUserInfo();
-  const articleID = comment.articleID;
+  const articleID = commentObj.articleID;
+  const loginUserID = loginUserInfo.userID;
+
+  const obj = {
+    article_id: articleID,
+    user_Id: loginUserID,
+    content: commentObj.comment,
+  };
 
   const response = await axios.post(
     `${ROOT_URL}/api/articles/${articleID}/comments`,
+    obj,
     loginUserInfo.sendConfig
   );
+
   dispatch({ type: CREATE_COMMENT, response });
 };
 

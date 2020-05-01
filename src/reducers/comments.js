@@ -1,5 +1,4 @@
 import { SHOW_ALL_COMMENTS, CREATE_COMMENT } from "../actions/comment";
-// import _ from "lodash";
 
 // reducerは関数として定義(引数は2つ)
 // 第一引数の初期値はないので{}
@@ -9,7 +8,9 @@ export default (comments = {}, action) => {
     case SHOW_ALL_COMMENTS:
       return action.response.data;
     case CREATE_COMMENT:
-      return comments;
+      const comment = action.response.data;
+
+      return [...comments, comment];
     default:
       return comments;
   }
