@@ -52,6 +52,31 @@ class AllComments extends Component {
     ));
   }
 
+  // コメント入力フォーム
+  renderCreateComment(loginUserName, handleSubmit) {
+    return (
+      <div>
+        <div>コメント入力欄</div>
+        <form id="create-comment-form" onSubmit={handleSubmit(this.onSubmit)}>
+          {loginUserName}
+
+          <input
+            type="text"
+            placeholder="1000文字以内"
+            defaultValue={this.state.inputComment}
+            onChange={this.handleChange}
+          />
+
+          <input
+            type="submit"
+            value="Submit"
+            disabled={this.state.commentCheck}
+          />
+        </form>
+      </div>
+    );
+  }
+
   render() {
     const { handleSubmit } = this.props;
     const loginUser = getLoginUserInfo();
@@ -62,24 +87,7 @@ class AllComments extends Component {
           <div>コメント欄</div>
           {this.renderComments()}
 
-          {/* コメント入力フォーム */}
-          <div>コメント入力欄</div>
-          <form id="create-comment-form" onSubmit={handleSubmit(this.onSubmit)}>
-            {loginUserName}
-
-            <input
-              type="text"
-              placeholder="1000文字以内"
-              defaultValue={this.state.inputComment}
-              onChange={this.handleChange}
-            />
-
-            <input
-              type="submit"
-              value="Submit"
-              disabled={this.state.commentCheck}
-            />
-          </form>
+          {this.renderCreateComment(loginUserName, handleSubmit)}
         </React.Fragment>
       );
     } else {
@@ -87,6 +95,7 @@ class AllComments extends Component {
         <React.Fragment>
           <div>コメント欄</div>
           <div>コメントはありません</div>
+          {this.renderCreateComment(loginUserName, handleSubmit)}
         </React.Fragment>
       );
     }
