@@ -33,8 +33,10 @@ class CommentNew extends Component {
 
   // 入力欄のチェック
   handleChange(e) {
-    this.setState({ inputComment: e.target.value });
-    if (e.target.value.match(/\S/g)) {
+    const content = e.target.value;
+
+    this.setState({ inputComment: content });
+    if (content.match(/\S/g) && content.length < 1000) {
       this.setState({ commentCheck: false });
     } else {
       this.setState({ commentCheck: true });

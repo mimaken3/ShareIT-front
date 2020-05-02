@@ -2,6 +2,7 @@ import {
   SHOW_ALL_COMMENTS,
   CREATE_COMMENT,
   DELETE_COMMENT,
+  UPDATE_COMMENT,
 } from "../actions/comment";
 import getIteratoredObjArr from "../modules/getIteratoredObjArr";
 
@@ -20,6 +21,17 @@ export default (comments = {}, action) => {
       const iteratoredCreateCommentsObj = getIteratoredObjArr(comments);
 
       return [...iteratoredCreateCommentsObj, comment];
+
+    case UPDATE_COMMENT:
+      const updatedComment = action.response.data;
+
+      // イテレータ付きのオブジェクト配列を返す
+      const iteratoredCreateCommentsObj2 = getIteratoredObjArr(comments);
+
+      return {
+        ...iteratoredCreateCommentsObj2,
+        [action.index]: updatedComment,
+      };
 
     case DELETE_COMMENT:
       delete comments[action.index];

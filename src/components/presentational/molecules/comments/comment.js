@@ -5,11 +5,13 @@ import UserIcon from "../../../presentational/atoms/user_icon";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router";
 import { deleteComment } from "../../../../actions/comment";
+import CommentEdit from "./edit";
 
 class Comment extends Component {
   constructor(props) {
     super(props);
     this.toUserShowPage = this.toUserShowPage.bind(this);
+    this.state = { isEdited: false };
   }
 
   toUserShowPage(userID) {
@@ -25,7 +27,20 @@ class Comment extends Component {
     );
   }
 
+  editComment() {
+    this.setState({ isEdited: true });
+  }
+
+  onEditCancel() {
+    this.setState({ isEdited: false });
+  }
+
+  Edited() {
+    this.setState({ isEdited: false });
+  }
+
   render() {
+    // 削除ボタン
     let deleteButton;
     if (this.props.loginUserName === this.props.comment.user_name) {
       deleteButton = (
@@ -34,6 +49,37 @@ class Comment extends Component {
         </div>
       );
     }
+
+    // 編集ボタン
+    let commentDisplay;
+    if (this.state.isEdited) {
+      commentDisplay = (
+        <div>
+          <div>
+            <CommentEdit
+              comment={this.props.comment}
+              index={this.props.index}
+              callback={() => this.Edited()}
+            />
+          </div>
+          <div>
+            <Button onClick={() => this.onEditCancel()}>キャンセル</Button>
+          </div>
+        </div>
+      );
+    } else {
+      commentDisplay = (
+        <div>
+          <div>コメント {this.props.comment.content}</div>
+        </div>
+      );
+    }
+
+    let editButton;
+    if (this.props.loginUserName === this.props.comment.user_name) {
+      editButton = <Button onClick={() => this.editComment()}>編集</Button>;
+    }
+
     return (
       <React.Fragment>
         <div>
@@ -43,8 +89,9 @@ class Comment extends Component {
             <UserIcon iconData={this.props.comment.icon_name} />
           </Button>
           <div>ユーザ名 {this.props.comment.user_name}</div>
-          <div>コメント {this.props.comment.content}</div>
-          {deleteButton}
+          <div>{commentDisplay}</div>
+          <div>{editButton}</div>
+          <div>{deleteButton}</div>
         </div>
       </React.Fragment>
     );

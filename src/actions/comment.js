@@ -5,6 +5,7 @@ import getLoginUserInfo from "../modules/getLoginUserInfo";
 export const CREATE_COMMENT = "CREATE_COMMENT";
 export const SHOW_ALL_COMMENTS = "SHOW_ALL_COMMENTS";
 export const DELETE_COMMENT = "DELETE_COMMENT";
+export const UPDATE_COMMENT = "UPDATE_COMMENT";
 
 const ROOT_URL = process.env.REACT_APP_ROOT_URL;
 
@@ -41,6 +42,18 @@ export const postComment = (commentObj) => async (dispatch) => {
 };
 
 // 記事のコメント更新
+export const updateComment = (commentObj, index) => async (dispatch) => {
+  const loginUserInfo = getLoginUserInfo();
+  const articleID = commentObj.article_id;
+
+  const response = await axios.put(
+    `${ROOT_URL}/api/articles/${articleID}/comments`,
+    commentObj,
+    loginUserInfo.sendConfig
+  );
+
+  dispatch({ type: UPDATE_COMMENT, response, index });
+};
 
 // 記事のコメント削除
 export const deleteComment = (articleID, commentID, index) => async (
