@@ -42,7 +42,8 @@ class CommentNew extends Component {
   }
 
   // コメント入力フォーム
-  renderCreateComment(loginUserName, handleSubmit) {
+  renderCreateComment(loginUserName) {
+    const { handleSubmit, submitting } = this.props;
     return (
       <div>
         <div>コメント入力欄</div>
@@ -60,7 +61,7 @@ class CommentNew extends Component {
           <input
             type="submit"
             value="Submit"
-            disabled={this.state.commentCheck}
+            disabled={this.state.commentCheck || submitting}
           />
         </form>
       </div>
@@ -68,10 +69,9 @@ class CommentNew extends Component {
   }
 
   render() {
-    const { handleSubmit } = this.props;
     const loginUser = getLoginUserInfo();
     const loginUserName = loginUser.userName;
-    return <div>{this.renderCreateComment(loginUserName, handleSubmit)}</div>;
+    return <div>{this.renderCreateComment(loginUserName)}</div>;
   }
 }
 
