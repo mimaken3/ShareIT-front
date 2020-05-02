@@ -16,7 +16,7 @@ class CommentEdit extends Component {
     };
   }
 
-  onSubmit = () => {
+  async onSubmit() {
     const commentObj = {
       article_id: this.props.comment.article_id,
       comment_id: this.props.comment.comment_id,
@@ -24,11 +24,11 @@ class CommentEdit extends Component {
     };
 
     // 更新
-    this.props.updateComment(commentObj, this.props.index).then(() => {
+    await this.props.updateComment(commentObj, this.props.index).then(() => {
       // 編集フォームをオフにする
       this.props.callback();
     });
-  };
+  }
 
   // 入力欄のチェック
   handleChange(e) {
