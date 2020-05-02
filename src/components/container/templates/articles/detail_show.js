@@ -102,7 +102,7 @@ class ArticleShow extends Component {
           </div>
 
           <div>
-            <CommentNew />
+            <CommentNew articleID={this.props.article.article_id} />
           </div>
         </React.Fragment>
       );
