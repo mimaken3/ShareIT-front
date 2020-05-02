@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { postComment } from "../../../../actions/comment";
 import { reduxForm } from "redux-form";
 import getLoginUserInfo from "../../../../modules/getLoginUserInfo";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 class CommentNew extends Component {
   constructor(props) {
@@ -48,10 +49,11 @@ class CommentNew extends Component {
         <form id="create-comment-form" onSubmit={handleSubmit(this.onSubmit)}>
           {loginUserName}
 
-          <input
-            type="text"
+          <TextareaAutosize
+            aria-label="comment"
+            rowsMin={3}
+            rowsMax={20}
             placeholder="1000文字以内"
-            defaultValue={this.state.inputComment}
             onChange={this.handleChange}
           />
 
