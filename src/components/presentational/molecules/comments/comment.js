@@ -4,6 +4,7 @@ import { reduxForm } from "redux-form";
 import UserIcon from "../../../presentational/atoms/user_icon";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router";
+import { deleteComment } from "../../../../actions/comment";
 
 class Comment extends Component {
   constructor(props) {
@@ -15,7 +16,24 @@ class Comment extends Component {
     this.props.history.push("/api/users/" + userID);
   }
 
+  // 記事の削除
+  onDeleteClick() {
+    this.props.deleteComment(
+      this.props.comment.article_id,
+      this.props.comment.comment_id,
+      this.props.index
+    );
+  }
+
   render() {
+    let deleteButton;
+    if (this.props.loginUserName === this.props.comment.user_name) {
+      deleteButton = (
+        <div>
+          <Button onClick={() => this.onDeleteClick()}>削除</Button>
+        </div>
+      );
+    }
     return (
       <React.Fragment>
         <div>
@@ -26,13 +44,14 @@ class Comment extends Component {
           </Button>
           <div>ユーザ名 {this.props.comment.user_name}</div>
           <div>コメント {this.props.comment.content}</div>
+          {deleteButton}
         </div>
       </React.Fragment>
     );
   }
 }
 
-const mapDispatchToProps = "";
+const mapDispatchToProps = { deleteComment };
 
 const mapStateToProps = "";
 

@@ -4,6 +4,7 @@ import getLoginUserInfo from "../modules/getLoginUserInfo";
 //reducerでもimortして使うので
 export const CREATE_COMMENT = "CREATE_COMMENT";
 export const SHOW_ALL_COMMENTS = "SHOW_ALL_COMMENTS";
+export const DELETE_COMMENT = "DELETE_COMMENT";
 
 const ROOT_URL = process.env.REACT_APP_ROOT_URL;
 
@@ -42,3 +43,14 @@ export const postComment = (commentObj) => async (dispatch) => {
 // 記事のコメント更新
 
 // 記事のコメント削除
+export const deleteComment = (articleID, commentID, index) => async (
+  dispatch
+) => {
+  const loginUserInfo = getLoginUserInfo();
+
+  await axios.delete(
+    `${ROOT_URL}/api/articles/${articleID}/comments/${commentID}`,
+    loginUserInfo.sendConfig
+  );
+  dispatch({ type: DELETE_COMMENT, commentID, index });
+};

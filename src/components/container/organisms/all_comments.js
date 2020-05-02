@@ -44,10 +44,14 @@ class AllComments extends Component {
   }
 
   // コメントを表示する関数
-  renderComments() {
-    return _.map(this.props.comments, (comment) => (
-      <div key={comment.comment_id}>
-        <Comment comment={comment} />
+  renderComments(loginUserName) {
+    return _.map(this.props.comments, (comment, index) => (
+      <div key={index}>
+        <Comment
+          comment={comment}
+          loginUserName={loginUserName}
+          index={index}
+        />
       </div>
     ));
   }
@@ -85,7 +89,7 @@ class AllComments extends Component {
       return (
         <React.Fragment>
           <div>コメント欄</div>
-          {this.renderComments()}
+          {this.renderComments(loginUserName)}
 
           {this.renderCreateComment(loginUserName, handleSubmit)}
         </React.Fragment>
