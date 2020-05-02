@@ -15,6 +15,7 @@ import CreateArticleButton from "../../../presentational/atoms/create_article_bu
 import Like from "../../../presentational/molecules/likes/like";
 import getLoginUserInfo from "../../../../modules/getLoginUserInfo";
 import AllComments from "../../../container/organisms/all_comments";
+import CommentNew from "../../../presentational/molecules/comments/create";
 
 class ArticleShow extends Component {
   constructor(props) {
@@ -98,6 +99,10 @@ class ArticleShow extends Component {
 
           <div>
             <AllComments articleID={this.props.article.article_id} />
+          </div>
+
+          <div>
+            <CommentNew />
           </div>
         </React.Fragment>
       );

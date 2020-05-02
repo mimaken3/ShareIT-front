@@ -3,7 +3,6 @@ import {
   CREATE_COMMENT,
   DELETE_COMMENT,
 } from "../actions/comment";
-import _ from "lodash";
 import getIteratoredObjArr from "../modules/getIteratoredObjArr";
 
 // reducerは関数として定義(引数は2つ)
