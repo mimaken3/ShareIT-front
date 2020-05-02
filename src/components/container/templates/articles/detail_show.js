@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { getArticleDetail, deleteEvent } from "../../../../actions/article";
+import { getAllComments } from "../../../../actions/comment";
 import ArticleTitle from "../../../presentational/atoms/articles/title";
 import ArticleContent from "../../../presentational/atoms/articles/content";
 import CreatedDate from "../../../presentational/atoms/created_date.js";
@@ -13,17 +14,25 @@ import EditButton from "../../../presentational/atoms/edit_button";
 import CreateArticleButton from "../../../presentational/atoms/create_article_button";
 import Like from "../../../presentational/molecules/likes/like";
 import getLoginUserInfo from "../../../../modules/getLoginUserInfo";
+import AllComments from "../../../container/organisms/all_comments";
+import CommentNew from "../../../presentational/molecules/comments/create";
 
 class ArticleShow extends Component {
   constructor(props) {
     super(props);
     this.onDeleteClick = this.onDeleteClick.bind(this);
+    this.state = { loading: true };
   }
 
   componentDidMount() {
     // 複雑な処理はcomponentに書かずに外(action)に記述
     const { articleId } = this.props.match.params;
-    if (articleId) this.props.getArticleDetail(articleId);
+    if (articleId) {
+      this.props.getAllComments(articleId).then(() => {
+        this.props.getArticleDetail(articleId);
+        this.setState({ loading: false });
+      });
+    }
   }
 
   // 記事の削除
@@ -36,7 +45,7 @@ class ArticleShow extends Component {
   render() {
     const loginUser = getLoginUserInfo();
     const loginUserID = loginUser.userID;
-    if (this.props.article) {
+    if (this.props.article && !this.state.loading) {
       var AuthorizedEditButton;
       if (loginUserID === this.props.article.created_user_id) {
         AuthorizedEditButton = (
@@ -87,6 +96,14 @@ class ArticleShow extends Component {
           <div>
             <ToAllArticlesButton />
           </div>
+
+          <div>
+            <AllComments articleID={this.props.article.article_id} />
+          </div>
+
+          <div>
+            <CommentNew articleID={this.props.article.article_id} />
+          </div>
         </React.Fragment>
       );
     } else {
@@ -106,13 +123,12 @@ class ArticleShow extends Component {
 // ReduxのStoreを第一引数にとる関数で、Componentにpropsとして渡すものをフィルタリングするときに使う。
 const mapStateToProps = (state, ownProps) => {
   // 詳細画面で必要な各種情報を取得
-
   const article = state.articles.articles[ownProps.match.params.articleId];
   // 初期状態でどんな値を表示するかをinitialValuesで設定
   return { initialValues: article, article: article };
 };
 
-const mapDispatchToProps = { getArticleDetail, deleteEvent };
+const mapDispatchToProps = { getArticleDetail, deleteEvent, getAllComments };
 
 // connect 第一引数はcomponentに渡すpropsを制御する
 // 第二引数はreducerを呼び出して、reduxで管理しているstateを更新する
