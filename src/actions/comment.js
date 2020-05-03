@@ -1,5 +1,6 @@
 import axios from "axios";
 import getLoginUserInfo from "../modules/getLoginUserInfo";
+import env from "env";
 
 //reducerでもimortして使うので
 export const CREATE_COMMENT = "CREATE_COMMENT";
@@ -7,7 +8,7 @@ export const SHOW_ALL_COMMENTS = "SHOW_ALL_COMMENTS";
 export const DELETE_COMMENT = "DELETE_COMMENT";
 export const UPDATE_COMMENT = "UPDATE_COMMENT";
 
-const ROOT_URL = process.env.REACT_APP_ROOT_URL;
+const ROOT_URL = env.ROOT_URL;
 
 // 記事のコメント一覧
 export const getAllComments = (articleID) => async (dispatch) => {

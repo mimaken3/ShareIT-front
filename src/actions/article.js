@@ -1,5 +1,6 @@
 import axios from "axios";
 import getLoginUserInfo from "../modules/getLoginUserInfo";
+import env from "env";
 
 //reducerでもimortして使うので
 export const SHOW_ALL_ARTICLES = "SHOW_ALL_ARTICLES";
@@ -9,7 +10,7 @@ export const UPDATE_ARTICLE_EVENT = "UPDATE_ARTICLE_EVENT";
 export const DELETE_ARTICLE_EVENT = "DELETE_ARTICLE_EVENT";
 export const CREATE_ARTICLE_EVENT = "CREATE_ARTICLE_EVENT";
 
-const ROOT_URL = process.env.REACT_APP_ROOT_URL;
+const ROOT_URL = env.ROOT_URL;
 
 // 記事一覧
 export const showAllArticles = (pageNum) => async (dispatch) => {

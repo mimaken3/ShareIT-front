@@ -1,11 +1,13 @@
+import env from "env";
+
 // アイコンを削除
 export default async function deleteIcon(deleteFileName) {
   var AWS = require("aws-sdk");
 
   // Create S3 service object
   let s3 = new AWS.S3({
-    accessKeyId: process.env.REACT_APP_AWS_S3_ACCESS_KEY_ID,
-    secretAccessKey: process.env.REACT_APP_AWS_S3_SECRET_ACCESS_KEY,
+    accessKeyId: env.AWS_S3_ACCESS_KEY_ID,
+    secretAccessKey: env.AWS_S3_SECRET_ACCESS_KEY,
     region: "ap-northeast-1",
   });
 

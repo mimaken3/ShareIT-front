@@ -11,8 +11,9 @@ import { Link } from "react-router-dom";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import EditUserIcon from "../../../presentational/molecules/edit_user_icon";
 import getIconURL from "../../../../modules/getIconURL";
+import env from "env";
 
-const ROOT_URL = process.env.REACT_APP_ROOT_URL;
+const ROOT_URL = env.ROOT_URL;
 
 let isUserNameCheck = false;
 let isEmailCheck = false;
