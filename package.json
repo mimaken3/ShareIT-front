@@ -45,9 +45,10 @@
     "semantic-ui-react": "^0.88.2"
   },
   "scripts": {
-    "dev": "webpack --mode development",
-    "build": "webpack --mode production",
-    "start": "webpack-dev-server",
+    "dev": "webpack --progress --colors --mode development",
+    "build": "webpack --progress --colors --mode production",
+    "watch": "webpack --progress --colors --watch --mode development",
+    "start": "webpack-dev-server --progress --colors",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
