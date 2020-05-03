@@ -1,21 +1,14 @@
 const path = require("path");
-var webpack = require("webpack");
 const environment = process.env.NODE_ENV || "dev";
 
 module.exports = {
-  //   entry: "./src/index.js",
-  //   entry: ["@babel/polyfill", "./src/index.js"],
   entry: ["@babel/polyfill", "./src/index.js"],
   output: {
     path: path.resolve(__dirname, "./dest"),
     filename: "bundle.js",
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-    }),
-  ],
 
+  // 環境変数ファイルの読み込み
   resolve: {
     alias: {
       env$: path.resolve(__dirname, `.env/${environment}.js`),
@@ -36,6 +29,7 @@ module.exports = {
       },
     ],
   },
+
   // ローカル開発用環境を立ち上げる
   // 実行時にブラウザが自動的に localhost を開く
   devServer: {
