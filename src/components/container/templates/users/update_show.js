@@ -2,17 +2,17 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 // 入力フォーム作成で使う
 import { reduxForm } from "redux-form";
-import { getAllTopics } from "../../../../actions/topic";
-import { getUserDetail, putUserEvent } from "../../../../actions/user";
+import { getAllTopics } from "Actions/topic";
+import { getUserDetail, putUserEvent } from "Actions/user";
 import { Link } from "react-router-dom";
-import ToAllUsersButton from "../../../presentational/atoms/to_all_users_button";
-import UserID from "../../../presentational/atoms/users/id";
-import Loading from "../../../container/templates/loading";
-import TopicSelectBox from "../../../presentational/atoms/topic_select_box";
-import UnauthorizedPage from "../../../presentational/atoms/unauthorized_page";
+import ToAllUsersButton from "Atoms/to_all_users_button";
+import UserID from "Atoms/users/id";
+import Loading from "Templates/loading";
+import TopicSelectBox from "Atoms/topic_select_box";
+import UnauthorizedPage from "Atoms/unauthorized_page";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-import EditUserIcon from "../../../presentational/molecules/edit_user_icon";
-import getLoginUserInfo from "../../../../modules/getLoginUserInfo";
+import EditUserIcon from "Molecules/edit_user_icon";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
 
 class UserUpdateShow extends Component {
   constructor(props) {

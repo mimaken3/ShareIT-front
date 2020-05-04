@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { showAllUsers } from "../../../../actions/user";
-import ToAllArticlesButton from "../../../presentational/atoms/to_all_articles_button";
-import Loading from "../../../container/templates/loading";
-import CreateArticleButton from "../../../presentational/atoms/create_article_button";
-import AllUsers from "../../../container/organisms/all_users";
+import { showAllUsers } from "Actions/user";
+import ToAllArticlesButton from "Atoms/to_all_articles_button";
+import Loading from "Templates/loading";
+import CreateArticleButton from "Atoms/create_article_button";
+import AllUsers from "Organisms/all_users";
 
 class UsersIndex extends Component {
   // 外部のAPIに対してイベントを取得する

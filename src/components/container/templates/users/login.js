@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { loginUserEvent } from "../../../../actions/user";
+import { loginUserEvent } from "Actions/user";
 
 let isUserNameCheck = false;
 let isEmailCheck = false;
