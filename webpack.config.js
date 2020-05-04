@@ -23,7 +23,12 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env", "@babel/preset-react"],
+            presets: [
+              // プリセットを指定することで、ES2020 を ES5 に変換
+              "@babel/preset-env",
+              // React の JSX を解釈
+              "@babel/preset-react",
+            ],
           },
         },
       },
