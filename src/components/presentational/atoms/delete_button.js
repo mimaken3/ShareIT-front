@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
+import { deleteUserEvent } from "Actions/user";
 
 // 削除ボタン
 class DeleteButton extends Component {
@@ -19,11 +20,17 @@ class DeleteButton extends Component {
   // 削除を実行
   onDeleteClick() {
     if (this.props.param === "comment") {
+      // コメントを削除
       const articleID = this.props.sendObj.articleID;
       const commentID = this.props.sendObj.commentID;
       const index = this.props.sendObj.index;
       this.props.deleteComment(articleID, commentID, index);
       this.setState({ open: false });
+    } else if (this.props.param === "user") {
+      // ユーザを削除
+      this.props.deleteUserEvent(this.props.sendObj.user).then(() => {
+        this.props.history.push("/login");
+      });
     }
   }
 
@@ -41,6 +48,8 @@ class DeleteButton extends Component {
     let param;
     if (this.props.param === "comment") {
       param = "コメント";
+    } else if (this.props.param === "user") {
+      param = "ユーザ";
     }
     return (
       <div>
@@ -82,7 +91,7 @@ class DeleteButton extends Component {
   }
 }
 
-const mapDispatchToProps = { deleteComment };
+const mapDispatchToProps = { deleteComment, deleteUserEvent };
 
 const mapStateToProps = "";
 

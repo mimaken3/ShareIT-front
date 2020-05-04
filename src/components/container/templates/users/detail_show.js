@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 // 入力フォーム作成で使う
 import { reduxForm } from "redux-form";
-import { getUserDetail, deleteUserEvent } from "Actions/user";
+import { getUserDetail } from "Actions/user";
 import { getAllArticlesByUserID } from "Actions/article";
 import ToAllUsersButton from "Atoms/to_all_users_button";
 import UserName from "Atoms/users/name";
@@ -16,7 +16,7 @@ import CreateArticleButton from "Atoms/create_article_button";
 import UserIcon from "Atoms/user_icon";
 import AllArticles from "Organisms/all_articles";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
-import Button from "@material-ui/core/Button";
+import DeleteButton from "Atoms/delete_button";
 
 class UserShow extends Component {
   constructor(props) {
@@ -24,8 +24,8 @@ class UserShow extends Component {
     this.state = {
       loading: true,
     };
-    this.deleteUser = this.deleteUser.bind(this);
   }
+
   // 初回読み込み用
   componentDidMount() {
     // 複雑な処理はcomponentに書かずに外(action)に記述
@@ -48,23 +48,17 @@ class UserShow extends Component {
     }
   }
 
-  // ユーザを削除
-  deleteUser() {
-    this.props.deleteUserEvent(this.props.user).then(() => {
-      this.props.history.push("/login");
-    });
-  }
-
   render() {
     if (this.props.user && this.props.allPagingNum && !this.state.loading) {
       const loginUser = getLoginUserInfo();
       const loginUserID = loginUser.userID;
       var AuthorizedEditButton;
       if (loginUserID === this.props.user.user_id) {
+        const sendObj = { user: this.props.user };
         AuthorizedEditButton = (
           <div>
             <EditButton path="users" id={this.props.user.user_id} />
-            <Button onClick={this.deleteUser}>削除</Button>
+            <DeleteButton param="user" sendObj={sendObj} />
           </div>
         );
       }
@@ -125,7 +119,6 @@ class UserShow extends Component {
 const mapDispatchToProps = {
   getUserDetail,
   getAllArticlesByUserID,
-  deleteUserEvent,
 };
 
 // stateとactionをcomponentに関連付ける実装
