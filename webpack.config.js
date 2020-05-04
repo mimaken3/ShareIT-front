@@ -15,7 +15,7 @@ module.exports = {
   // 環境変数ファイルの読み込みと絶対パスのエイリアス
   resolve: {
     alias: {
-      env$: path.resolve(__dirname, `.env2/${environment}.js`),
+      env$: path.resolve(__dirname, `.env/${environment}.js`),
       src: path.resolve(__dirname, "./src"),
       Actions: path.resolve(__dirname, "./src/actions"),
       Reducers: path.resolve(__dirname, "./src/reducers"),
