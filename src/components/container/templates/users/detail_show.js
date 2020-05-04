@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 // 入力フォーム作成で使う
 import { reduxForm } from "redux-form";
-import { getUserDetail } from "Actions/user";
+import { getUserDetail, deleteUserEvent } from "Actions/user";
 import { getAllArticlesByUserID } from "Actions/article";
 import ToAllUsersButton from "Atoms/to_all_users_button";
 import UserName from "Atoms/users/name";
@@ -16,6 +16,7 @@ import CreateArticleButton from "Atoms/create_article_button";
 import UserIcon from "Atoms/user_icon";
 import AllArticles from "Organisms/all_articles";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
+import Button from "@material-ui/core/Button";
 
 class UserShow extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class UserShow extends Component {
     this.state = {
       loading: true,
     };
+    this.deleteUser = this.deleteUser.bind(this);
   }
   // 初回読み込み用
   componentDidMount() {
@@ -40,10 +42,17 @@ class UserShow extends Component {
   // 主にヘッダーから用
   componentDidUpdate() {
     const { userId } = this.props.match.params;
-    if (userId) {
+    if (userId && this.props.user) {
       this.props.getUserDetail(userId);
       this.props.getAllArticlesByUserID(userId, 1);
     }
+  }
+
+  // ユーザを削除
+  deleteUser() {
+    this.props.deleteUserEvent(this.props.user).then(() => {
+      this.props.history.push("/login");
+    });
   }
 
   render() {
@@ -55,10 +64,10 @@ class UserShow extends Component {
         AuthorizedEditButton = (
           <div>
             <EditButton path="users" id={this.props.user.user_id} />
+            <Button onClick={this.deleteUser}>削除</Button>
           </div>
         );
       }
-
       return (
         <React.Fragment>
           <div>ユーザ詳細</div>
@@ -113,7 +122,11 @@ class UserShow extends Component {
   }
 }
 
-const mapDispatchToProps = { getUserDetail, getAllArticlesByUserID };
+const mapDispatchToProps = {
+  getUserDetail,
+  getAllArticlesByUserID,
+  deleteUserEvent,
+};
 
 // stateとactionをcomponentに関連付ける実装
 // このstatusは状態のトップレベルを表す

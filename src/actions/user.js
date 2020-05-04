@@ -1,7 +1,7 @@
 import axios from "axios";
-import deleteIcon from "../modules/deleteIcon";
-import uploadIcon from "../modules/uploadIcon";
-import getLoginUserInfo from "../modules/getLoginUserInfo";
+import deleteIcon from "Modules/deleteIcon";
+import uploadIcon from "Modules/uploadIcon";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
 import env from "env";
 
 export const LOGIN_USER_EVENT = "LOGIN_USER_EVENT";
@@ -10,6 +10,7 @@ export const CREATE_USER_EVENT = "CREATE_USER_EVENT";
 export const SHOW_ALL_USERS = "SHOW_ALL_USERS";
 export const SHOW_USER_DETAIL = "SHOW_USER_DETAIL";
 export const UPDATE_USER_EVENT = "UPDATE_USER_EVENT";
+export const DELETE_USER_EVENT = "DELETE_USER_EVENT";
 
 const ROOT_URL = env.ROOT_URL;
 
@@ -32,6 +33,7 @@ export const postUserEvent = (user, iconImage) => async (dispatch) => {
 
   dispatch({ type: CREATE_USER_EVENT, response });
 };
+
 // ログイン
 export const loginUserEvent = (user) => async (dispatch) => {
   await axios
@@ -94,4 +96,16 @@ export const putUserEvent = (user, iconImage) => async (dispatch) => {
     loginUserInfo.sendConfig
   );
   dispatch({ type: UPDATE_USER_EVENT, response });
+};
+
+// ユーザを削除
+export const deleteUserEvent = (user) => async (dispatch) => {
+  const loginUserInfo = getLoginUserInfo();
+
+  const response = await axios.delete(
+    `${ROOT_URL}/api/users/${user.user_id}`,
+    loginUserInfo.sendConfig
+  );
+
+  dispatch({ type: DELETE_USER_EVENT, response });
 };
