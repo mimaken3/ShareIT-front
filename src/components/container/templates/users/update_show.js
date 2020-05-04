@@ -13,6 +13,7 @@ import UnauthorizedPage from "Atoms/unauthorized_page";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import EditUserIcon from "Molecules/edit_user_icon";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
+import DeleteButton from "Atoms/delete_button";
 
 class UserUpdateShow extends Component {
   constructor(props) {
@@ -69,10 +70,10 @@ class UserUpdateShow extends Component {
   }
 
   render() {
-    const { handleSubmit, submitting, invalid } = this.props;
-    const loginUserInfo = getLoginUserInfo();
-    const loginUserID = loginUserInfo.userID;
     if (this.props.user && Object.values(this.props.allTopics).length !== 0) {
+      const { handleSubmit, submitting, invalid } = this.props;
+      const loginUserInfo = getLoginUserInfo();
+      const loginUserID = loginUserInfo.userID;
       if (loginUserID !== this.props.user.user_id) {
         // 別ユーザがアクセスしようとした場合
         return (
@@ -86,6 +87,8 @@ class UserUpdateShow extends Component {
 
         // 初期表示トピック
         const initTopics = this.props.user.interested_topics;
+
+        const sendObj = { user: this.props.user };
         return (
           <React.Fragment>
             <form onSubmit={handleSubmit(this.onSubmit)}>
@@ -121,6 +124,9 @@ class UserUpdateShow extends Component {
                 </div>
               </div>
               <div>作成日: {this.props.user.created_date}</div>
+              <div>
+                <DeleteButton param="user" sendObj={sendObj} />
+              </div>
               <div>
                 <input
                   type="submit"
