@@ -15,7 +15,7 @@ module.exports = {
   // 環境変数ファイルの読み込み
   resolve: {
     alias: {
-      env$: path.resolve(__dirname, `.env/${environment}.js`),
+      env$: path.resolve(__dirname, `.env2/${environment}.js`),
     },
   },
 
