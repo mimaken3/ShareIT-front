@@ -1,13 +1,14 @@
 import S3 from "react-aws-s3";
+import env from "env";
 
 // アイコンをアップロード
 export default async function uploadIcon(iconImage, newFileName) {
   const iconImageConfig = {
-    bucketName: process.env.REACT_APP_AWS_S3_BUCKET_NAME,
+    bucketName: env.AWS_S3_BUCKET_NAME,
     dirName: "user-icons",
     region: "ap-northeast-1",
-    accessKeyId: process.env.REACT_APP_AWS_S3_ACCESS_KEY_ID,
-    secretAccessKey: process.env.REACT_APP_AWS_S3_SECRET_ACCESS_KEY,
+    accessKeyId: env.AWS_S3_ACCESS_KEY_ID,
+    secretAccessKey: env.AWS_S3_SECRET_ACCESS_KEY,
   };
 
   const ReactS3Client = new S3(iconImageConfig);

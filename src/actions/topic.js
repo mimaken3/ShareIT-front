@@ -1,7 +1,8 @@
 import axios from "axios";
+import env from "env";
 export const GET_ALL_TOPICS = "GET_ALL_TOPICS_EVENT";
 
-const ROOT_URL = process.env.REACT_APP_ROOT_URL;
+const ROOT_URL = env.ROOT_URL;
 
 // 全トピックを取得
 export const getAllTopics = () => async (dispatch) => {

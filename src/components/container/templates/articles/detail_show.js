@@ -1,21 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
-import { getArticleDetail, deleteEvent } from "../../../../actions/article";
-import { getAllComments } from "../../../../actions/comment";
-import ArticleTitle from "../../../presentational/atoms/articles/title";
-import ArticleContent from "../../../presentational/atoms/articles/content";
-import CreatedDate from "../../../presentational/atoms/created_date.js";
-import Topic from "../../../presentational/atoms/topics/topic";
-import ArticleID from "../../../presentational/atoms/articles/id";
-import ToAllArticlesButton from "../../../presentational/atoms/to_all_articles_button";
-import Loading from "../loading";
-import EditButton from "../../../presentational/atoms/edit_button";
-import CreateArticleButton from "../../../presentational/atoms/create_article_button";
-import Like from "../../../presentational/molecules/likes/like";
-import getLoginUserInfo from "../../../../modules/getLoginUserInfo";
-import AllComments from "../../../container/organisms/all_comments";
-import CommentNew from "../../../presentational/molecules/comments/create";
+import { getArticleDetail, deleteEvent } from "Actions/article";
+import { getAllComments } from "Actions/comment";
+import ArticleTitle from "Atoms/articles/title";
+import ArticleContent from "Atoms/articles/content";
+import CreatedDate from "Atoms/created_date.js";
+import Topic from "Atoms/topics/topic";
+import ArticleID from "Atoms/articles/id";
+import ToAllArticlesButton from "Atoms/to_all_articles_button";
+import Loading from "Templates/loading";
+import EditButton from "Atoms/edit_button";
+import CreateArticleButton from "Atoms/create_article_button";
+import Like from "Molecules/likes/like";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
+import AllComments from "Organisms/all_comments";
+import CommentNew from "Molecules/comments/create";
 
 class ArticleShow extends Component {
   constructor(props) {

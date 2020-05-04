@@ -2,6 +2,7 @@ import axios from "axios";
 import deleteIcon from "../modules/deleteIcon";
 import uploadIcon from "../modules/uploadIcon";
 import getLoginUserInfo from "../modules/getLoginUserInfo";
+import env from "env";
 
 export const LOGIN_USER_EVENT = "LOGIN_USER_EVENT";
 export const LOGOUT_USER_EVENT = "LOGOUT_USER_EVENT";
@@ -10,7 +11,7 @@ export const SHOW_ALL_USERS = "SHOW_ALL_USERS";
 export const SHOW_USER_DETAIL = "SHOW_USER_DETAIL";
 export const UPDATE_USER_EVENT = "UPDATE_USER_EVENT";
 
-const ROOT_URL = process.env.REACT_APP_ROOT_URL;
+const ROOT_URL = env.ROOT_URL;
 
 // ユーザ作成
 export const postUserEvent = (user, iconImage) => async (dispatch) => {

@@ -1,4 +1,4 @@
-import { LOGIN_USER_EVENT } from "../actions/user";
+import { LOGIN_USER_EVENT } from "Actions/user";
 
 let initialState = {
   message: null,

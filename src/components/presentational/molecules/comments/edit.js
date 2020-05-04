@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { updateComment } from "../../../../actions/comment";
+import { updateComment } from "Actions/comment";
 import { reduxForm } from "redux-form";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 

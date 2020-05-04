@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import getLoginUserInfo from "../../../modules/getLoginUserInfo";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
 
 // 投稿ボタン
 const CreateArticleButton = () => {

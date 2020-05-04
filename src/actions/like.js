@@ -1,10 +1,11 @@
 import axios from "axios";
-import getLoginUserInfo from "../modules/getLoginUserInfo";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
+import env from "env";
 
 //reducerでもimortして使うので
 export const TOGGLE_LIKE = "TOGGLE_LIKE";
 
-const ROOT_URL = process.env.REACT_APP_ROOT_URL;
+const ROOT_URL = env.ROOT_URL;
 
 // いいねを切り替え
 export const toggleLike = (likeArticle) => async (dispatch) => {

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
-import UserIcon from "../../../presentational/atoms/user_icon";
+import UserIcon from "Atoms/user_icon";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router";
-import { deleteComment } from "../../../../actions/comment";
+import { deleteComment } from "Actions/comment";
 import CommentEdit from "./edit";
 
 class Comment extends Component {

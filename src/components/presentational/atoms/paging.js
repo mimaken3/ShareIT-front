@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { showAllArticles } from "../../../actions/article";
-import { showAllUsers } from "../../../actions/user";
-import { getAllArticlesByUserID } from "../../../actions/article";
+import { showAllArticles } from "Actions/article";
+import { showAllUsers } from "Actions/user";
+import { getAllArticlesByUserID } from "Actions/article";
 import Pagination from "@material-ui/lab/Pagination";
 import { ScrollTo } from "react-scroll-to";
 

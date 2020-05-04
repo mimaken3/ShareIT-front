@@ -3,7 +3,7 @@ import {
   SHOW_ALL_USERS,
   SHOW_USER_DETAIL,
   UPDATE_USER_EVENT,
-} from "../actions/user";
+} from "Actions/user";
 import _ from "lodash";
 
 // reducers/index.jsに渡すためexport
