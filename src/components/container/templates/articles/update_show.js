@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 // 入力フォーム作成で使う
 import { Field, reduxForm } from "redux-form";
-import { getArticleDetail, putEvent, deleteEvent } from "Actions/article";
+import { getArticleDetail, putEvent } from "Actions/article";
 import { getAllTopics } from "Actions/topic";
 import { Link } from "react-router-dom";
 import TopicSelectBox from "Atoms/topic_select_box";
@@ -12,12 +12,12 @@ import Loading from "Templates/loading";
 import UnauthorizedPage from "Atoms/unauthorized_page";
 import ArticleID from "Atoms/articles/id";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
+import DeleteButton from "Atoms/delete_button";
 
 class ArticleUpdate extends Component {
   constructor(props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
-    this.onDeleteClick = this.onDeleteClick.bind(this);
   }
 
   // 外部のAPIに対してイベントを取得する
@@ -36,7 +36,6 @@ class ArticleUpdate extends Component {
       input,
       label,
       type,
-      // mata: { visited, error }
       meta: { error },
     } = field;
 
@@ -44,7 +43,6 @@ class ArticleUpdate extends Component {
       <div>
         <input {...input} placeholder={label} type={type} />
         {error && <span>{error}</span>}
-        {/* {visited && error && <span>{error}</span>} */}
       </div>
     );
   }
@@ -61,17 +59,7 @@ class ArticleUpdate extends Component {
     this.props.history.push("/api/articles/" + values.article_id);
   }
 
-  // 記事の削除
-  async onDeleteClick() {
-    const article_id = this.props.match.params.articleId;
-
-    await this.props.deleteEvent(article_id);
-  }
-
   render() {
-    // pristine:
-    // submitting: submitボタンを一度押したら非活性にする
-    // invalid: submitボタンを押したらtrueになる状態
     const { handleSubmit, submitting, invalid } = this.props;
     const loginUserInfo = getLoginUserInfo();
     const loginUserID = loginUserInfo.userID;
@@ -93,6 +81,7 @@ class ArticleUpdate extends Component {
         // 初期表示トピック
         const initTopics = this.props.article.article_topics;
 
+        const sendObj = { articleID: this.props.article.article_id };
         return (
           <form onSubmit={handleSubmit(this.onSubmit)}>
             <div>
@@ -145,9 +134,7 @@ class ArticleUpdate extends Component {
             </div>
 
             <div>
-              <Link to="/api/articles" onClick={this.onDeleteClick}>
-                削除
-              </Link>
+              <DeleteButton param="article" sendObj={sendObj} />
             </div>
 
             <div>
@@ -202,7 +189,6 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = {
   getArticleDetail,
   putEvent,
-  deleteEvent,
   getAllTopics,
 };
 

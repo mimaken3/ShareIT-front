@@ -9,6 +9,7 @@ import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { deleteUserEvent } from "Actions/user";
+import { deleteEvent } from "Actions/article";
 
 // 削除ボタン
 class DeleteButton extends Component {
@@ -31,6 +32,12 @@ class DeleteButton extends Component {
       this.props.deleteUserEvent(this.props.sendObj.user).then(() => {
         this.props.history.push("/login");
       });
+    } else if (this.props.param === "article") {
+      // 記事を削除
+      const articleID = this.props.sendObj.articleID;
+      this.props.deleteEvent(articleID).then(() => {
+        this.props.history.push("/api/articles");
+      });
     }
   }
 
@@ -50,6 +57,8 @@ class DeleteButton extends Component {
       param = "コメント";
     } else if (this.props.param === "user") {
       param = "ユーザ";
+    } else if (this.props.param === "article") {
+      param = "記事";
     }
     return (
       <div>
@@ -91,7 +100,7 @@ class DeleteButton extends Component {
   }
 }
 
-const mapDispatchToProps = { deleteComment, deleteUserEvent };
+const mapDispatchToProps = { deleteComment, deleteUserEvent, deleteEvent };
 
 const mapStateToProps = "";
 
