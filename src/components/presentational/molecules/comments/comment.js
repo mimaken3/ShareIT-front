@@ -1,11 +1,8 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { reduxForm } from "redux-form";
 import UserIcon from "Atoms/user_icon";
 import Button from "@material-ui/core/Button";
-import { withRouter } from "react-router";
-import { deleteComment } from "Actions/comment";
 import CommentEdit from "./edit";
+import DeleteButton from "Atoms/delete_button";
 
 class Comment extends Component {
   constructor(props) {
@@ -16,15 +13,6 @@ class Comment extends Component {
 
   toUserShowPage(userID) {
     this.props.history.push("/api/users/" + userID);
-  }
-
-  // 記事の削除
-  onDeleteClick() {
-    this.props.deleteComment(
-      this.props.comment.article_id,
-      this.props.comment.comment_id,
-      this.props.index
-    );
   }
 
   editComment() {
@@ -43,9 +31,14 @@ class Comment extends Component {
     // 削除ボタン
     let deleteButton;
     if (this.props.loginUserName === this.props.comment.user_name) {
+      const sendObj = {
+        articleID: this.props.comment.article_id,
+        commentID: this.props.comment.comment_id,
+        index: this.props.index,
+      };
       deleteButton = (
         <div>
-          <Button onClick={() => this.onDeleteClick()}>削除</Button>
+          <DeleteButton param="comment" sendObj={sendObj} />
         </div>
       );
     }
@@ -98,13 +91,4 @@ class Comment extends Component {
   }
 }
 
-const mapDispatchToProps = { deleteComment };
-
-const mapStateToProps = "";
-
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(reduxForm({ form: "commentForm" })(Comment))
-);
+export default Comment;

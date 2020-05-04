@@ -16,6 +16,7 @@ import Like from "Molecules/likes/like";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import AllComments from "Organisms/all_comments";
 import CommentNew from "Molecules/comments/create";
+import DeleteButton from "Atoms/delete_button";
 
 class ArticleShow extends Component {
   constructor(props) {
@@ -48,9 +49,11 @@ class ArticleShow extends Component {
     if (this.props.article && !this.state.loading) {
       var AuthorizedEditButton;
       if (loginUserID === this.props.article.created_user_id) {
+        const sendObj = { articleID: this.props.article.article_id };
         AuthorizedEditButton = (
           <div>
             <EditButton path="articles" id={this.props.article.article_id} />
+            <DeleteButton param="article" sendObj={sendObj} />
           </div>
         );
       }

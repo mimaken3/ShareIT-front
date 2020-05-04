@@ -2,20 +2,21 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 // 入力フォーム作成で使う
 import { reduxForm } from "redux-form";
-import { getUserDetail } from "../../../../actions/user";
-import { getAllArticlesByUserID } from "../../../../actions/article";
-import ToAllUsersButton from "../../../presentational/atoms/to_all_users_button";
-import UserName from "../../../presentational/atoms/users/name";
-import UserID from "../../../presentational/atoms/users/id";
-import Profile from "../../../presentational/atoms/users/profile";
-import CreatedDate from "../../../presentational/atoms/created_date.js";
-import Topic from "../../../presentational/atoms/topics/topic";
-import Loading from "../loading";
-import EditButton from "../../../presentational/atoms/edit_button";
-import CreateArticleButton from "../../../presentational/atoms/create_article_button";
-import UserIcon from "../../../presentational/atoms/user_icon";
-import AllArticles from "../../organisms/all_articles";
-import getLoginUserInfo from "../../../../modules/getLoginUserInfo";
+import { getUserDetail } from "Actions/user";
+import { getAllArticlesByUserID } from "Actions/article";
+import ToAllUsersButton from "Atoms/to_all_users_button";
+import UserName from "Atoms/users/name";
+import UserID from "Atoms/users/id";
+import Profile from "Atoms/users/profile";
+import CreatedDate from "Atoms/created_date.js";
+import Topic from "Atoms/topics/topic";
+import Loading from "Templates/loading";
+import EditButton from "Atoms/edit_button";
+import CreateArticleButton from "Atoms/create_article_button";
+import UserIcon from "Atoms/user_icon";
+import AllArticles from "Organisms/all_articles";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
+import DeleteButton from "Atoms/delete_button";
 
 class UserShow extends Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class UserShow extends Component {
       loading: true,
     };
   }
+
   // 初回読み込み用
   componentDidMount() {
     // 複雑な処理はcomponentに書かずに外(action)に記述
@@ -40,7 +42,7 @@ class UserShow extends Component {
   // 主にヘッダーから用
   componentDidUpdate() {
     const { userId } = this.props.match.params;
-    if (userId) {
+    if (userId && this.props.user) {
       this.props.getUserDetail(userId);
       this.props.getAllArticlesByUserID(userId, 1);
     }
@@ -52,13 +54,14 @@ class UserShow extends Component {
       const loginUserID = loginUser.userID;
       var AuthorizedEditButton;
       if (loginUserID === this.props.user.user_id) {
+        const sendObj = { user: this.props.user };
         AuthorizedEditButton = (
           <div>
             <EditButton path="users" id={this.props.user.user_id} />
+            <DeleteButton param="user" sendObj={sendObj} />
           </div>
         );
       }
-
       return (
         <React.Fragment>
           <div>ユーザ詳細</div>
@@ -113,7 +116,10 @@ class UserShow extends Component {
   }
 }
 
-const mapDispatchToProps = { getUserDetail, getAllArticlesByUserID };
+const mapDispatchToProps = {
+  getUserDetail,
+  getAllArticlesByUserID,
+};
 
 // stateとactionをcomponentに関連付ける実装
 // このstatusは状態のトップレベルを表す

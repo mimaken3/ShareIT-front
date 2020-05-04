@@ -16,7 +16,10 @@ const appReducer = combineReducers({
 });
 
 const rootReducer = (state, action) => {
-  if (action.type === "LOGOUT_USER_EVENT") {
+  if (
+    action.type === "LOGOUT_USER_EVENT" ||
+    action.type === "DELETE_USER_EVENT"
+  ) {
     localStorage.removeItem("shareIT_token");
     localStorage.removeItem("login_user_icon_URL");
     localStorage.removeItem("currentPage");
