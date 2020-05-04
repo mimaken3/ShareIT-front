@@ -2,7 +2,11 @@ const path = require("path");
 const environment = process.env.NODE_ENV || "dev";
 
 module.exports = {
-  entry: ["@babel/polyfill", "./src/index.js"],
+  entry: [
+    // polyfill はIE11などで必要
+    "@babel/polyfill",
+    "./src/index.js",
+  ],
   output: {
     path: path.resolve(__dirname, "./dest"),
     filename: "bundle.js",
