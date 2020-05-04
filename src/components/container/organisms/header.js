@@ -4,8 +4,8 @@ import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { LogoutUserEvent } from "/Users/mimaken/react/share-it-front/src/actions/user.js";
-import UserIcon from "../../container/../presentational/atoms/user_icon";
-import getLoginUserInfo from "../../../modules/getLoginUserInfo";
+import UserIcon from "Atoms/user_icon";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
 
 // ヘッダー
 const Header = withRouter((props) => {

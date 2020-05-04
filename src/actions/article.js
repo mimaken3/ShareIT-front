@@ -1,5 +1,5 @@
 import axios from "axios";
-import getLoginUserInfo from "../modules/getLoginUserInfo";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
 import env from "env";
 
 //reducerでもimortして使うので

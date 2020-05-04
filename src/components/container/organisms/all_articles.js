@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { reduxForm } from "redux-form";
-import Paging from "../../presentational/atoms/paging";
-import Article from "../../presentational/molecules/articles/article";
-import getLoginUserInfo from "../../../modules/getLoginUserInfo";
+import Paging from "Atoms/paging";
+import Article from "Molecules/articles/article";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
 
 class AllArticles extends Component {
   // 記事を表示する関数

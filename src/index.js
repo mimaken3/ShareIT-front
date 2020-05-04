@@ -6,22 +6,22 @@ import reducer from "./reducers";
 import thunk from "redux-thunk";
 import { BrowserRouter, Switch } from "react-router-dom";
 import { Route } from "react-router";
-import UsersIndex from "./components/container/templates/users/index";
-import UserShow from "./components/container/templates/users/detail_show";
-import UserUpdateShow from "./components/container/templates/users/update_show";
+import UsersIndex from "Templates/users/index";
+import UserShow from "Templates/users/detail_show";
+import UserUpdateShow from "Templates/users/update_show";
 
-import ArticlesIndex from "./components/container/templates/articles/index";
-import ArticleShow from "./components/container/templates/articles/detail_show";
-import ArticleUpdate from "./components/container/templates/articles/update_show";
-import ArticleNew from "./components/container/templates/articles/create";
-import SignUp from "./components/container/templates/users/sign_up";
-import Login from "./components/container/templates/users/login";
+import ArticlesIndex from "Templates/articles/index";
+import ArticleShow from "Templates/articles/detail_show";
+import ArticleUpdate from "Templates/articles/update_show";
+import ArticleNew from "Templates/articles/create";
+import SignUp from "Templates/users/sign_up";
+import Login from "Templates/users/login";
 import { composeWithDevTools } from "redux-devtools-extension";
 import Auth from "./auth";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import Header from "./components/container/organisms/header";
-import Footer from "./components/container/organisms/footer";
-import NotFoundPage from "./components/container/templates/NotFoundPage";
+import Header from "Organisms/header";
+import Footer from "Organisms/footer";
+import NotFoundPage from "Templates/NotFoundPage";
 
 import * as serviceWorker from "./serviceWorker";
 

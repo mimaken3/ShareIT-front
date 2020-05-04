@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { reduxForm } from "redux-form";
-import Comment from "../../presentational/molecules/comments/comment";
-import { postComment } from "../../../actions/comment";
-import getLoginUserInfo from "../../../modules/getLoginUserInfo";
+import Comment from "Molecules/comments/comment";
+import { postComment } from "Actions/comment";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
 
 class AllComments extends Component {
   // コメントを表示する関数

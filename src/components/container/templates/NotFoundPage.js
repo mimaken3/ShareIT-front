@@ -1,5 +1,5 @@
 import React from "react";
-import ToAllArticlesButton from "./../../presentational/atoms/to_all_articles_button";
+import ToAllArticlesButton from "Atoms/to_all_articles_button";
 
 class NotFoundPage extends React.Component {
   render() {

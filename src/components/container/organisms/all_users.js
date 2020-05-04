@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import { reduxForm } from "redux-form";
-import Paging from "../../presentational/atoms/paging";
-import UserIcon from "../../presentational/atoms/user_icon";
+import Paging from "Atoms/paging";
+import UserIcon from "Atoms/user_icon";
 
 class AllUsers extends Component {
   // ユーザ一覧を表示する関数

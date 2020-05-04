@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { postComment } from "../../../../actions/comment";
+import { postComment } from "Actions/comment";
 import { reduxForm } from "redux-form";
-import getLoginUserInfo from "../../../../modules/getLoginUserInfo";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 class CommentNew extends Component {

@@ -3,8 +3,8 @@ import {
   CREATE_COMMENT,
   DELETE_COMMENT,
   UPDATE_COMMENT,
-} from "../actions/comment";
-import getIteratoredObjArr from "../modules/getIteratoredObjArr";
+} from "Actions/comment";
+import getIteratoredObjArr from "Modules/getIteratoredObjArr";
 
 // reducerは関数として定義(引数は2つ)
 // 第一引数の初期値はないので{}

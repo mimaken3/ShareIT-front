@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import UserIcon from "../atoms/user_icon";
+import UserIcon from "Atoms/user_icon";
 
 // ユーザ一のアイコン画像
 class EditUserIcon extends Component {

@@ -5,8 +5,8 @@ import {
   UPDATE_ARTICLE_EVENT,
   CREATE_ARTICLE_EVENT,
   DELETE_ARTICLE_EVENT,
-} from "../actions/article";
-import { TOGGLE_LIKE } from "../actions/like";
+} from "Actions/article";
+import { TOGGLE_LIKE } from "Actions/like";
 import _ from "lodash";
 
 // reducerは関数として定義(引数は2つ)

@@ -2,20 +2,16 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 // 入力フォーム作成で使う
 import { Field, reduxForm } from "redux-form";
-import {
-  getArticleDetail,
-  putEvent,
-  deleteEvent,
-} from "../../../../actions/article";
-import { getAllTopics } from "../../../../actions/topic";
+import { getArticleDetail, putEvent, deleteEvent } from "Actions/article";
+import { getAllTopics } from "Actions/topic";
 import { Link } from "react-router-dom";
-import TopicSelectBox from "../../../presentational/atoms/topic_select_box";
-import CreatedDate from "../../../presentational/atoms/created_date.js";
-import ToAllArticlesButton from "../../../presentational/atoms/to_all_articles_button";
-import Loading from "../loading";
-import UnauthorizedPage from "../../../presentational/atoms/unauthorized_page";
-import ArticleID from "../../../presentational/atoms/articles/id";
-import getLoginUserInfo from "../../../../modules/getLoginUserInfo";
+import TopicSelectBox from "Atoms/topic_select_box";
+import CreatedDate from "Atoms/created_date.js";
+import ToAllArticlesButton from "Atoms/to_all_articles_button";
+import Loading from "Templates/loading";
+import UnauthorizedPage from "Atoms/unauthorized_page";
+import ArticleID from "Atoms/articles/id";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
 
 class ArticleUpdate extends Component {
   constructor(props) {
