@@ -11,6 +11,7 @@ export const SHOW_ALL_USERS = "SHOW_ALL_USERS";
 export const SHOW_USER_DETAIL = "SHOW_USER_DETAIL";
 export const UPDATE_USER_EVENT = "UPDATE_USER_EVENT";
 export const DELETE_USER_EVENT = "DELETE_USER_EVENT";
+export const USER_NOT_EXIST = "USER_NOT_EXIST";
 
 const ROOT_URL = env.ROOT_URL;
 
@@ -68,11 +69,14 @@ export const showAllUsers = (pageNum) => async (dispatch) => {
 // ユーザ詳細画面
 export const getUserDetail = (userId) => async (dispatch) => {
   const loginUserInfo = getLoginUserInfo();
-  const response = await axios.get(
-    `${ROOT_URL}/api/users/${userId}`,
-    loginUserInfo.sendConfig
-  );
-  dispatch({ type: SHOW_USER_DETAIL, response });
+  await axios
+    .get(`${ROOT_URL}/api/users/${userId}`, loginUserInfo.sendConfig)
+    .then((response) => {
+      dispatch({ type: SHOW_USER_DETAIL, response });
+    })
+    .catch((e) => {
+      dispatch({ type: USER_NOT_EXIST });
+    });
 };
 
 // ユーザ情報を更新

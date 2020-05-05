@@ -17,6 +17,7 @@ import UserIcon from "Atoms/user_icon";
 import AllArticles from "Organisms/all_articles";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import DeleteButton from "Atoms/delete_button";
+import NotFoundPage from "Templates/not_found_page";
 
 class UserShow extends Component {
   constructor(props) {
@@ -31,8 +32,10 @@ class UserShow extends Component {
     // 複雑な処理はcomponentに書かずに外(action)に記述
     const { userId } = this.props.match.params;
     if (userId) {
-      this.props.getUserDetail(userId);
-      this.props.getAllArticlesByUserID(userId, 1).then(() => {
+      Promise.all([
+        this.props.getUserDetail(userId),
+        this.props.getAllArticlesByUserID(userId, 1),
+      ]).then(() => {
         this.setState({ loading: false });
       });
     }
@@ -104,6 +107,14 @@ class UserShow extends Component {
           />
         </React.Fragment>
       );
+    } else if (this.props.isEmpty && !this.state.loading) {
+      return (
+        <React.Fragment>
+          <div>
+            <NotFoundPage />
+          </div>
+        </React.Fragment>
+      );
     } else {
       return (
         <React.Fragment>
@@ -128,10 +139,14 @@ const mapStateToProps = (state, ownProps) => {
   // 詳細画面で必要な各種情報を取得
   const user = state.users.users[ownProps.match.params.userId];
 
+  // ユーザの存在
+  const isEmpty = state.users.is_empty;
+
   // 初期状態でどんな値を表示するかをinitialValuesで設定
   return {
     initialValues: user,
     user: user,
+    isEmpty: isEmpty,
     allPagingNum: state.articles.all_paging_num,
   };
 };

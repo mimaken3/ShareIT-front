@@ -3,6 +3,7 @@ import {
   SHOW_ALL_USERS,
   SHOW_USER_DETAIL,
   UPDATE_USER_EVENT,
+  USER_NOT_EXIST,
 } from "Actions/user";
 import _ from "lodash";
 
@@ -35,6 +36,15 @@ export default (users = initialState, action) => {
         all_paging_num: 0,
         users: { ...users.users, [data.user_id]: data },
       });
+
+    case USER_NOT_EXIST:
+      return Object.assign({}, users, {
+        is_empty: true,
+        ref_pg: 0,
+        all_paging_num: 0,
+        users: {},
+      });
+
     default:
       return users;
   }
