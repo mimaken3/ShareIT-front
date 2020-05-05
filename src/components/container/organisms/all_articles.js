@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { reduxForm } from "redux-form";
-import Paging from "Atoms/paging";
 import Article from "Molecules/articles/article";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 
@@ -22,14 +21,6 @@ class AllArticles extends Component {
         <React.Fragment>
           <div>記事一覧</div>
           <div>記事はありません</div>
-          <div>
-            <Paging
-              refName={this.props.refName}
-              userID={this.props.userID}
-              refPg={this.props.refPg}
-              allPagingNum={this.props.allPagingNum}
-            />
-          </div>
         </React.Fragment>
       );
     } else {
@@ -38,15 +29,6 @@ class AllArticles extends Component {
         <React.Fragment>
           <div>記事一覧</div>
           {this.renderArticles(loginUser.userID)}
-
-          <div>
-            <Paging
-              refName={this.props.refName}
-              userID={this.props.userID}
-              refPg={this.props.refPg}
-              allPagingNum={this.props.allPagingNum}
-            />
-          </div>
         </React.Fragment>
       );
     }
@@ -59,13 +41,9 @@ const mapStateToProps = (state) => {
   return {
     isEmpty: state.articles.is_empty,
     articles: state.articles.articles,
-    refPg: state.articles.ref_pg,
-    allPagingNum: state.articles.all_paging_num,
   };
 };
 
-// connect 第一引数はcomponentに渡すpropsを制御する
-// 第二引数はreducerを呼び出して、reduxで管理しているstateを更新する
 export default connect(
   mapStateToProps,
   mapDispatchToProps

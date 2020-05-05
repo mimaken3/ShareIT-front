@@ -5,13 +5,10 @@ import {
   UPDATE_USER_EVENT,
   USER_NOT_EXIST,
   LOGIN_FAILED,
+  EMPTY_USERS,
 } from "Actions/user";
 import _ from "lodash";
 
-// reducers/index.jsに渡すためexport
-// reducerは関数として定義(引数は2つ)
-// 第一引数に初期値はないので{}
-// 受け取ったactionのtypeに応じて状態を変更して、その結果を返す
 let initialState = {
   auth_fail: false,
   is_empty: true,
@@ -63,6 +60,15 @@ export default (users = initialState, action) => {
         ref_pg: 0,
         all_paging_num: 0,
         users: failedUserInfo,
+      });
+
+    case EMPTY_USERS:
+      return Object.assign({}, users, {
+        auth_fail: false,
+        is_empty: true,
+        ref_pg: 0,
+        all_paging_num: 0,
+        users: {},
       });
 
     default:

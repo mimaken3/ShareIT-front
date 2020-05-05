@@ -15,6 +15,7 @@ const Paging = ({
   showAllUsers,
   getAllArticlesByUserID,
   userID,
+  callback,
 }) => {
   return (
     <React.Fragment>
@@ -30,12 +31,15 @@ const Paging = ({
               if (refName === "articles") {
                 showAllArticles(page);
                 scroll({ x: 0, y: 0 });
+                callback();
               } else if (refName === "users") {
                 showAllUsers(page);
                 scroll({ x: 0, y: 0 });
+                callback();
               } else if (refName === "userArticles") {
                 getAllArticlesByUserID(userID, page);
                 scroll({ x: 0, y: 0 });
+                callback();
               }
             }}
           />

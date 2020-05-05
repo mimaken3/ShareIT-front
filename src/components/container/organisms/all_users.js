@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import { reduxForm } from "redux-form";
-import Paging from "Atoms/paging";
 import UserIcon from "Atoms/user_icon";
 
 class AllUsers extends Component {
@@ -24,13 +23,6 @@ class AllUsers extends Component {
         <React.Fragment>
           <div>ユーザ一覧</div>
           <div>ユーザはいません</div>
-          <div>
-            <Paging
-              refName={this.props.refName}
-              refPg={this.props.refPg}
-              allPagingNum={this.props.allPagingNum}
-            />
-          </div>
         </React.Fragment>
       );
     } else {
@@ -38,14 +30,6 @@ class AllUsers extends Component {
         <React.Fragment>
           <div>ユーザ一覧</div>
           {this.renderUsers()}
-
-          <div>
-            <Paging
-              refName={this.props.refName}
-              refPg={this.props.refPg}
-              allPagingNum={this.props.allPagingNum}
-            />
-          </div>
         </React.Fragment>
       );
     }
@@ -58,8 +42,6 @@ const mapStateToProps = (state) => {
   return {
     isEmpty: state.users.is_empty,
     users: state.users.users,
-    refPg: state.users.ref_pg,
-    allPagingNum: state.users.all_paging_num,
   };
 };
 
