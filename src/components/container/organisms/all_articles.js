@@ -22,14 +22,6 @@ class AllArticles extends Component {
         <React.Fragment>
           <div>記事一覧</div>
           <div>記事はありません</div>
-          <div>
-            <Paging
-              refName={this.props.refName}
-              userID={this.props.userID}
-              refPg={this.props.refPg}
-              allPagingNum={this.props.allPagingNum}
-            />
-          </div>
         </React.Fragment>
       );
     } else {
@@ -38,15 +30,6 @@ class AllArticles extends Component {
         <React.Fragment>
           <div>記事一覧</div>
           {this.renderArticles(loginUser.userID)}
-
-          <div>
-            <Paging
-              refName={this.props.refName}
-              userID={this.props.userID}
-              refPg={this.props.refPg}
-              allPagingNum={this.props.allPagingNum}
-            />
-          </div>
         </React.Fragment>
       );
     }

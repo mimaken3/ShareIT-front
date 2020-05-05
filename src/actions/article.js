@@ -10,6 +10,7 @@ export const UPDATE_ARTICLE_EVENT = "UPDATE_ARTICLE_EVENT";
 export const DELETE_ARTICLE_EVENT = "DELETE_ARTICLE_EVENT";
 export const CREATE_ARTICLE_EVENT = "CREATE_ARTICLE_EVENT";
 export const ARTICLE_NOT_EXIST = "ARTICLE_NOT_EXIST";
+export const EMPTY_ARTICELS = "EMPTY_ARTICELS";
 
 const ROOT_URL = env.ROOT_URL;
 
@@ -102,4 +103,8 @@ export const deleteEvent = (articleId) => async (dispatch) => {
     loginUserInfo.sendConfig
   );
   dispatch({ type: DELETE_ARTICLE_EVENT, articleId });
+};
+
+export const emptyArticles = () => (dispatch) => {
+  dispatch({ type: EMPTY_ARTICELS });
 };

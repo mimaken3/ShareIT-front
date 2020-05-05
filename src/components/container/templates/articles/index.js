@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { showAllArticles } from "Actions/article";
+import { showAllArticles, emptyArticles } from "Actions/article";
 import ToAllUsersButton from "Atoms/to_all_users_button";
 import Loading from "Templates/loading";
 import CreateArticleButton from "Atoms/create_article_button";
 import AllArticles from "Organisms/all_articles";
+import Paging from "Atoms/paging";
 
 class ArticlesIndex extends Component {
   constructor(props) {
@@ -12,6 +13,13 @@ class ArticlesIndex extends Component {
     this.state = {
       loading: true,
     };
+  }
+
+  PagingClick() {
+    this.props.emptyArticles();
+    if (this.props.allPagingNum) {
+      this.setState({ loading: false });
+    }
   }
 
   // 外部のAPIに対してイベントを取得する
@@ -23,11 +31,20 @@ class ArticlesIndex extends Component {
   }
 
   render() {
-    if (this.props.articles && this.props.allPagingNum && !this.state.loading) {
+    if (this.props.articles && this.props.allPagingNum && !this.props.loading) {
       return (
         <React.Fragment>
           <AllArticles refName="articles" />
 
+          <div>
+            <Paging
+              refName="articles"
+              userID={this.props.userID}
+              refPg={this.props.refPg}
+              allPagingNum={this.props.allPagingNum}
+              callback={() => this.PagingClick()}
+            />
+          </div>
           <div>
             <CreateArticleButton />
           </div>
@@ -52,9 +69,10 @@ const mapStateToProps = (state) => {
   return {
     allPagingNum: state.articles.all_paging_num,
     articles: state.articles.articles,
+    refPg: state.articles.ref_pg,
   };
 };
 
-const mapDispatchToProps = { showAllArticles };
+const mapDispatchToProps = { showAllArticles, emptyArticles };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArticlesIndex);

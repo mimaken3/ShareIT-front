@@ -6,6 +6,7 @@ import {
   CREATE_ARTICLE_EVENT,
   DELETE_ARTICLE_EVENT,
   ARTICLE_NOT_EXIST,
+  EMPTY_ARTICELS,
 } from "Actions/article";
 import { TOGGLE_LIKE } from "Actions/like";
 import _ from "lodash";
@@ -61,6 +62,14 @@ export default (articles = initialState, action) => {
         is_empty: true,
         ref_pg: 0,
         all_paging_num: 1,
+        articles: {},
+      });
+
+    case EMPTY_ARTICELS:
+      return Object.assign({}, articles, {
+        is_empty: true,
+        ref_pg: 0,
+        all_paging_num: 0,
         articles: {},
       });
     default:
