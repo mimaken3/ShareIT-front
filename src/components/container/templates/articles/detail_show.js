@@ -17,6 +17,7 @@ import getLoginUserInfo from "Modules/getLoginUserInfo";
 import AllComments from "Organisms/all_comments";
 import CommentNew from "Molecules/comments/create";
 import DeleteButton from "Atoms/delete_button";
+import NotFoundPage from "Templates/not_found_page";
 
 class ArticleShow extends Component {
   constructor(props) {
@@ -26,11 +27,12 @@ class ArticleShow extends Component {
   }
 
   componentDidMount() {
-    // 複雑な処理はcomponentに書かずに外(action)に記述
     const { articleId } = this.props.match.params;
     if (articleId) {
-      this.props.getAllComments(articleId).then(() => {
-        this.props.getArticleDetail(articleId);
+      Promise.all([
+        this.props.getAllComments(articleId),
+        this.props.getArticleDetail(articleId),
+      ]).then(() => {
         this.setState({ loading: false });
       });
     }
@@ -109,6 +111,14 @@ class ArticleShow extends Component {
           </div>
         </React.Fragment>
       );
+    } else if (this.props.isEmpty && !this.state.loading) {
+      return (
+        <React.Fragment>
+          <div>
+            <NotFoundPage />
+          </div>
+        </React.Fragment>
+      );
     } else {
       return (
         <React.Fragment>
@@ -127,8 +137,12 @@ class ArticleShow extends Component {
 const mapStateToProps = (state, ownProps) => {
   // 詳細画面で必要な各種情報を取得
   const article = state.articles.articles[ownProps.match.params.articleId];
+
+  // 記事の存在
+  const isEmpty = state.articles.is_empty;
+
   // 初期状態でどんな値を表示するかをinitialValuesで設定
-  return { initialValues: article, article: article };
+  return { initialValues: article, article: article, isEmpty: isEmpty };
 };
 
 const mapDispatchToProps = { getArticleDetail, deleteEvent, getAllComments };

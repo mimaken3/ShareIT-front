@@ -21,7 +21,7 @@ import Auth from "./auth";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import Header from "Organisms/header";
 import Footer from "Organisms/footer";
-import NotFoundPage from "Templates/NotFoundPage";
+import NotFoundPage from "Templates/not_found_page";
 
 import * as serviceWorker from "./serviceWorker";
 

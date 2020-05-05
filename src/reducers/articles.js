@@ -5,6 +5,7 @@ import {
   UPDATE_ARTICLE_EVENT,
   CREATE_ARTICLE_EVENT,
   DELETE_ARTICLE_EVENT,
+  ARTICLE_NOT_EXIST,
 } from "Actions/article";
 import { TOGGLE_LIKE } from "Actions/like";
 import _ from "lodash";
@@ -37,6 +38,7 @@ export default (articles = initialState, action) => {
     case UPDATE_ARTICLE_EVENT:
     case TOGGLE_LIKE:
       const data = action.response.data;
+
       return Object.assign({}, articles, {
         is_empty: false,
         ref_pg: articles.ref_pg,
@@ -52,6 +54,14 @@ export default (articles = initialState, action) => {
         ref_pg: 0,
         all_paging_num: 1,
         articles: { ...articles.articles },
+      });
+
+    case ARTICLE_NOT_EXIST:
+      return Object.assign({}, articles, {
+        is_empty: true,
+        ref_pg: 0,
+        all_paging_num: 1,
+        articles: {},
       });
     default:
       return articles;
