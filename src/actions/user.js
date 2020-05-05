@@ -13,6 +13,7 @@ export const UPDATE_USER_EVENT = "UPDATE_USER_EVENT";
 export const DELETE_USER_EVENT = "DELETE_USER_EVENT";
 export const USER_NOT_EXIST = "USER_NOT_EXIST";
 export const LOGIN_FAILED = "LOGIN_FAILED";
+export const EMPTY_USERS = "EMPTY_USERS";
 
 const ROOT_URL = env.ROOT_URL;
 
@@ -116,4 +117,9 @@ export const deleteUserEvent = (user) => async (dispatch) => {
   );
 
   dispatch({ type: DELETE_USER_EVENT, response });
+};
+
+// storeのusersを空に
+export const emptyUsers = () => (dispatch) => {
+  dispatch({ type: EMPTY_USERS });
 };

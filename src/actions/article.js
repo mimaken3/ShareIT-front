@@ -105,6 +105,7 @@ export const deleteEvent = (articleId) => async (dispatch) => {
   dispatch({ type: DELETE_ARTICLE_EVENT, articleId });
 };
 
+// storeのarticlesを空に
 export const emptyArticles = () => (dispatch) => {
   dispatch({ type: EMPTY_ARTICELS });
 };
