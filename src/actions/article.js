@@ -9,6 +9,7 @@ export const SHOW_ARTICLE_DETAIL = "SHOW_ARTICLE_DETAIL";
 export const UPDATE_ARTICLE_EVENT = "UPDATE_ARTICLE_EVENT";
 export const DELETE_ARTICLE_EVENT = "DELETE_ARTICLE_EVENT";
 export const CREATE_ARTICLE_EVENT = "CREATE_ARTICLE_EVENT";
+export const ARTICLE_NOT_EXIST = "ARTICLE_NOT_EXIST";
 
 const ROOT_URL = env.ROOT_URL;
 
@@ -41,11 +42,17 @@ export const getArticleDetail = (articleId) => async (dispatch) => {
   const loginUserInfo = getLoginUserInfo();
   const loginUserID = loginUserInfo.userID;
 
-  const response = await axios.get(
-    `${ROOT_URL}/api/articles/${articleId}?user_id=${loginUserID}`,
-    loginUserInfo.sendConfig
-  );
-  dispatch({ type: SHOW_ARTICLE_DETAIL, response });
+  await axios
+    .get(
+      `${ROOT_URL}/api/articles/${articleId}?user_id=${loginUserID}`,
+      loginUserInfo.sendConfig
+    )
+    .then((response) => {
+      dispatch({ type: SHOW_ARTICLE_DETAIL, response });
+    })
+    .catch((e) => {
+      dispatch({ type: ARTICLE_NOT_EXIST });
+    });
 };
 
 // 記事を投稿
