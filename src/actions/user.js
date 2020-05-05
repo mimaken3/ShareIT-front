@@ -12,6 +12,7 @@ export const SHOW_USER_DETAIL = "SHOW_USER_DETAIL";
 export const UPDATE_USER_EVENT = "UPDATE_USER_EVENT";
 export const DELETE_USER_EVENT = "DELETE_USER_EVENT";
 export const USER_NOT_EXIST = "USER_NOT_EXIST";
+export const LOGIN_FAILED = "LOGIN_FAILED";
 
 const ROOT_URL = env.ROOT_URL;
 
@@ -47,7 +48,10 @@ export const loginUserEvent = (user) => async (dispatch) => {
     .catch((error) => {
       // ログイン失敗時
       // TODO:
-      console.log(error);
+      const errResponse = Object.assign({}, error);
+      const failedUserInfo = errResponse.response.data.user;
+
+      dispatch({ type: LOGIN_FAILED, failedUserInfo });
     });
 };
 

@@ -48,6 +48,10 @@ class Login extends Component {
 
   render() {
     const { handleSubmit, submitting } = this.props;
+    let loginFail;
+    if (this.props.authFail) {
+      loginFail = <div>ユーザ名、もしくはパスワードが間違っています</div>;
+    }
     return (
       <React.Fragment>
         <div>Login</div>
@@ -72,6 +76,8 @@ class Login extends Component {
               component={this.renderField}
             />
           </div>
+
+          <div>{loginFail}</div>
 
           <div>
             <input
@@ -123,7 +129,12 @@ const validate = (values) => {
 
 const mapDispatchToProps = { loginUserEvent };
 
-const mapStateToProps = "";
+const mapStateToProps = (state) => {
+  const authFail = state.users.auth_fail;
+  const failUserInfo = state.users.users;
+
+  return { authFail: authFail, failUserInfo: failUserInfo };
+};
 
 export default connect(
   mapStateToProps,
