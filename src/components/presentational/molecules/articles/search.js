@@ -6,28 +6,27 @@ import Button from "@material-ui/core/Button";
 import { getAllTopics } from "Actions/topic";
 import { emptyArticles, searchArticles } from "Actions/article";
 import { getAllUsersForSelectBox } from "Actions/user";
+import { reduxForm } from "redux-form";
+import { withRouter } from "react-router";
 
 class SearchArticles extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loading: true,
-    };
-    this.onSubmit = this.onSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   // 記事を送信
-  onSubmit() {
-    this.props.emptyArticles();
-    this.setState({ loading: true });
-
+  handleSubmit() {
     const values = {
       refPg: 1,
       user: this.refs.UserSelectBox.getSendUser(),
       topics: this.refs.TopicSelectBox.state.selectedOption,
     };
+    this.props.emptyArticles();
 
     this.props.searchArticles(values);
+
+    this.props.history.push("/api/articles");
   }
 
   render() {
@@ -54,7 +53,7 @@ class SearchArticles extends Component {
             param="search"
           />
         </div>
-        <Button onClick={this.onSubmit}>検索</Button>
+        <Button onClick={() => this.handleSubmit()}>検索</Button>
       </React.Fragment>
     );
   }
@@ -65,7 +64,7 @@ const mapStateToProps = (state) => {
   const allTopics = state.topics;
 
   // 全ユーザ
-  const allUsers = state.users.users;
+  const allUsers = state.selectUser.users;
 
   return {
     allTopics: allTopics,
@@ -80,4 +79,9 @@ const mapDispatchToProps = {
   searchArticles,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchArticles);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(reduxForm({ form: "searchForm" })(SearchArticles))
+);

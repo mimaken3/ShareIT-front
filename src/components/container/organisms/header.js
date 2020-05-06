@@ -97,7 +97,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => {
   // 全ユーザ
-  const allUsers = state.users.users;
+  const allUsers = state.selectUser.users;
 
   return { allUsers: allUsers };
 };
