@@ -8,7 +8,7 @@ class TopicSelectBox extends Component {
 
     this.state = {
       selectedOption: null,
-      isChosen: false
+      isChosen: false,
     };
   }
 
@@ -40,12 +40,12 @@ class TopicSelectBox extends Component {
   }
 
   // 選択されたtopicを設定
-  handleChange = selectedOption => {
+  handleChange = (selectedOption) => {
     this.setState({ selectedOption, isChosen: true });
   };
 
-  //   全トピックをセット
-  setAllTopics = allTopics => {
+  // 全トピックをセット
+  setAllTopics = (allTopics) => {
     //   // object to array
     const allTopicsArr = [];
     const topicObjArr = Object.values(allTopics);
@@ -53,7 +53,7 @@ class TopicSelectBox extends Component {
     for (let i = 0; i < topicObjArr.length; i++) {
       allTopicsArr.push({
         value: topicObjArr[i].topic_id,
-        label: topicObjArr[i].topic_name
+        label: topicObjArr[i].topic_name,
       });
     }
     return allTopicsArr;
@@ -75,14 +75,24 @@ class TopicSelectBox extends Component {
   };
 
   render() {
-    //   全トピックをセット
+    // 全トピックをセット
     let allTopicsArr = this.setAllTopics(this.props.allTopics);
 
-    // // 初期表示トピックをセット
+    // 初期表示トピックをセット
     let initTopicsArr = this.setInitTopics(allTopicsArr, this.props.initTopics);
-
-    return (
-      <div>
+    let TopicSelectBox;
+    if (this.props.param === "search") {
+      TopicSelectBox = (
+        <Select
+          name="select-test-name"
+          onChange={this.handleChange}
+          options={allTopicsArr}
+          placeholder="トピックを選択して下さい"
+          defaultValue={initTopicsArr}
+        />
+      );
+    } else {
+      TopicSelectBox = (
         <Select
           name="select-test-name"
           onChange={this.handleChange}
@@ -91,8 +101,9 @@ class TopicSelectBox extends Component {
           placeholder="トピックを選択して下さい"
           defaultValue={initTopicsArr}
         />
-      </div>
-    );
+      );
+    }
+    return <div>{TopicSelectBox}</div>;
   }
 }
 

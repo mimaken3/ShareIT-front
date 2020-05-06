@@ -1,5 +1,6 @@
 import {
   CREATE_USER_EVENT,
+  ALL_USERS_FOR_SELECT_BOX,
   SHOW_ALL_USERS,
   SHOW_USER_DETAIL,
   UPDATE_USER_EVENT,
@@ -28,6 +29,15 @@ export default (users = initialState, action) => {
         ref_pg: action.response.data.ref_pg,
         all_paging_num: action.response.data.all_paging_num,
         users: _.mapKeys(action.response.data.users, "user_id"),
+      });
+
+    case ALL_USERS_FOR_SELECT_BOX:
+      return Object.assign({}, users, {
+        auth_fail: false,
+        is_empty: action.response.data.is_empty,
+        ref_pg: action.response.data.ref_pg,
+        all_paging_num: action.response.data.all_paging_num,
+        users: action.response.data.users,
       });
 
     case CREATE_USER_EVENT:

@@ -7,6 +7,7 @@ import env from "env";
 export const LOGIN_USER_EVENT = "LOGIN_USER_EVENT";
 export const LOGOUT_USER_EVENT = "LOGOUT_USER_EVENT";
 export const CREATE_USER_EVENT = "CREATE_USER_EVENT";
+export const ALL_USERS_FOR_SELECT_BOX = "ALL_USERS_FOR_SELECT_BOX";
 export const SHOW_ALL_USERS = "SHOW_ALL_USERS";
 export const SHOW_USER_DETAIL = "SHOW_USER_DETAIL";
 export const UPDATE_USER_EVENT = "UPDATE_USER_EVENT";
@@ -69,6 +70,15 @@ export const showAllUsers = (pageNum) => async (dispatch) => {
     loginUserInfo.sendConfig
   );
   dispatch({ type: SHOW_ALL_USERS, response });
+};
+
+export const getAllUsersForSelectBox = (userID) => async (dispatch) => {
+  const loginUserInfo = getLoginUserInfo();
+  const response = await axios.get(
+    `${ROOT_URL}/api/users/selectBox/${userID}`,
+    loginUserInfo.sendConfig
+  );
+  dispatch({ type: ALL_USERS_FOR_SELECT_BOX, response });
 };
 
 // ユーザ詳細画面

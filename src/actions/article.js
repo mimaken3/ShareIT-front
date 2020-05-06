@@ -4,6 +4,8 @@ import env from "env";
 
 //reducerでもimortして使うので
 export const SHOW_ALL_ARTICLES = "SHOW_ALL_ARTICLES";
+export const SHOW_SEARCHING_FOR_ALL_ARTICLES =
+  "SHOW_SEARCHING_FOR_ALL_ARTICLES";
 export const SHOW_ALL_ARTICLES_BY_USER_ID = "SHOW_ALL_ARTICLES_BY_USER_ID";
 export const SHOW_ARTICLE_DETAIL = "SHOW_ARTICLE_DETAIL";
 export const UPDATE_ARTICLE_EVENT = "UPDATE_ARTICLE_EVENT";
@@ -24,6 +26,37 @@ export const showAllArticles = (pageNum) => async (dispatch) => {
     loginUserInfo.sendConfig
   );
   dispatch({ type: SHOW_ALL_ARTICLES, response });
+};
+
+// 記事検索
+export const searchArticles = (values) => async (dispatch) => {
+  const loginUserInfo = getLoginUserInfo();
+  const refPg = values.refPg;
+  const userID = values.user ? values.user["value"] : 0;
+  const topics = values.topics;
+
+  let topics_query = "";
+  if (topics) {
+    if (topics.length) {
+      // TODO: SelectBoxがMulti
+      for (let i = 0; i < topics.length; i++) {
+        topics_query = topics_query + topics[i]["value"].toString() + "+";
+      }
+      topics_query = topics_query.slice(0, -1);
+    } else {
+      // TODO: 1つ
+      topics_query = topics_query + topics["value"].toString();
+    }
+  } else {
+    topics_query = "0";
+  }
+
+  const response = await axios.get(
+    `${ROOT_URL}/api/articles/search?ref_pg=${refPg}&user_id=${userID}&topic_id=${topics_query}`,
+    loginUserInfo.sendConfig
+  );
+
+  dispatch({ type: SHOW_SEARCHING_FOR_ALL_ARTICLES, response });
 };
 
 // ユーザIDの全記事を取得

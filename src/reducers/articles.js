@@ -1,6 +1,7 @@
 import {
   SHOW_ALL_ARTICLES,
   SHOW_ALL_ARTICLES_BY_USER_ID,
+  SHOW_SEARCHING_FOR_ALL_ARTICLES,
   SHOW_ARTICLE_DETAIL,
   UPDATE_ARTICLE_EVENT,
   CREATE_ARTICLE_EVENT,
@@ -24,6 +25,7 @@ export default (articles = initialState, action) => {
   switch (action.type) {
     case SHOW_ALL_ARTICLES:
     case SHOW_ALL_ARTICLES_BY_USER_ID:
+    case SHOW_SEARCHING_FOR_ALL_ARTICLES:
       localStorage.removeItem("currentPage");
       localStorage.setItem("currentPage", action.response.data.ref_pg);
 

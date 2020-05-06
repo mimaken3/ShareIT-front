@@ -3,9 +3,11 @@ import { withRouter } from "react-router";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
-import { LogoutUserEvent } from "/Users/mimaken/react/share-it-front/src/actions/user.js";
+import { LogoutUserEvent } from "Actions/user";
 import UserIcon from "Atoms/user_icon";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
+import { getAllTopics } from "Actions/topic";
+import { searchArticles } from "Actions/article";
 
 // ヘッダー
 const Header = withRouter((props) => {
@@ -56,9 +58,18 @@ const Header = withRouter((props) => {
   return <React.Fragment>{Display}</React.Fragment>;
 });
 
-const mapDispatchToProps = { LogoutUserEvent };
+const mapDispatchToProps = {
+  LogoutUserEvent,
+  getAllTopics,
+  searchArticles,
+};
 
-const mapStateToProps = "";
+const mapStateToProps = (state) => {
+  // 全トピック
+  const allTopics = state.topics;
+
+  return { allTopics: allTopics };
+};
 
 // stateとactionをcomponentに関連付ける実装
 // このstatusは状態のトップレベルを表す

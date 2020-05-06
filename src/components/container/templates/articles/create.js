@@ -96,7 +96,7 @@ class articleNew extends Component {
             </div>
 
             <div>
-              興味のあるトピック
+              トピック
               <TopicSelectBox
                 allTopics={allTopics}
                 initTopics={initTopics}
