@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { withRouter } from "react-router";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
@@ -6,28 +6,58 @@ import { reduxForm } from "redux-form";
 import { LogoutUserEvent } from "Actions/user";
 import UserIcon from "Atoms/user_icon";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
+import { getAllUsersForSelectBox } from "Actions/user";
 import { getAllTopics } from "Actions/topic";
 import { searchArticles } from "Actions/article";
+import SearchArticles from "Molecules/articles/search";
 
 // ヘッダー
 const Header = withRouter((props) => {
+  useEffect(() => {
+    const loginUser = getLoginUserInfo();
+    if (loginUser !== null) {
+      // セレクトボックス用の全ユーザを取得
+      props.getAllUsersForSelectBox(loginUser.userID);
+
+      // 全トピックの取得
+      props.getAllTopics();
+    }
+  });
+
   const loginUser = getLoginUserInfo();
   var Display;
   if (loginUser !== null) {
     // ログイン状態
     const loginUserIconURL = localStorage.getItem("login_user_icon_URL");
 
-    Display = (
-      <div>
-        <Button onClick={toAllArticlesPage}>ShareIT</Button>
-        <Button onClick={() => toUserShowPage(loginUser.userID)}>
-          <UserIcon iconData={loginUserIconURL} />
-          {loginUser.userName}
-        </Button>
-
-        <Button onClick={toLogOutage}>Logout</Button>
-      </div>
-    );
+    if (Object.values(props.allUsers).length > 1) {
+      // セレクトボックスの中身が読み込まれたら表示
+      Display = (
+        <div>
+          <Button onClick={toAllArticlesPage}>ShareIT</Button>
+          <Button onClick={() => toUserShowPage(loginUser.userID)}>
+            <UserIcon iconData={loginUserIconURL} />
+            {loginUser.userName}
+          </Button>
+          <div>
+            <SearchArticles />
+          </div>
+          <Button onClick={toLogOutage}>Logout</Button>
+        </div>
+      );
+    } else {
+      // セレクトボックスの中身が読み込まれるまで表示
+      Display = (
+        <div>
+          <Button onClick={toAllArticlesPage}>ShareIT</Button>
+          <Button onClick={() => toUserShowPage(loginUser.userID)}>
+            <UserIcon iconData={loginUserIconURL} />
+            {loginUser.userName}
+          </Button>
+          <Button onClick={toLogOutage}>Logout</Button>
+        </div>
+      );
+    }
   } else {
     // 未ログイン状態
     Display = (
@@ -62,13 +92,17 @@ const mapDispatchToProps = {
   LogoutUserEvent,
   getAllTopics,
   searchArticles,
+  getAllUsersForSelectBox,
 };
 
 const mapStateToProps = (state) => {
   // 全トピック
   const allTopics = state.topics;
 
-  return { allTopics: allTopics };
+  // 全ユーザ
+  const allUsers = state.users.users;
+
+  return { allTopics: allTopics, allUsers: allUsers };
 };
 
 // stateとactionをcomponentに関連付ける実装
