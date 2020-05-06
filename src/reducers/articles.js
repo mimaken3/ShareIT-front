@@ -16,6 +16,9 @@ import _ from "lodash";
 // 第一引数の初期値はないので{}
 // 受け取ったactionのtypeに応じて状態を変更して、その結果を返す
 let initialState = {
+  is_searched: false,
+  search_user: 0,
+  search_topics: "",
   is_empty: true,
   ref_pg: 0,
   all_paging_num: 0,
@@ -30,6 +33,9 @@ export default (articles = initialState, action) => {
       localStorage.setItem("currentPage", action.response.data.ref_pg);
 
       return Object.assign({}, articles, {
+        is_searched: action.response.data.is_searched,
+        search_user: action.response.data.search_user,
+        search_topics: action.response.data.search_topics,
         is_empty: action.response.data.is_empty,
         ref_pg: action.response.data.ref_pg,
         all_paging_num: action.response.data.all_paging_num,

@@ -29,26 +29,31 @@ export const showAllArticles = (pageNum) => async (dispatch) => {
 };
 
 // 記事検索
-export const searchArticles = (values) => async (dispatch) => {
+export const searchArticles = (values, param) => async (dispatch) => {
   const loginUserInfo = getLoginUserInfo();
   const refPg = values.refPg;
   const userID = values.user ? values.user["value"] : 0;
   const topics = values.topics;
 
   let topics_query = "";
-  if (topics) {
-    if (topics.length) {
-      // TODO: SelectBoxがMulti
-      for (let i = 0; i < topics.length; i++) {
-        topics_query = topics_query + topics[i]["value"].toString() + "+";
-      }
-      topics_query = topics_query.slice(0, -1);
-    } else {
-      // TODO: 1つ
-      topics_query = topics_query + topics["value"].toString();
-    }
+
+  if (param === "paging") {
+    // ページングからのアクセス
+    topics_query = topics_query + topics;
   } else {
-    topics_query = "0";
+    // セレクトボックスからのアクセス
+    if (topics) {
+      if (topics.length) {
+        for (let i = 0; i < topics.length; i++) {
+          topics_query = topics_query + topics[i]["value"].toString() + "+";
+        }
+        topics_query = topics_query.slice(0, -1);
+      } else {
+        topics_query = topics_query + topics["value"].toString();
+      }
+    } else {
+      topics_query = "0";
+    }
   }
 
   const response = await axios.get(
