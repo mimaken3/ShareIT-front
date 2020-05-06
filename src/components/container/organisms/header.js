@@ -96,13 +96,10 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state) => {
-  // 全トピック
-  const allTopics = state.topics;
-
   // 全ユーザ
   const allUsers = state.users.users;
 
-  return { allTopics: allTopics, allUsers: allUsers };
+  return { allUsers: allUsers };
 };
 
 // stateとactionをcomponentに関連付ける実装
