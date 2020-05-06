@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import Loading from "Templates/loading";
 import { getAllTopics } from "Actions/topic";
-import { postArticleEvent } from "Actions/article";
+import { postArticleEvent, emptyArticles } from "Actions/article";
 import TopicSelectBox from "Atoms/topic_select_box";
 import { Redirect } from "react-router-dom";
 import ToAllArticlesButton from "Atoms/to_all_articles_button";
@@ -47,11 +47,15 @@ class articleNew extends Component {
     // 送信するトピックをセット
     values.article_topics = this.refs.TopicSelectBox.getSendTopics("その他");
 
-    // 作成
-    await this.props.postArticleEvent(values);
-
-    // ボタンを押した後に遷移するURL
-    this.props.history.push("/api/articles");
+    Promise.all([
+      // storeの記事一覧を削除
+      await this.props.emptyArticles(),
+      // 記事作成
+      await this.props.postArticleEvent(values),
+    ]).then(() => {
+      // ボタンを押した後に遷移するURL
+      this.props.history.push("/api/articles");
+    });
   }
 
   render() {
@@ -96,7 +100,7 @@ class articleNew extends Component {
             </div>
 
             <div>
-              興味のあるトピック
+              トピック
               <TopicSelectBox
                 allTopics={allTopics}
                 initTopics={initTopics}
@@ -136,7 +140,7 @@ const mapStateToProps = (state, ownProps) => {
   return { userID: userID, allTopics: allTopics };
 };
 
-const mapDispatchToProps = { getAllTopics, postArticleEvent };
+const mapDispatchToProps = { getAllTopics, postArticleEvent, emptyArticles };
 
 export default connect(
   mapStateToProps,

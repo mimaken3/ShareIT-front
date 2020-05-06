@@ -4,6 +4,7 @@ import articles from "./articles";
 import topics from "./topics";
 import comments from "./comments";
 import auth from "./auth";
+import selectUser from "./select_user";
 import { reducer as form } from "redux-form";
 
 const appReducer = combineReducers({
@@ -13,6 +14,7 @@ const appReducer = combineReducers({
   comments,
   auth,
   form,
+  selectUser,
 });
 
 const rootReducer = (state, action) => {

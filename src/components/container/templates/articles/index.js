@@ -15,13 +15,6 @@ class ArticlesIndex extends Component {
     };
   }
 
-  PagingClick() {
-    this.props.emptyArticles();
-    if (this.props.allPagingNum) {
-      this.setState({ loading: false });
-    }
-  }
-
   // 外部のAPIに対してイベントを取得する
   componentDidMount() {
     // 複雑な処理はcomponentに書かずに外(action)に書く
@@ -30,12 +23,18 @@ class ArticlesIndex extends Component {
     });
   }
 
+  PagingClick() {
+    this.props.emptyArticles();
+    if (this.props.allPagingNum) {
+      this.setState({ loading: false });
+    }
+  }
+
   render() {
     if (this.props.articles && this.props.allPagingNum && !this.props.loading) {
       return (
         <React.Fragment>
           <AllArticles refName="articles" />
-
           <div>
             <Paging
               refName="articles"
@@ -73,6 +72,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = { showAllArticles, emptyArticles };
+const mapDispatchToProps = {
+  showAllArticles,
+  emptyArticles,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArticlesIndex);
