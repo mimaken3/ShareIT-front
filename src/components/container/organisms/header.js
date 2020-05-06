@@ -8,7 +8,7 @@ import UserIcon from "Atoms/user_icon";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import { getAllUsersForSelectBox } from "Actions/user";
 import { getAllTopics } from "Actions/topic";
-import { searchArticles } from "Actions/article";
+import { searchArticles, emptyArticles } from "Actions/article";
 import SearchArticles from "Molecules/articles/search";
 
 // ヘッダー
@@ -50,6 +50,7 @@ const Header = withRouter((props) => {
       Display = (
         <div>
           <Button onClick={toAllArticlesPage}>ShareIT</Button>
+          {/* <Link to={`/api/articles`}>ShareIT</Link> */}
           <Button onClick={() => toUserShowPage(loginUser.userID)}>
             <UserIcon iconData={loginUserIconURL} />
             {loginUser.userName}
@@ -69,7 +70,12 @@ const Header = withRouter((props) => {
   }
 
   function toAllArticlesPage() {
-    props.history.push("/api/articles");
+    if (props.history.location.pathname === "/api/articles") {
+      window.location.reload(false);
+    } else {
+      props.emptyArticles();
+      props.history.push("/api/articles");
+    }
   }
 
   function toLoginPage() {
@@ -93,6 +99,7 @@ const mapDispatchToProps = {
   getAllTopics,
   searchArticles,
   getAllUsersForSelectBox,
+  emptyArticles,
 };
 
 const mapStateToProps = (state) => {
