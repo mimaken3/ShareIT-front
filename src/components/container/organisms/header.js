@@ -50,7 +50,6 @@ const Header = withRouter((props) => {
       Display = (
         <div>
           <Button onClick={toAllArticlesPage}>ShareIT</Button>
-          {/* <Link to={`/api/articles`}>ShareIT</Link> */}
           <Button onClick={() => toUserShowPage(loginUser.userID)}>
             <UserIcon iconData={loginUserIconURL} />
             {loginUser.userName}
