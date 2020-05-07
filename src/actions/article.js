@@ -31,6 +31,7 @@ export const showAllArticles = (pageNum) => async (dispatch) => {
 // 記事検索
 export const searchArticles = (values, param) => async (dispatch) => {
   const loginUserInfo = getLoginUserInfo();
+  const loginUserID = loginUserInfo.userID;
   const refPg = values.refPg;
   const userID = values.user ? values.user["value"] : 0;
   const topics = values.topics;
@@ -57,7 +58,7 @@ export const searchArticles = (values, param) => async (dispatch) => {
   }
 
   const response = await axios.get(
-    `${ROOT_URL}/api/articles/search?ref_pg=${refPg}&user_id=${userID}&topic_id=${topics_query}`,
+    `${ROOT_URL}/api/articles/search?ref_pg=${refPg}&login_user_id=${loginUserID}&user_id=${userID}&topic_id=${topics_query}`,
     loginUserInfo.sendConfig
   );
 
@@ -104,6 +105,7 @@ export const postArticleEvent = (values) => async (dispatch) => {
     article_content: values.article_content,
     created_user_id: userID,
     article_topics: values.article_topics,
+    is_private: values.is_private,
   };
 
   await axios

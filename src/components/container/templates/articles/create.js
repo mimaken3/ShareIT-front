@@ -8,11 +8,13 @@ import TopicSelectBox from "Atoms/topic_select_box";
 import { Redirect } from "react-router-dom";
 import ToAllArticlesButton from "Atoms/to_all_articles_button";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
+import Privacy from "Atoms/articles/privacy";
 
 class articleNew extends Component {
   constructor(props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
+    this.childRef = React.createRef();
   }
 
   componentDidMount() {
@@ -46,6 +48,9 @@ class articleNew extends Component {
 
     // 送信するトピックをセット
     values.article_topics = this.refs.TopicSelectBox.getSendTopics("その他");
+
+    // プライバシーを設定
+    values.is_private = this.refs.Privacy.privacy;
 
     Promise.all([
       // storeの記事一覧を削除
@@ -83,7 +88,7 @@ class articleNew extends Component {
             <div>
               タイトル:
               <Field
-                label="article_title"
+                label="タイトル"
                 name="article_title"
                 type="text"
                 component={this.renderField}
@@ -92,7 +97,7 @@ class articleNew extends Component {
             <div>
               内容:
               <Field
-                label="article_content"
+                label="内容"
                 name="article_content"
                 type="text"
                 component={this.renderField}
@@ -106,6 +111,10 @@ class articleNew extends Component {
                 initTopics={initTopics}
                 ref="TopicSelectBox"
               />
+            </div>
+
+            <div>
+              <Privacy initPrivacy={0} ref="Privacy" />
             </div>
 
             <div>

@@ -13,6 +13,7 @@ import UnauthorizedPage from "Atoms/unauthorized_page";
 import ArticleID from "Atoms/articles/id";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import DeleteButton from "Atoms/delete_button";
+import Privacy from "Atoms/articles/privacy";
 
 class ArticleUpdate extends Component {
   constructor(props) {
@@ -53,6 +54,9 @@ class ArticleUpdate extends Component {
     values.article_topics = this.refs.TopicSelectBox.getSendTopics(
       values.article_topics
     );
+
+    // プライバシーを設定
+    values.is_private = this.refs.Privacy.privacy;
 
     await this.props.putEvent(values);
     // 更新ボタンを押したとに表示するPATH
@@ -112,6 +116,13 @@ class ArticleUpdate extends Component {
                 allTopics={allTopics}
                 initTopics={initTopics}
                 ref="TopicSelectBox"
+              />
+            </div>
+
+            <div>
+              <Privacy
+                initPrivacy={this.props.article.is_private}
+                ref="Privacy"
               />
             </div>
 
