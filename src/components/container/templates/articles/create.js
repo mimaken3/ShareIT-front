@@ -59,7 +59,7 @@ class articleNew extends Component {
       await this.props.postArticleEvent(values),
     ]).then(() => {
       // ボタンを押した後に遷移するURL
-      this.props.history.push("/api/articles");
+      this.props.history.push("/api/users/" + this.props.userID);
     });
   }
 
