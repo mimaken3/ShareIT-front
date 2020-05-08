@@ -27,10 +27,17 @@ class ArticlesIndex extends Component {
         this.setState({ loading: false });
       });
     } else {
-      // 記事一覧ページ
-      this.props.showAllArticles(1).then(() => {
-        this.setState({ loading: false });
-      });
+      // 記事一覧ページに直アクセスのみ、１ページ目の全記事取得を行う
+      // 記事一覧以外のページから検索したときは、１ページ目の全記事取得は行なわない
+      if (
+        this.props.history !== undefined &&
+        this.props.history.action === "POP"
+      ) {
+        // 記事一覧ページ
+        this.props.showAllArticles(1).then(() => {
+          this.setState({ loading: false });
+        });
+      }
     }
   }
 
