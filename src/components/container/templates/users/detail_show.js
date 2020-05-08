@@ -18,6 +18,7 @@ import getLoginUserInfo from "Modules/getLoginUserInfo";
 import DeleteButton from "Atoms/delete_button";
 import NotFoundPage from "Templates/not_found_page";
 import ArticleIndex from "Templates/articles/index";
+import AllArticlesWithPaging from "Organisms/all_articles_with_paging";
 
 class UserShow extends Component {
   constructor(props) {
@@ -97,10 +98,13 @@ class UserShow extends Component {
             <ToAllUsersButton />
           </div>
 
-          <ArticleIndex
-            param="userDetailShow"
-            userID={this.props.user.user_id}
-          />
+          <div>
+            <AllArticlesWithPaging
+              param="userDetailShow"
+              userID={this.props.user.user_id}
+              historyAction={this.props.history.action}
+            />
+          </div>
         </React.Fragment>
       );
     } else if (this.props.isEmpty && !this.state.loading) {
