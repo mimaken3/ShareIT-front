@@ -14,10 +14,11 @@ import Loading from "Templates/loading";
 import EditButton from "Atoms/edit_button";
 import CreateArticleButton from "Atoms/create_article_button";
 import UserIcon from "Atoms/user_icon";
-import AllArticles from "Organisms/all_articles";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import DeleteButton from "Atoms/delete_button";
 import NotFoundPage from "Templates/not_found_page";
+import ArticleIndex from "Templates/articles/index";
+import AllArticlesWithPaging from "Organisms/all_articles_with_paging";
 
 class UserShow extends Component {
   constructor(props) {
@@ -32,10 +33,7 @@ class UserShow extends Component {
     // 複雑な処理はcomponentに書かずに外(action)に記述
     const { userId } = this.props.match.params;
     if (userId) {
-      Promise.all([
-        this.props.getUserDetail(userId),
-        this.props.getAllArticlesByUserID(userId, 1),
-      ]).then(() => {
+      Promise.all([this.props.getUserDetail(userId)]).then(() => {
         this.setState({ loading: false });
       });
     }
@@ -47,12 +45,11 @@ class UserShow extends Component {
     const { userId } = this.props.match.params;
     if (userId && this.props.user) {
       this.props.getUserDetail(userId);
-      this.props.getAllArticlesByUserID(userId, 1);
     }
   }
 
   render() {
-    if (this.props.user && this.props.allPagingNum && !this.state.loading) {
+    if (this.props.user && !this.state.loading) {
       const loginUser = getLoginUserInfo();
       const loginUserID = loginUser.userID;
       var AuthorizedEditButton;
@@ -101,10 +98,13 @@ class UserShow extends Component {
             <ToAllUsersButton />
           </div>
 
-          <AllArticles
-            refName="userArticles"
-            userID={this.props.user.user_id}
-          />
+          <div>
+            <AllArticlesWithPaging
+              param="userDetailShow"
+              userID={this.props.user.user_id}
+              historyAction={this.props.history.action}
+            />
+          </div>
         </React.Fragment>
       );
     } else if (this.props.isEmpty && !this.state.loading) {

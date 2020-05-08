@@ -58,7 +58,7 @@ module.exports = {
 
   // webpack-dev-server用設定
   devServer: {
-    historyApiFallback: true,
+    historyApiFallback: true, // HTML5 の History API を使用する
     contentBase: "dest", // サーバーの起点とするディレクトリ
     compress: false, // gzip圧縮するか
     port: 8088,

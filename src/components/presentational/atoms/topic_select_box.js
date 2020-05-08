@@ -9,6 +9,7 @@ class TopicSelectBox extends Component {
     this.state = {
       selectedOption: null,
       isChosen: false,
+      error: null,
     };
   }
 
@@ -41,7 +42,12 @@ class TopicSelectBox extends Component {
 
   // 選択されたtopicを設定
   handleChange = (selectedOption) => {
-    this.setState({ selectedOption, isChosen: true });
+    if (selectedOption !== null && Object.values(selectedOption).length > 6) {
+      this.setState({ error: "登録できるトピックは6個までです" });
+    } else {
+      this.setState({ selectedOption, isChosen: true });
+      this.setState({ error: null });
+    }
   };
 
   // 全トピックをセット
@@ -82,6 +88,7 @@ class TopicSelectBox extends Component {
     let initTopicsArr = this.setInitTopics(allTopicsArr, this.props.initTopics);
     let TopicSelectBox;
     if (this.props.param === "search") {
+      // 検索用セレクト(一つのみ)
       TopicSelectBox = (
         <Select
           name="select-test-name"
@@ -92,6 +99,7 @@ class TopicSelectBox extends Component {
         />
       );
     } else {
+      // 複数可
       TopicSelectBox = (
         <Select
           name="select-test-name"
@@ -100,10 +108,16 @@ class TopicSelectBox extends Component {
           isMulti
           placeholder="トピックを選択して下さい"
           defaultValue={initTopicsArr}
+          value={this.state.selectedOption}
         />
       );
     }
-    return <div>{TopicSelectBox}</div>;
+    return (
+      <div>
+        <div>{TopicSelectBox}</div>
+        <div>{this.state.error}</div>
+      </div>
+    );
   }
 }
 
