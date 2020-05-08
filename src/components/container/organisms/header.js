@@ -82,6 +82,7 @@ const Header = withRouter((props) => {
   }
 
   function toUserShowPage(loginUserID) {
+    props.emptyArticles();
     props.history.push("/api/users/" + loginUserID);
   }
 

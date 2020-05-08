@@ -17,7 +17,7 @@ import UserIcon from "Atoms/user_icon";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import DeleteButton from "Atoms/delete_button";
 import NotFoundPage from "Templates/not_found_page";
-import AllArticlesWithPaging from "Templates/articles/index";
+import ArticleIndex from "Templates/articles/index";
 
 class UserShow extends Component {
   constructor(props) {
@@ -97,7 +97,7 @@ class UserShow extends Component {
             <ToAllUsersButton />
           </div>
 
-          <AllArticlesWithPaging
+          <ArticleIndex
             param="userDetailShow"
             userID={this.props.user.user_id}
           />
