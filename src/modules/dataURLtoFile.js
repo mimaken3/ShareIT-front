@@ -1,6 +1,6 @@
 /**
  * base64のdataURLをFileオブジェクトに変換
- * @param {String} base64-dataURL
+ * @param {string} base64-dataURL
  */
 export default function dataURLtoFile(dataURL) {
   var arr = dataURL.split(","),
