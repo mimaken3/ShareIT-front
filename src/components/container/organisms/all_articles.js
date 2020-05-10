@@ -19,17 +19,13 @@ class AllArticles extends Component {
     if (this.props.isEmpty) {
       return (
         <React.Fragment>
-          <div>記事一覧</div>
           <div>記事はありません</div>
         </React.Fragment>
       );
     } else {
       let loginUser = getLoginUserInfo();
       return (
-        <React.Fragment>
-          <div>記事一覧</div>
-          {this.renderArticles(loginUser.userID)}
-        </React.Fragment>
+        <React.Fragment>{this.renderArticles(loginUser.userID)}</React.Fragment>
       );
     }
   }

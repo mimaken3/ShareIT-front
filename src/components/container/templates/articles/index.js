@@ -10,6 +10,7 @@ import { getAllUsersForSelectBox } from "Actions/user";
 import { getAllTopics } from "Actions/topic";
 import { searchArticles } from "Actions/article";
 import Loading from "Templates/loading";
+import AllArticleTitle from "Atoms/articles/all_articles";
 
 // 記事一覧ページ
 class ArticlesIndex extends Component {
@@ -30,6 +31,9 @@ class ArticlesIndex extends Component {
     if (Object.values(this.props.allUsers).length > 1) {
       return (
         <React.Fragment>
+          <div>
+            <AllArticleTitle />
+          </div>
           <div>
             <SearchArticles />
           </div>
