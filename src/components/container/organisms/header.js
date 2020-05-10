@@ -17,11 +17,11 @@ const Header = withRouter((props) => {
   useEffect(() => {
     const loginUser = getLoginUserInfo();
     if (loginUser !== null) {
-      // セレクトボックス用の全ユーザを取得
-      props.getAllUsersForSelectBox(loginUser.userID);
-
       // 全トピックの取得
-      props.getAllTopics();
+      props.getAllTopics().then(() => {
+        // セレクトボックス用の全ユーザを取得
+        props.getAllUsersForSelectBox(loginUser.userID);
+      });
     }
   });
 
@@ -73,6 +73,7 @@ const Header = withRouter((props) => {
     );
   }
 
+  // 記事一覧画面へ
   function toAllArticlesPage() {
     if (props.history.location.pathname === "/api/articles") {
       window.location.reload(false);
@@ -82,18 +83,15 @@ const Header = withRouter((props) => {
     }
   }
 
+  // ログインページへ
   function toLoginPage() {
     props.history.push("/login");
   }
 
+  // ユーザ詳細画面へ
   function toUserShowPage(loginUserID) {
     props.emptyArticles();
     props.history.push("/api/users/" + loginUserID);
-  }
-
-  function toLogOutage() {
-    props.LogoutUserEvent();
-    props.history.push("/login");
   }
 
   return <React.Fragment>{Display}</React.Fragment>;
