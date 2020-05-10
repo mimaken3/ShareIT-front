@@ -34,6 +34,14 @@ class SignUp extends Component {
       emailCheckText: "",
       result_user_name_num: 1,
       result_email_num: 1,
+      imageSrc: null,
+      crop: { x: 0, y: 0 },
+      zoom: 1,
+      aspect: 1 / 1,
+      croppedAreaPixels: null,
+      croppedImage: null,
+      isCropping: false,
+      croppedFile: null,
     };
   }
 
@@ -164,29 +172,25 @@ class SignUp extends Component {
 
       // 初期表示トピック
       const initTopics = "";
+
       return (
         <React.Fragment>
           <form onSubmit={handleSubmit(this.onSubmit)}>
             <div>ユーザ登録</div>
-
             <EditUserIcon
               defaultIconURL=""
               icon={this.state.defaultIconURL}
               ref="EditUserIcon"
             />
-
-            <div>
-              ユーザ名:
-              <Field
-                label="2文字以上20文字以内"
-                name="user_name"
-                disabled={submitting}
-                type="text"
-                component={this.renderField}
-                onBlur={(e) => this.onBlurUserName(e)}
-              />
-            </div>
-
+            ユーザ名:
+            <Field
+              label="2文字以上20文字以内"
+              name="user_name"
+              disabled={submitting}
+              type="text"
+              component={this.renderField}
+              onBlur={(e) => this.onBlurUserName(e)}
+            />
             <div>
               メールアドレス:
               <Field
@@ -197,7 +201,6 @@ class SignUp extends Component {
                 onBlur={(e) => this.onBlurEmail(e)}
               />
             </div>
-
             <div>
               興味のあるトピック
               <TopicSelectBox
@@ -206,7 +209,6 @@ class SignUp extends Component {
                 ref="TopicSelectBox"
               />
             </div>
-
             <div>
               プロフィール
               <div>
@@ -219,7 +221,6 @@ class SignUp extends Component {
                 />
               </div>
             </div>
-
             <div>
               パスワード
               <Field
@@ -229,7 +230,6 @@ class SignUp extends Component {
                 component={this.renderField}
               />
             </div>
-
             <div>
               確認用パスワード
               <Field
@@ -239,7 +239,6 @@ class SignUp extends Component {
                 component={this.renderField}
               />
             </div>
-
             <div>
               <input
                 type="submit"

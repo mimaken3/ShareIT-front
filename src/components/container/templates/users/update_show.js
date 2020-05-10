@@ -5,7 +5,7 @@ import { reduxForm } from "redux-form";
 import { getAllTopics } from "Actions/topic";
 import { getUserDetail, putUserEvent } from "Actions/user";
 import { Link } from "react-router-dom";
-import ToAllUsersButton from "Atoms/to_all_users_button";
+import ToAllUsersButton from "Atoms/buttons/to_all_users_button";
 import UserID from "Atoms/users/id";
 import Loading from "Templates/loading";
 import TopicSelectBox from "Atoms/topic_select_box";
@@ -13,7 +13,7 @@ import UnauthorizedPage from "Atoms/unauthorized_page";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import EditUserIcon from "Molecules/edit_user_icon";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
-import DeleteButton from "Atoms/delete_button";
+import DeleteButton from "Atoms/buttons/delete_button";
 
 class UserUpdateShow extends Component {
   constructor(props) {

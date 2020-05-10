@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import UserIcon from "Atoms/user_icon";
 import Button from "@material-ui/core/Button";
 import CommentEdit from "./edit";
-import DeleteButton from "Atoms/delete_button";
+import DeleteButton from "Atoms/buttons/delete_button";
 
 class Comment extends Component {
   constructor(props) {

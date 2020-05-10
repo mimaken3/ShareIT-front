@@ -8,15 +8,15 @@ import ArticleContent from "Atoms/articles/content";
 import CreatedDate from "Atoms/created_date.js";
 import Topic from "Atoms/topics/topic";
 import ArticleID from "Atoms/articles/id";
-import ToAllArticlesButton from "Atoms/to_all_articles_button";
+import ToAllArticlesButton from "Atoms/buttons/to_all_articles_button";
 import Loading from "Templates/loading";
-import EditButton from "Atoms/edit_button";
-import CreateArticleButton from "Atoms/create_article_button";
+import EditButton from "Atoms/buttons/edit_button";
+import CreateArticleButton from "Atoms/buttons/create_article_button";
 import Like from "Molecules/likes/like";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import AllComments from "Organisms/all_comments";
 import CommentNew from "Molecules/comments/create";
-import DeleteButton from "Atoms/delete_button";
+import DeleteButton from "Atoms/buttons/delete_button";
 import NotFoundPage from "Templates/not_found_page";
 
 class ArticleShow extends Component {

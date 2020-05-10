@@ -10,6 +10,7 @@ import { getAllUsersForSelectBox } from "Actions/user";
 import { getAllTopics } from "Actions/topic";
 import { searchArticles, emptyArticles } from "Actions/article";
 import SearchArticles from "Molecules/articles/search";
+import Logout from "Atoms/buttons/logout";
 
 // ヘッダー
 const Header = withRouter((props) => {
@@ -42,7 +43,9 @@ const Header = withRouter((props) => {
           <div>
             <SearchArticles />
           </div>
-          <Button onClick={toLogOutage}>Logout</Button>
+          <div>
+            <Logout />
+          </div>
         </div>
       );
     } else {
@@ -54,7 +57,9 @@ const Header = withRouter((props) => {
             <UserIcon iconData={loginUserIconURL} />
             {loginUser.userName}
           </Button>
-          <Button onClick={toLogOutage}>Logout</Button>
+          <div>
+            <Logout />
+          </div>
         </div>
       );
     }

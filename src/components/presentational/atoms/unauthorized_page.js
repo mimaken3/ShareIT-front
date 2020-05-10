@@ -1,6 +1,6 @@
 import React from "react";
-import ToAllArticlesButton from "./to_all_articles_button";
-import ToAllUsersButton from "./to_all_users_button";
+import ToAllArticlesButton from "Atoms/buttons/to_all_articles_button";
+import ToAllUsersButton from "Atoms/buttons/to_all_users_button";
 
 // 許可されていないページ
 const UnauthorizedPage = (props) => {

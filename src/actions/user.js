@@ -101,6 +101,10 @@ export const putUserEvent = (user, iconImage) => async (dispatch) => {
     let preSignedURL = user.icon_name.split("/")[4];
     const deleteFileName = preSignedURL.split("?")[0];
 
+    // アイコンURLを拡張子に変更
+    const fileExtension = iconImage.name.split(".")[1];
+    user.icon_name = fileExtension;
+
     if (deleteFileName !== "default.png") {
       // デフォ画像でないなら削除
       deleteIcon(deleteFileName).then(() => {
@@ -109,6 +113,7 @@ export const putUserEvent = (user, iconImage) => async (dispatch) => {
       });
     }
   }
+
   const response = await axios.put(
     `${ROOT_URL}/api/users/${user.user_id}`,
     user,

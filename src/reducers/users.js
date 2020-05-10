@@ -32,15 +32,29 @@ export default (users = initialState, action) => {
 
     case CREATE_USER_EVENT:
     case SHOW_USER_DETAIL:
-    case UPDATE_USER_EVENT:
       const data = action.response.data;
-      // [data.user_id]をkeyとしたdataというオブジェクトを持って、上書きした情報をまるっとわたす
       return Object.assign({}, users, {
         auth_fail: false,
         is_empty: false,
         ref_pg: 0,
         all_paging_num: 0,
         users: { ...users.users, [data.user_id]: data },
+      });
+
+    case UPDATE_USER_EVENT:
+      const updatedUser = action.response.data;
+
+      // ヘッダーのユーザアイコンを更新
+      localStorage.removeItem("login_user_icon_URL");
+      localStorage.setItem("login_user_icon_URL", updatedUser.icon_name);
+
+      return Object.assign({}, users, {
+        auth_fail: false,
+        is_empty: false,
+        ref_pg: 0,
+        all_paging_num: 0,
+        // [data.user_id]をkeyとしたdataというオブジェクトを持って、上書きした情報をまるっとわたす
+        users: { ...users.users, [updatedUser.user_id]: updatedUser },
       });
 
     case USER_NOT_EXIST:

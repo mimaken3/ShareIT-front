@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { showAllUsers, emptyUsers } from "Actions/user";
-import ToAllArticlesButton from "Atoms/to_all_articles_button";
+import ToAllArticlesButton from "Atoms/buttons/to_all_articles_button";
 import Loading from "Templates/loading";
-import CreateArticleButton from "Atoms/create_article_button";
+import CreateArticleButton from "Atoms/buttons/create_article_button";
 import AllUsers from "Organisms/all_users";
 import Paging from "Atoms/paging";
 

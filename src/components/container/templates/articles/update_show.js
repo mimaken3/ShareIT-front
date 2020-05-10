@@ -7,12 +7,12 @@ import { getAllTopics } from "Actions/topic";
 import { Link } from "react-router-dom";
 import TopicSelectBox from "Atoms/topic_select_box";
 import CreatedDate from "Atoms/created_date.js";
-import ToAllArticlesButton from "Atoms/to_all_articles_button";
+import ToAllArticlesButton from "Atoms/buttons/to_all_articles_button";
 import Loading from "Templates/loading";
 import UnauthorizedPage from "Atoms/unauthorized_page";
 import ArticleID from "Atoms/articles/id";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
-import DeleteButton from "Atoms/delete_button";
+import DeleteButton from "Atoms/buttons/delete_button";
 import Privacy from "Atoms/articles/privacy";
 
 class ArticleUpdate extends Component {

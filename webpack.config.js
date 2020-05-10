@@ -53,13 +53,29 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.css$/,
+        use: [
+          // style-loader
+          { loader: "style-loader" },
+          // css-loader
+          {
+            loader: "css-loader",
+            options: {
+              modules: true,
+            },
+          },
+          // sass-loader
+          { loader: "sass-loader" },
+        ],
+      },
     ],
   },
 
   // webpack-dev-server用設定
   devServer: {
     historyApiFallback: true, // HTML5 の History API を使用する
-    contentBase: "dest", // サーバーの起点とするディレクトリ
+    contentBase: "public", // サーバーの起点とするディレクトリ
     compress: false, // gzip圧縮するか
     port: 8088,
     host: "localhost",
