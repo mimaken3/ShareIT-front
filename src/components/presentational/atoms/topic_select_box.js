@@ -67,11 +67,26 @@ class TopicSelectBox extends Component {
     const allTopicsArr = [];
     const topicObjArr = Object.values(allTopics);
 
-    for (let i = 0; i < topicObjArr.length; i++) {
+    if (this.props.param === "search") {
+      // 検索の場合は最初に「全トピック」を表示
       allTopicsArr.push({
-        value: topicObjArr[i].topic_id,
-        label: topicObjArr[i].topic_name,
+        value: 0,
+        label: "全トピック",
       });
+      for (let i = 0; i < topicObjArr.length; i++) {
+        allTopicsArr.push({
+          value: topicObjArr[i].topic_id,
+          label: topicObjArr[i].topic_name,
+        });
+      }
+    } else {
+      // 検索以外の場合
+      for (let i = 0; i < topicObjArr.length; i++) {
+        allTopicsArr.push({
+          value: topicObjArr[i].topic_id,
+          label: topicObjArr[i].topic_name,
+        });
+      }
     }
     return allTopicsArr;
   };

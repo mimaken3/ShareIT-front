@@ -34,7 +34,7 @@ class SearchArticles extends Component {
     const allTopics = this.props.allTopics;
 
     // 初期表示トピック
-    const initTopics = "";
+    const initTopics = "全トピック";
 
     // 全ユーザ
     const allUsers = this.props.allUsers;
