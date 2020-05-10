@@ -6,7 +6,7 @@ import { getAllTopics } from "Actions/topic";
 import { postArticleEvent, emptyArticles } from "Actions/article";
 import TopicSelectBox from "Atoms/topic_select_box";
 import { Redirect } from "react-router-dom";
-import ToAllArticlesButton from "Atoms/to_all_articles_button";
+import ToAllArticlesButton from "Atoms/buttons/to_all_articles_button";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import Privacy from "Atoms/articles/privacy";
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import ToAllUsersButton from "Atoms/to_all_users_button";
-import CreateArticleButton from "Atoms/create_article_button";
+import ToAllUsersButton from "Atoms/buttons/to_all_users_button";
+import CreateArticleButton from "Atoms/buttons/create_article_button";
 import AllArticlesWithPaging from "Organisms/all_articles_with_paging";
 
 // 記事一覧ページ

@@ -4,20 +4,19 @@ import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { getUserDetail } from "Actions/user";
 import { getAllArticlesByUserID } from "Actions/article";
-import ToAllUsersButton from "Atoms/to_all_users_button";
+import ToAllUsersButton from "Atoms/buttons/to_all_users_button";
 import UserName from "Atoms/users/name";
 import UserID from "Atoms/users/id";
 import Profile from "Atoms/users/profile";
 import CreatedDate from "Atoms/created_date.js";
 import Topic from "Atoms/topics/topic";
 import Loading from "Templates/loading";
-import EditButton from "Atoms/edit_button";
-import CreateArticleButton from "Atoms/create_article_button";
+import EditButton from "Atoms/buttons/edit_button";
+import CreateArticleButton from "Atoms/buttons/create_article_button";
 import UserIcon from "Atoms/user_icon";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
-import DeleteButton from "Atoms/delete_button";
+import DeleteButton from "Atoms/buttons/delete_button";
 import NotFoundPage from "Templates/not_found_page";
-import ArticleIndex from "Templates/articles/index";
 import AllArticlesWithPaging from "Organisms/all_articles_with_paging";
 
 class UserShow extends Component {

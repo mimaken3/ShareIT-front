@@ -32,7 +32,6 @@ export default (users = initialState, action) => {
 
     case CREATE_USER_EVENT:
     case SHOW_USER_DETAIL:
-      console.log("SWOW");
       const data = action.response.data;
       return Object.assign({}, users, {
         auth_fail: false,
