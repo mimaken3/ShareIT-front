@@ -10,7 +10,18 @@ class TopicSelectBox extends Component {
       selectedOption: null,
       isChosen: false,
       error: null,
+      allTopicsArr: null,
     };
+  }
+
+  componentDidMount() {
+    // 全トピックをセット
+    let allTopicsArr = this.setAllTopics(this.props.allTopics);
+    this.setState({ allTopicsArr });
+
+    // 初期表示トピックをセット
+    let initTopicsArr = this.setInitTopics(allTopicsArr, this.props.initTopics);
+    this.setState({ selectedOption: initTopicsArr });
   }
 
   // 送信するトピックを取得
@@ -81,11 +92,6 @@ class TopicSelectBox extends Component {
   };
 
   render() {
-    // 全トピックをセット
-    let allTopicsArr = this.setAllTopics(this.props.allTopics);
-
-    // 初期表示トピックをセット
-    let initTopicsArr = this.setInitTopics(allTopicsArr, this.props.initTopics);
     let TopicSelectBox;
     if (this.props.param === "search") {
       // 検索用セレクト(一つのみ)
@@ -93,9 +99,9 @@ class TopicSelectBox extends Component {
         <Select
           name="select-test-name"
           onChange={this.handleChange}
-          options={allTopicsArr}
+          options={this.state.allTopicsArr}
           placeholder="トピックを選択して下さい"
-          defaultValue={initTopicsArr}
+          value={this.state.selectedOption}
         />
       );
     } else {
@@ -104,10 +110,9 @@ class TopicSelectBox extends Component {
         <Select
           name="select-test-name"
           onChange={this.handleChange}
-          options={allTopicsArr}
+          options={this.state.allTopicsArr}
           isMulti
           placeholder="トピックを選択して下さい"
-          defaultValue={initTopicsArr}
           value={this.state.selectedOption}
         />
       );
