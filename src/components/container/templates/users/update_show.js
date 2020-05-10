@@ -74,7 +74,8 @@ class UserUpdateShow extends Component {
       const { handleSubmit, submitting, invalid } = this.props;
       const loginUserInfo = getLoginUserInfo();
       const loginUserID = loginUserInfo.userID;
-      if (loginUserID !== this.props.user.user_id) {
+      const isAdmin = loginUserInfo.admin;
+      if (loginUserID !== this.props.user.user_id && !isAdmin) {
         // 別ユーザがアクセスしようとした場合
         return (
           <React.Fragment>

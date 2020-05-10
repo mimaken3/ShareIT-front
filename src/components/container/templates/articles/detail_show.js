@@ -48,9 +48,10 @@ class ArticleShow extends Component {
   render() {
     const loginUser = getLoginUserInfo();
     const loginUserID = loginUser.userID;
+    const isAdmin = loginUser.admin;
     if (this.props.article && !this.state.loading) {
       var AuthorizedEditButton;
-      if (loginUserID === this.props.article.created_user_id) {
+      if (loginUserID === this.props.article.created_user_id || isAdmin) {
         const sendObj = { articleID: this.props.article.article_id };
         AuthorizedEditButton = (
           <div>

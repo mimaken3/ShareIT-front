@@ -67,12 +67,13 @@ class ArticleUpdate extends Component {
     const { handleSubmit, submitting, invalid } = this.props;
     const loginUserInfo = getLoginUserInfo();
     const loginUserID = loginUserInfo.userID;
+    const isAdmin = loginUserInfo.admin;
     if (
       this.props.article &&
       Object.values(this.props.allTopics).length !== 0
     ) {
-      if (loginUserID !== this.props.article.created_user_id) {
-        // 別ユーザがアクセスしようとした場合
+      if (loginUserID !== this.props.article.created_user_id && !isAdmin) {
+        // 別ユーザ(admin以外)がアクセスしようとした場合
         return (
           <React.Fragment>
             <UnauthorizedPage page="articles" />

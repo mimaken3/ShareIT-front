@@ -3,6 +3,7 @@ import UserIcon from "Atoms/user_icon";
 import Button from "@material-ui/core/Button";
 import CommentEdit from "./edit";
 import DeleteButton from "Atoms/buttons/delete_button";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
 
 class Comment extends Component {
   constructor(props) {
@@ -28,9 +29,12 @@ class Comment extends Component {
   }
 
   render() {
+    const loginUserInfo = getLoginUserInfo();
+    const isAdmin = loginUserInfo.admin;
+
     // 削除ボタン
     let deleteButton;
-    if (this.props.loginUserName === this.props.comment.user_name) {
+    if (this.props.loginUserName === this.props.comment.user_name || isAdmin) {
       const sendObj = {
         articleID: this.props.comment.article_id,
         commentID: this.props.comment.comment_id,
@@ -69,7 +73,7 @@ class Comment extends Component {
     }
 
     let editButton;
-    if (this.props.loginUserName === this.props.comment.user_name) {
+    if (this.props.loginUserName === this.props.comment.user_name || isAdmin) {
       editButton = <Button onClick={() => this.editComment()}>編集</Button>;
     }
 

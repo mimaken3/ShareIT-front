@@ -51,8 +51,9 @@ class UserShow extends Component {
     if (this.props.user && !this.state.loading) {
       const loginUser = getLoginUserInfo();
       const loginUserID = loginUser.userID;
+      const isAdmin = loginUser.admin;
       var AuthorizedEditButton;
-      if (loginUserID === this.props.user.user_id) {
+      if (loginUserID === this.props.user.user_id || isAdmin) {
         const sendObj = { user: this.props.user };
         AuthorizedEditButton = (
           <div>
