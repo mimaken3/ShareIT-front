@@ -6,6 +6,7 @@ import { reduxForm } from "redux-form";
 import UserIcon from "Atoms/user_icon";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import { emptyArticles } from "Actions/article";
+import { emptyUsers, getUserDetail } from "Actions/user";
 import Logout from "Atoms/buttons/logout";
 
 // ヘッダー
@@ -56,6 +57,9 @@ const Header = withRouter((props) => {
   // ユーザ詳細画面へ
   function toUserShowPage(loginUserID) {
     props.emptyArticles();
+    props.emptyUsers();
+    props.getUserDetail(loginUserID);
+
     props.history.push("/api/users/" + loginUserID);
   }
 
@@ -64,6 +68,8 @@ const Header = withRouter((props) => {
 
 const mapDispatchToProps = {
   emptyArticles,
+  emptyUsers,
+  getUserDetail,
 };
 
 const mapStateToProps = "";

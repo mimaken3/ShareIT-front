@@ -79,7 +79,7 @@ export default (users = initialState, action) => {
     case EMPTY_USERS:
       return Object.assign({}, users, {
         auth_fail: false,
-        is_empty: true,
+        is_empty: false, // 一時的に空なのでfalse
         ref_pg: 0,
         all_paging_num: 0,
         users: {},
