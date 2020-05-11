@@ -55,7 +55,17 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     fontSize: "18px",
   },
+  guest: {
+    color: "white",
+    fontSize: "18px",
+    lineHeight: "180px",
+    marginRight: "20px",
+  },
   memuUserName: {
+    color: "black",
+    fontSize: "18px",
+  },
+  memuGuestUserName: {
     color: "black",
     fontSize: "18px",
   },
@@ -168,10 +178,76 @@ const Header = withRouter((props) => {
     );
   } else {
     // 未ログイン状態
+    const mobileMenuId = "primary-search-account-menu-mobile";
+    const renderMobileMenu = (
+      <Menu
+        anchorEl={mobileMoreAnchorEl}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        id={mobileMenuId}
+        keepMounted
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={isMobileMenuOpen}
+        onClose={handleMobileMenuClose}
+      >
+        <MenuItem>
+          <Button onClick={() => toUserShowPage(loginUser.userID)}>
+            <div className={classes.memuGuestUserName}>ゲスト</div>
+          </Button>
+        </MenuItem>
+        <MenuItem>
+          <div>
+            <Button
+              onClick={toLoginPage}
+              style={{ color: "black", fontSize: 17 }}
+            >
+              ログイン
+            </Button>
+          </div>
+        </MenuItem>
+      </Menu>
+    );
     Display = (
       <div>
-        SHAREIT ゲストさんようこそ
-        <Button onClick={toLoginPage}>Login</Button>
+        <div className={classes.root}>
+          <AppBar position="static" className={classes.appBar}>
+            <Toolbar className={classes.toolBar}>
+              <Typography className={classes.title}>
+                <Button
+                  color="inherit"
+                  className={classes.shareIT}
+                  onClick={toAllArticlesPage}
+                >
+                  ShareIT
+                </Button>
+              </Typography>
+
+              <div className={classes.grow} />
+              <div className={classes.sectionDesktop}>
+                <div className={classes.guest}>ゲスト</div>
+                <Button
+                  onClick={toLoginPage}
+                  style={{ color: "white", fontSize: 17 }}
+                >
+                  ログイン
+                </Button>
+              </div>
+
+              <div className={classes.sectionMobile}>
+                <IconButton
+                  aria-label="show more"
+                  aria-controls={mobileMenuId}
+                  aria-haspopup="true"
+                  onClick={handleMobileMenuOpen}
+                  color="inherit"
+                  className={classes.moreIcon}
+                >
+                  <MoreIcon />
+                </IconButton>
+              </div>
+            </Toolbar>
+          </AppBar>
+          {renderMobileMenu}
+        </div>
       </div>
     );
   }
