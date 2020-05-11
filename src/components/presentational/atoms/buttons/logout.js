@@ -34,41 +34,38 @@ class Logout extends Component {
 
   render() {
     return (
-      <div>
-        <div>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => this.handleClickOpen()}
-          >
-            ログアウト
-          </Button>
-          <Dialog
-            open={this.state.open}
-            onClose={this.handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                ログアウトしてもよろしいですか？
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => this.handleClose()} color="primary">
-                いいえ
-              </Button>
-              <Button
-                onClick={() => this.onLogoutClick()}
-                color="primary"
-                autoFocus
-              >
-                はい
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </div>
-      </div>
+      <React.Fragment>
+        <Button
+          style={{ color: this.props.fontColor, fontSize: 17 }}
+          onClick={() => this.handleClickOpen()}
+        >
+          ログアウト
+        </Button>
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              ログアウトしてもよろしいですか？
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => this.handleClose()} color="primary">
+              いいえ
+            </Button>
+            <Button
+              onClick={() => this.onLogoutClick()}
+              color="primary"
+              autoFocus
+            >
+              はい
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </React.Fragment>
     );
   }
 }
