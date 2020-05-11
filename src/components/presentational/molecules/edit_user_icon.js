@@ -120,6 +120,7 @@ class EditUserIcon extends Component {
                   onCropChange={this.onCropChange}
                   onCropComplete={this.onCropComplete}
                   onZoomChange={this.onZoomChange}
+                  cropShape="round"
                 />
               </div>
               <div className={styles.controls}>
