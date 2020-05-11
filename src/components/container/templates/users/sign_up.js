@@ -184,7 +184,7 @@ class SignUp extends Component {
             />
             ユーザ名:
             <Field
-              label="2文字以上20文字以内"
+              label="2文字以上10文字以内"
               name="user_name"
               disabled={submitting}
               type="text"
@@ -275,8 +275,8 @@ const validate = (values) => {
 
   // ユーザ名
   if (values.user_name) {
-    if (values.user_name.length > 20 || values.user_name.length < 2) {
-      errors.user_name = "ユーザ名は2文字以上20文字以内です";
+    if (values.user_name.length > 10 || values.user_name.length < 2) {
+      errors.user_name = "ユーザ名は2文字以上10文字以内です";
       isUserNameCheck = false;
     } else {
       // ユーザ名の重複チェック
