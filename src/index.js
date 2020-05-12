@@ -49,7 +49,7 @@ class App extends Component {
       display: "block",
       width: "100%",
       height: "100%",
-      margin: "0",
+      margin: "0px",
     };
 
     const content = {

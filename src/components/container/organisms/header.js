@@ -46,10 +46,12 @@ const useStyles = makeStyles((theme) => ({
   userIcon: {
     width: "50px",
     height: "50px",
+    marginRight: "10px",
   },
   memuUserIcon: {
     width: "50px",
     height: "50px",
+    marginRight: "10px",
   },
   userName: {
     color: "white",
@@ -212,47 +214,45 @@ const Header = withRouter((props) => {
       </Menu>
     );
     Display = (
-      <div>
-        <div className={classes.root}>
-          <AppBar position="static" className={classes.appBar}>
-            <Toolbar className={classes.toolBar}>
-              <Typography className={classes.title}>
-                <Button
-                  color="inherit"
-                  className={classes.shareIT}
-                  onClick={toAllArticlesPage}
-                >
-                  ShareIT
-                </Button>
-              </Typography>
+      <div className={classes.root}>
+        <AppBar position="static" className={classes.appBar}>
+          <Toolbar className={classes.toolBar}>
+            <Typography className={classes.title}>
+              <Button
+                color="inherit"
+                className={classes.shareIT}
+                onClick={toAllArticlesPage}
+              >
+                ShareIT
+              </Button>
+            </Typography>
 
-              <div className={classes.grow} />
-              <div className={classes.sectionDesktop}>
-                <div className={classes.guest}>ゲスト</div>
-                <Button
-                  onClick={toLoginPage}
-                  style={{ color: "white", fontSize: 17, marginBottom: 0 }}
-                >
-                  <div>ログイン</div>
-                </Button>
-              </div>
+            <div className={classes.grow} />
+            <div className={classes.sectionDesktop}>
+              <div className={classes.guest}>ゲスト</div>
+              <Button
+                onClick={toLoginPage}
+                style={{ color: "white", fontSize: 17, marginBottom: 0 }}
+              >
+                <div>ログイン</div>
+              </Button>
+            </div>
 
-              <div className={classes.sectionMobile}>
-                <IconButton
-                  aria-label="show more"
-                  aria-controls={mobileMenuId}
-                  aria-haspopup="true"
-                  onClick={handleMobileMenuOpen}
-                  color="inherit"
-                  className={classes.moreIcon}
-                >
-                  <MoreIcon />
-                </IconButton>
-              </div>
-            </Toolbar>
-          </AppBar>
-          {renderMobileMenu}
-        </div>
+            <div className={classes.sectionMobile}>
+              <IconButton
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+                className={classes.moreIcon}
+              >
+                <MoreIcon />
+              </IconButton>
+            </div>
+          </Toolbar>
+        </AppBar>
+        {renderMobileMenu}
       </div>
     );
   }
