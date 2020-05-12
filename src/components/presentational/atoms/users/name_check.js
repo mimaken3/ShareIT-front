@@ -14,7 +14,7 @@ const ResultUserNameDuplicationCheck = (props) => {
       // 重複していなかった場合
       return (
         <div style={{ color: "#00EE00" }}>
-          <CheckCircleOutlineIcon size={5} />
+          <CheckCircleOutlineIcon />
         </div>
       );
     }
@@ -24,7 +24,7 @@ const ResultUserNameDuplicationCheck = (props) => {
         <CircularProgress
           variant="indeterminate"
           disableShrink
-          size={15}
+          size={18}
           thickness={4}
           {...props}
           style={{ color: "grey" }}

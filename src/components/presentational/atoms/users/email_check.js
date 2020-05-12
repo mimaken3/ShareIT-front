@@ -26,7 +26,7 @@ const ResultEmailDuplicationCheck = (props) => {
         <CircularProgress
           variant="indeterminate"
           disableShrink
-          size={15}
+          size={18}
           thickness={4}
           {...props}
           style={{ color: "grey" }}
