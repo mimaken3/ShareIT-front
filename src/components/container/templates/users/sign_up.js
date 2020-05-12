@@ -27,7 +27,6 @@ import { ThemeProvider } from "@material-ui/styles";
 import ResultUserNameDuplicationCheck from "Atoms/users/name_check";
 import ResultEmailDuplicationCheck from "Atoms/users/email_check";
 import Button from "@material-ui/core/Button";
-import { MuiThemeProvider } from "@material-ui/core/styles";
 
 const ROOT_URL = env.ROOT_URL;
 
