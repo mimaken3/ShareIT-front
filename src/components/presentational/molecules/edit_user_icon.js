@@ -46,6 +46,7 @@ class EditUserIcon extends Component {
 
   // 画像をアップロード
   onFileChange = async (e) => {
+    console.log("onFileChange");
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       let imageDataUrl = await convertFileToDataURL(file);
@@ -108,15 +109,18 @@ class EditUserIcon extends Component {
       <React.Fragment>
         <div className={this.props.classes.userIcon}>{Icon}</div>
         <div className={this.props.classes.App}>
-          <Button variant="outlined" component="label">
-            画像をアップロード
-            <input
-              type="file"
-              accept="image/*"
-              onChange={this.onFileChange}
-              className={this.props.classes.inputFileBtnHide}
-            />
-          </Button>
+          <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="raised-button-file"
+            type="file"
+            onChange={this.onFileChange}
+          />
+          <label htmlFor="raised-button-file">
+            <Button variant="outlined" component="span">
+              画像をアップロード
+            </Button>
+          </label>
           {this.state.imageSrc && (
             <div>
               <div className={this.props.classes.cropContainer}>
