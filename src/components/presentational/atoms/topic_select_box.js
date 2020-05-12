@@ -129,13 +129,14 @@ class TopicSelectBox extends Component {
           isMulti
           placeholder="トピックを選択して下さい"
           value={this.state.selectedOption}
+          styles={{ zIndex: 999 }}
         />
       );
     }
     return (
       <div>
         <div>{TopicSelectBox}</div>
-        <div>{this.state.error}</div>
+        <div style={{ color: "red" }}>{this.state.error}</div>
       </div>
     );
   }

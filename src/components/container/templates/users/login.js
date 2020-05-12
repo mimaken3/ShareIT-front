@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { reduxForm } from "redux-form";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { loginUserEvent } from "Actions/user";
 import TextField from "@material-ui/core/TextField";
@@ -13,12 +12,10 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createMuiTheme } from "@material-ui/core/styles";
-import blue from "@material-ui/core/colors/blue";
 import { withStyles } from "@material-ui/core/styles";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
-import { purple } from "@material-ui/core/colors";
 import { ThemeProvider } from "@material-ui/styles";
 
 class Login extends Component {
@@ -130,7 +127,6 @@ class Login extends Component {
                 label="ユーザ名 *必須"
                 name="user_name"
                 autoComplete="user_name"
-                autoFocus
                 disabled={submitting}
                 InputProps={{
                   startAdornment: (
@@ -207,7 +203,7 @@ class Login extends Component {
 
 const styles = (theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(3),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -215,7 +211,7 @@ const styles = (theme) => ({
   avatar: {
     margin: theme.spacing(1),
     // backgroundColor: theme.palette.primary.light,
-    backgroundColor: "#00CCFF",
+    backgroundColor: "#888888",
   },
   form: {
     width: "100%", // Fix IE 11 issue.
