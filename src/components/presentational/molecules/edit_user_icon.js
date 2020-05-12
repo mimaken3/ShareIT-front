@@ -46,7 +46,6 @@ class EditUserIcon extends Component {
 
   // 画像をアップロード
   onFileChange = async (e) => {
-    console.log("onFileChange");
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       let imageDataUrl = await convertFileToDataURL(file);
@@ -143,7 +142,7 @@ class EditUserIcon extends Component {
                   step={0.1}
                   aria-labelledby="Zoom"
                   onChange={(e, zoom) => this.onZoomChange(zoom)}
-                  // classes={{ container: "slider" }}
+                  className={this.props.classes.slider}
                 />
               </div>
               <div className={this.props.classes.button}>
@@ -216,10 +215,10 @@ const styles = (theme) => ({
     width: "50%",
     display: "flex",
     alignItems: "center",
-    /* z-index: 1; セレクトボックスの上に重ねる */
   },
   slider: {
     padding: "30px 0px",
+    color: "#AAAAAA",
   },
   userIcon: {
     width: "80px",
