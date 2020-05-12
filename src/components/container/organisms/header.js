@@ -58,8 +58,9 @@ const useStyles = makeStyles((theme) => ({
   guest: {
     color: "white",
     fontSize: "18px",
-    lineHeight: "180px",
     marginRight: "20px",
+    marginTop: "auto",
+    marginBottom: "auto",
   },
   memuUserName: {
     color: "black",
@@ -82,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   moreIcon: {
-    marginRight: "30px",
+    marginRight: "0px", // 今後変更の可能性あり
   },
 }));
 
@@ -129,7 +130,11 @@ const Header = withRouter((props) => {
         </MenuItem>
         <MenuItem>
           <div>
-            <Logout fontColor="black" />
+            <Logout
+              fontColor="black"
+              callback={handleMobileMenuClose}
+              param="mobile"
+            />
           </div>
         </MenuItem>
       </Menu>
@@ -226,9 +231,9 @@ const Header = withRouter((props) => {
                 <div className={classes.guest}>ゲスト</div>
                 <Button
                   onClick={toLoginPage}
-                  style={{ color: "white", fontSize: 17 }}
+                  style={{ color: "white", fontSize: 17, marginBottom: 0 }}
                 >
-                  ログイン
+                  <div>ログイン</div>
                 </Button>
               </div>
 

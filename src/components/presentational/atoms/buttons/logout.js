@@ -18,6 +18,10 @@ class Logout extends Component {
 
   // ログアウトを実行
   onLogoutClick() {
+    // メニューバーを閉じる
+    if (this.props.param === "mobile") {
+      this.props.callback();
+    }
     this.props.LogoutUserEvent();
     this.props.history.push("/login");
   }
