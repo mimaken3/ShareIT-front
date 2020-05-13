@@ -80,9 +80,7 @@ class AllArticlesWithPaging extends Component {
     } else {
       return (
         <React.Fragment>
-          <div>
-            <Loading />
-          </div>
+          <Loading />
         </React.Fragment>
       );
     }
