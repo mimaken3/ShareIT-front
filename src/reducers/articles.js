@@ -10,6 +10,7 @@ import {
   EMPTY_ARTICELS,
 } from "Actions/article";
 import { TOGGLE_LIKE } from "Actions/like";
+import getJSTCreatedDateArr from "Modules/getJST_created_date_arr";
 import _ from "lodash";
 
 // reducerは関数として定義(引数は2つ)
@@ -32,6 +33,10 @@ export default (articles = initialState, action) => {
       localStorage.removeItem("currentPage");
       localStorage.setItem("currentPage", action.response.data.ref_pg);
 
+      // 作成日を年月日時分に変換
+      const _articles = action.response.data.articles;
+      const articles2 = getJSTCreatedDateArr(_articles);
+
       return Object.assign({}, articles, {
         is_searched: action.response.data.is_searched,
         search_user: action.response.data.search_user,
@@ -39,20 +44,25 @@ export default (articles = initialState, action) => {
         is_empty: action.response.data.is_empty,
         ref_pg: action.response.data.ref_pg,
         all_paging_num: action.response.data.all_paging_num,
-        articles: _.mapKeys(action.response.data.articles, "article_id"),
+        articles: _.mapKeys(articles2, "article_id"),
       });
 
     case SHOW_ARTICLE_DETAIL:
     case CREATE_ARTICLE_EVENT:
     case UPDATE_ARTICLE_EVENT:
     case TOGGLE_LIKE:
-      const data = action.response.data;
+      // 作成日を年月日時分に変換
+      const _data = action.response.data;
+      const data = getJSTCreatedDateArr(_data);
 
       return Object.assign({}, articles, {
         is_empty: false,
         ref_pg: articles.ref_pg,
         all_paging_num: articles.all_paging_num,
-        articles: { ...articles.articles, [data.article_id]: data },
+        articles: {
+          ...articles.articles,
+          [data.article_id]: data,
+        },
       });
 
     case DELETE_ARTICLE_EVENT:
