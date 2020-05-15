@@ -61,11 +61,9 @@ class AllArticlesWithPaging extends Component {
       } else {
         // 記事一覧ページ
         return (
-          <div>
-            <div>
-              <AllArticles refName="articles" />
-            </div>
-            <div>
+          <div style={{ clear: "both", paddingTop: "10px" }}>
+            <AllArticles refName="articles" />
+            <div style={{ marginTop: "30px" }}>
               <Paging
                 refName="articles"
                 userID={this.props.userID}
@@ -79,9 +77,9 @@ class AllArticlesWithPaging extends Component {
       }
     } else {
       return (
-        <React.Fragment>
+        <div style={{ clear: "both", paddingTop: "10px" }}>
           <Loading />
-        </React.Fragment>
+        </div>
       );
     }
   }

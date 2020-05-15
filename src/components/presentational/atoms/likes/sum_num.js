@@ -4,7 +4,7 @@ import React from "react";
 const LikeNum = (props) => {
   return (
     <React.Fragment>
-      <div>{props.likeNum}</div>
+      <div style={{ fontSize: "17px" }}>{props.likeNum}</div>
     </React.Fragment>
   );
 };

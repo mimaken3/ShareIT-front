@@ -11,6 +11,8 @@ import { getAllTopics } from "Actions/topic";
 import { searchArticles } from "Actions/article";
 import Loading from "Templates/loading";
 import AllArticleTitle from "Atoms/articles/all_articles";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
 
 // 記事一覧ページ
 class ArticlesIndex extends Component {
@@ -28,15 +30,17 @@ class ArticlesIndex extends Component {
 
   render() {
     // セレクトボックスの中身が読み込まれたら表示
-    if (Object.values(this.props.allUsers).length > 1) {
+    if (Object.values(this.props.allUsers).length > 0) {
       return (
-        <React.Fragment>
+        <Container component="main" maxWidth="sm">
+          <CssBaseline />
           <div>
             <AllArticleTitle />
           </div>
           <div>
             <SearchArticles />
           </div>
+
           <div>
             <AllArticlesWithPaging historyAction={this.props.history.action} />
           </div>
@@ -48,15 +52,14 @@ class ArticlesIndex extends Component {
           <div>
             <ToAllUsersButton />
           </div>
-        </React.Fragment>
+        </Container>
       );
     } else {
       return (
-        <React.Fragment>
-          <div>
-            <Loading />
-          </div>
-        </React.Fragment>
+        <Container component="main" maxWidth="sm">
+          <CssBaseline />
+          <Loading />
+        </Container>
       );
     }
   }
