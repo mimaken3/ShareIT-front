@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import Button from "@material-ui/core/Button";
-import { toggleLike } from "../../../../actions/like";
-import LikeNum from "../../atoms/likes/sum_num";
-import LikeObj from "../../atoms/likes/obj";
+import { toggleLike } from "Actions/like";
+import LikeNum from "Atoms/likes/sum_num";
+import LikeObj from "Atoms/likes/obj";
+import { withStyles } from "@material-ui/core/styles";
+import { compose } from "redux";
 
 class Like extends Component {
   constructor(props) {
@@ -47,27 +49,33 @@ class Like extends Component {
     var isLiked;
     if (this.state.isLiked) {
       isLiked = (
-        <div>
-          <Button onClick={() => this.offLike()}>
+        <React.Fragment>
+          <Button
+            onClick={() => this.offLike()}
+            className={this.props.classes.button}
+          >
             <LikeObj obj={true} />
           </Button>
-        </div>
+        </React.Fragment>
       );
     } else {
       isLiked = (
-        <div>
-          <Button onClick={() => this.onLike()}>
+        <React.Fragment>
+          <Button
+            onClick={() => this.onLike()}
+            className={this.props.classes.button}
+          >
             <LikeObj obj={false} />
           </Button>
-        </div>
+        </React.Fragment>
       );
     }
     return (
       <React.Fragment>
-        <div>
+        <div>{isLiked}</div>
+        <div className={this.props.classes.likeNum}>
           <LikeNum likeNum={this.state.likeNum} />
         </div>
-        <div>{isLiked}</div>
       </React.Fragment>
     );
   }
@@ -77,7 +85,21 @@ const mapDispatchToProps = { toggleLike };
 
 const mapStateToProps = "";
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(reduxForm({ form: "likeForm" })(Like));
+const styles = {
+  button: {
+    padding: 5,
+    minHeight: 0,
+    minWidth: 0,
+    maxHeight: 30,
+    maxWidth: 30,
+  },
+  likeNum: {
+    marginLeft: "5px",
+  },
+};
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({ form: "likeForm" }),
+  withStyles(styles)
+)(Like);

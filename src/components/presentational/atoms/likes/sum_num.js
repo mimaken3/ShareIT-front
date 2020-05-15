@@ -4,7 +4,7 @@ import React from "react";
 const LikeNum = (props) => {
   return (
     <React.Fragment>
-      <div>いいね数 {props.likeNum}</div>
+      <div>{props.likeNum}</div>
     </React.Fragment>
   );
 };
