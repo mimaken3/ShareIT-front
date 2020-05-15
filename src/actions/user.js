@@ -98,7 +98,9 @@ export const getUserDetail = (userId) => async (dispatch) => {
 // ユーザ情報を更新
 export const putUserEvent = (user, iconImage) => async (dispatch) => {
   const loginUserInfo = getLoginUserInfo();
+  let flag = false;
   if (iconImage) {
+    flag = true;
     let preSignedURL = user.icon_name.split("/")[4];
     const deleteFileName = preSignedURL.split("?")[0];
 
@@ -121,7 +123,7 @@ export const putUserEvent = (user, iconImage) => async (dispatch) => {
     user,
     loginUserInfo.sendConfig
   );
-  dispatch({ type: UPDATE_USER_EVENT, response });
+  dispatch({ type: UPDATE_USER_EVENT, response, flag });
 };
 
 // ユーザを削除

@@ -52,9 +52,11 @@ export default (users = initialState, action) => {
       const _updatedUser = action.response.data;
       const updatedUser = getJSTCreatedDateArr(_updatedUser);
 
-      // ヘッダーのユーザアイコンを更新
-      localStorage.removeItem("login_user_icon_URL");
-      localStorage.setItem("login_user_icon_URL", updatedUser.icon_name);
+      if (action.flag) {
+        // ヘッダーのユーザアイコンを更新
+        localStorage.removeItem("login_user_icon_URL");
+        localStorage.setItem("login_user_icon_URL", updatedUser.icon_name);
+      }
 
       return Object.assign({}, users, {
         auth_fail: false,
