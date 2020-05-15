@@ -14,7 +14,9 @@ const ToAllArticlesButton = withRouter((props) => {
 
   return (
     <React.Fragment>
-      <Button onClick={toAllArticlesPage}>記事一覧</Button>
+      <Button onClick={toAllArticlesPage} variant="outlined">
+        記事一覧
+      </Button>
     </React.Fragment>
   );
 });
