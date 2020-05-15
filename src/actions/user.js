@@ -3,6 +3,7 @@ import deleteIcon from "Modules/deleteIcon";
 import uploadIcon from "Modules/uploadIcon";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import env from "env";
+import convertJSTToDate from "Modules/convert_JST_to_date";
 
 export const LOGIN_USER_EVENT = "LOGIN_USER_EVENT";
 export const LOGOUT_USER_EVENT = "LOGOUT_USER_EVENT";
@@ -113,6 +114,7 @@ export const putUserEvent = (user, iconImage) => async (dispatch) => {
       });
     }
   }
+  user.created_date = convertJSTToDate(user.created_date);
 
   const response = await axios.put(
     `${ROOT_URL}/api/users/${user.user_id}`,
