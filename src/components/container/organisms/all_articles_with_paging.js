@@ -63,15 +63,13 @@ class AllArticlesWithPaging extends Component {
         return (
           <div style={{ clear: "both", paddingTop: "10px" }}>
             <AllArticles refName="articles" />
-            <div style={{ marginTop: "30px" }}>
-              <Paging
-                refName="articles"
-                userID={this.props.userID}
-                refPg={this.props.refPg}
-                allPagingNum={this.props.allPagingNum}
-                callback={() => this.PagingClick()}
-              />
-            </div>
+            <Paging
+              refName="articles"
+              userID={this.props.userID}
+              refPg={this.props.refPg}
+              allPagingNum={this.props.allPagingNum}
+              callback={() => this.PagingClick()}
+            />
           </div>
         );
       }

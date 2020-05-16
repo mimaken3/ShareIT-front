@@ -5,6 +5,9 @@ import { showAllUsers } from "Actions/user";
 import { getAllArticlesByUserID } from "Actions/article";
 import Pagination from "@material-ui/lab/Pagination";
 import { ScrollTo } from "react-scroll-to";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import "./paging.css";
 
 // ページング
 const Paging = ({
@@ -21,44 +24,56 @@ const Paging = ({
   searchUser,
   searchTopics,
 }) => {
+  const theme = createMuiTheme({
+    // ページングボタンを中央に
+    overrides: {
+      MuiPagination: {
+        ul: {
+          display: "inline-block",
+        },
+      },
+    },
+  });
   return (
-    <React.Fragment>
-      <ScrollTo>
-        {({ scroll }) => (
-          <Pagination
-            count={allPagingNum}
-            defaultPage={1}
-            variant="outlined"
-            color="primary"
-            page={refPg}
-            onChange={(event, page) => {
-              if (isSearched) {
-                const values = {
-                  refPg: page,
-                  user: searchUser,
-                  topics: searchTopics,
-                };
-                searchArticles(values, "paging");
-                scroll({ x: 0, y: 0 });
-                callback();
-              } else if (refName === "articles") {
-                showAllArticles(page);
-                scroll({ x: 0, y: 0 });
-                callback();
-              } else if (refName === "users") {
-                showAllUsers(page);
-                scroll({ x: 0, y: 0 });
-                callback();
-              } else if (refName === "userArticles") {
-                getAllArticlesByUserID(userID, page);
-                scroll({ x: 0, y: 0 });
-                callback();
-              }
-            }}
-          />
-        )}
-      </ScrollTo>
-    </React.Fragment>
+    <ThemeProvider theme={theme}>
+      <div style={{ marginTop: "30px", textAlign: "center" }}>
+        <ScrollTo>
+          {({ scroll }) => (
+            <Pagination
+              count={allPagingNum}
+              defaultPage={1}
+              variant="outlined"
+              color="primary"
+              page={refPg}
+              onChange={(event, page) => {
+                if (isSearched) {
+                  const values = {
+                    refPg: page,
+                    user: searchUser,
+                    topics: searchTopics,
+                  };
+                  searchArticles(values, "paging");
+                  scroll({ x: 0, y: 0 });
+                  callback();
+                } else if (refName === "articles") {
+                  showAllArticles(page);
+                  scroll({ x: 0, y: 0 });
+                  callback();
+                } else if (refName === "users") {
+                  showAllUsers(page);
+                  scroll({ x: 0, y: 0 });
+                  callback();
+                } else if (refName === "userArticles") {
+                  getAllArticlesByUserID(userID, page);
+                  scroll({ x: 0, y: 0 });
+                  callback();
+                }
+              }}
+            />
+          )}
+        </ScrollTo>
+      </div>
+    </ThemeProvider>
   );
 };
 
