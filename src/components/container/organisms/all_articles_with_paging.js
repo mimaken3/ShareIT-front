@@ -47,7 +47,7 @@ class AllArticlesWithPaging extends Component {
         return (
           <React.Fragment>
             <AllArticles refName="userArticles" userID={this.props.userID} />
-            <div>
+            <div style={{ marginTop: "30px" }}>
               <Paging
                 refName="userArticles"
                 userID={this.props.userID}

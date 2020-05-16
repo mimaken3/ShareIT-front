@@ -25,6 +25,7 @@ let initialState = {
   all_paging_num: 0,
   articles: {},
 };
+
 export default (articles = initialState, action) => {
   switch (action.type) {
     case SHOW_ALL_ARTICLES:

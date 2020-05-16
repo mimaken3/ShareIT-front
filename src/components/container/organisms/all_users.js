@@ -4,6 +4,7 @@ import _ from "lodash";
 import { Link } from "react-router-dom";
 import { reduxForm } from "redux-form";
 import UserIcon from "Atoms/user_icon";
+import getIndexDisplayArr from "Modules/get_index_display_arr";
 
 class AllUsers extends Component {
   // ユーザ一覧を表示する関数
@@ -41,7 +42,7 @@ const mapDispatchToProps = "";
 const mapStateToProps = (state) => {
   return {
     isEmpty: state.users.is_empty,
-    users: state.users.users,
+    users: getIndexDisplayArr(state.users.users),
   };
 };
 

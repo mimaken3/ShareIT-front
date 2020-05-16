@@ -59,12 +59,18 @@ class App extends Component {
       marginLeft: "auto",
     };
 
+    const header = {
+      position: "fixed" /* ヘッダーの固定 */,
+      top: "0px" /* 位置(上0px) */,
+      left: "0px" /* 位置(右0px) */,
+    };
+
     return (
       <MuiThemeProvider theme={theme}>
         <Provider store={store}>
           <div style={body}>
             <BrowserRouter>
-              <Header />
+              <Header className={header} />
               <div style={content}>
                 <main>
                   <Switch>

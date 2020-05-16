@@ -73,6 +73,7 @@ export const showAllUsers = (pageNum) => async (dispatch) => {
   dispatch({ type: SHOW_ALL_USERS, response });
 };
 
+// セレクトボックス用のユーザ一覧を取得
 export const getAllUsersForSelectBox = (userID) => async (dispatch) => {
   const loginUserInfo = getLoginUserInfo();
   const response = await axios.get(
