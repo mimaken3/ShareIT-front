@@ -16,7 +16,7 @@ class UserSelectBox extends Component {
     this.setState({ selectedOption });
   };
 
-  // 送信するトピックを取得
+  // 送信するユーザを取得
   getSendUser() {
     return this.state.selectedOption;
   }

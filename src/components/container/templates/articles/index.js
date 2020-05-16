@@ -38,7 +38,7 @@ class ArticlesIndex extends Component {
             <AllArticleTitle />
           </div>
 
-          <div style={{ float: "left" }}>
+          <div style={{ display: "-webkit-flex" }}>
             <SearchArticles />
           </div>
 

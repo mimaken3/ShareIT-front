@@ -41,11 +41,11 @@ class SearchArticles extends Component {
 
     return (
       <React.Fragment>
-        <div style={{ width: 120, float: "left", marginRight: "5px" }}>
+        <div style={{ width: 170, marginRight: "5px" }}>
           <UserSelectBox allUsers={allUsers} ref="UserSelectBox" />
         </div>
 
-        <div style={{ width: 250, float: "left", marginRight: "5px" }}>
+        <div style={{ width: 250, marginRight: "5px" }}>
           <TopicSelectBox
             allTopics={allTopics}
             initTopics={initTopics}
@@ -56,7 +56,7 @@ class SearchArticles extends Component {
 
         <Button
           variant="outlined"
-          style={{ float: "left" }}
+          // style={{ float: "left" }}
           onClick={() => this.handleSubmit()}
         >
           検索
