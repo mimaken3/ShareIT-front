@@ -40,11 +40,13 @@ class SignUp extends Component {
       // ユーザ名
       userName: "",
       userNameError: "",
+      isUserNameError: true,
       resultUserNameDuplicationCheck: 2, // 2はチェック前の数値(0: 重複なし、1: 重複)
       userNameTouched: false,
       // メアド
       email: "",
       emailError: "",
+      isEmailError: true,
       resultEmailDuplicationCheck: 2, // 2はチェック前の数値(0: 重複なし、1: 重複)
       emailTouched: false,
       // パスワード
@@ -89,8 +91,9 @@ class SignUp extends Component {
   }
 
   // 入力されたユーザ名のチェック
-  onBlurUserName = (e) => {
+  onChangeUserName = (e) => {
     this.setState({ userNameTouched: true });
+    this.setState({ isUserNameError: true });
     const userName = e.target.value;
     if (userName) {
       if (userName.length > 10 || userName.length < 2) {
@@ -119,8 +122,12 @@ class SignUp extends Component {
     axios
       .post(`${ROOT_URL}/signUp/check`, userInfo)
       .then((response) => {
+        const num = response.data.result_user_name_num;
+        if (num === 0) {
+          this.setState({ isUserNameError: false });
+        }
         this.setState({
-          resultUserNameDuplicationCheck: response.data.result_user_name_num,
+          resultUserNameDuplicationCheck: num,
         });
       })
       .catch((error) => {
@@ -129,9 +136,9 @@ class SignUp extends Component {
   }
 
   // 入力されたメアドのチェック
-  onBlurEmail = (e) => {
+  onChangeEmail = (e) => {
     this.setState({ emailTouched: true });
-
+    this.setState({ isEmailError: true });
     const email = e.target.value;
     if (email) {
       let regexp = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/;
@@ -162,6 +169,10 @@ class SignUp extends Component {
     axios
       .post(`${ROOT_URL}/signUp/check`, userInfo)
       .then((response) => {
+        const num = response.data.result_email_num;
+        if (num === 0) {
+          this.setState({ isEmailError: false });
+        }
         this.setState({
           resultEmailDuplicationCheck: response.data.result_email_num,
         });
@@ -184,12 +195,30 @@ class SignUp extends Component {
   }
 
   // パスワードの入力チェック
-  onBlurPassword(e) {
+  onChangePassword(e) {
     this.setState({ passwordTouched: true });
     const password = e.target.value;
     if (password) {
       if (password.length > 16 || password.length < 8) {
         this.setState({ passwordError: "パスワードは8文字以上16文字以内です" });
+      } else if (
+        this.state.confirmPasswordTouched &&
+        this.state.confirmPasswordError === "" &&
+        !(password === this.state.confirmPassword)
+      ) {
+        // 正しい確認用パスワードを入力後、パスワードを変更したとき
+        this.setState({
+          confirmPasswordError: "パスワードと確認用パスワードが一致しません",
+        });
+      } else if (
+        this.state.confirmPasswordError ===
+          "パスワードと確認用パスワードが一致しません" &&
+        password === this.state.confirmPassword
+      ) {
+        // 正しい確認用パスワードを入力後、パスワードを変更して、もし一致していたとき
+        this.setState({
+          confirmPasswordError: "",
+        });
       } else {
         this.setState({ passwordError: "" });
         this.setState({ password });
@@ -200,12 +229,14 @@ class SignUp extends Component {
   }
 
   // 確認用パスワードの入力チェック
-  onBlurConfirmPassword(e) {
+  onChangeConfirmPassword(e) {
     this.setState({ confirmPasswordTouched: true });
     const confirmPassword = e.target.value;
     if (confirmPassword) {
       if (confirmPassword.length > 16 || confirmPassword.length < 8) {
-        this.setState({ passwordError: "パスワードは8文字以上16文字以内です" });
+        this.setState({
+          confirmPasswordError: "パスワードは8文字以上16文字以内です",
+        });
       } else if (!(this.state.password === confirmPassword)) {
         this.setState({
           confirmPasswordError: "パスワードと確認用パスワードが一致しません",
@@ -417,7 +448,7 @@ class SignUp extends Component {
                       </InputAdornment>
                     ),
                   }}
-                  onBlur={(e) => this.onBlurUserName(e)}
+                  onChange={(e) => this.onChangeUserName(e)}
                 />
                 {userNameResult}
                 <TextField
@@ -436,7 +467,7 @@ class SignUp extends Component {
                       </InputAdornment>
                     ),
                   }}
-                  onBlur={(e) => this.onBlurEmail(e)}
+                  onChange={(e) => this.onChangeEmail(e)}
                 />
                 {emailResult}
                 <div>
@@ -479,7 +510,7 @@ class SignUp extends Component {
                       </InputAdornment>
                     ),
                   }}
-                  onBlur={(e) => this.onBlurPassword(e)}
+                  onChange={(e) => this.onChangePassword(e)}
                 />
                 {passwordResult}
 
@@ -500,7 +531,7 @@ class SignUp extends Component {
                       </InputAdornment>
                     ),
                   }}
-                  onBlur={(e) => this.onBlurConfirmPassword(e)}
+                  onChange={(e) => this.onChangeConfirmPassword(e)}
                 />
                 {confirmPasswordResult}
 
@@ -513,13 +544,11 @@ class SignUp extends Component {
                   className={this.props.classes.submit}
                   disabled={
                     submitting ||
-                    !(this.state.userNameError === "") ||
-                    !(this.state.emailError === "") ||
+                    this.state.isUserNameError ||
+                    this.state.isEmailError ||
                     !(this.state.profileError === "") ||
                     !(this.state.passwordError === "") ||
                     !(this.state.confirmPasswordError === "") ||
-                    !this.state.userNameTouched ||
-                    !this.state.emailTouched ||
                     !this.state.passwordTouched ||
                     !this.state.confirmPasswordTouched
                   }
