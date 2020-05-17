@@ -1,4 +1,4 @@
 /* ページングボタンを中央に移動 */
-li {
+.paging ul li {
   float: left;
 }
