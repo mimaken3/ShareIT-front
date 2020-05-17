@@ -50,7 +50,7 @@ class Login extends Component {
   }
 
   // ユーザ名を入力
-  onBlurUserName = (e) => {
+  onChangeUserName = (e) => {
     this.setState({ userNameTouched: true });
     const userName = e.target.value;
     if (userName) {
@@ -66,7 +66,7 @@ class Login extends Component {
   };
 
   // パスワードを入力
-  onBlurPassword = (e) => {
+  onChangePassword = (e) => {
     this.setState({ passwordTouched: true });
     const password = e.target.value;
     if (password) {
@@ -135,7 +135,7 @@ class Login extends Component {
                     </InputAdornment>
                   ),
                 }}
-                onBlur={(e) => this.onBlurUserName(e)}
+                onChange={(e) => this.onChangeUserName(e)}
               />
               <div className={this.props.classes.error}>
                 {this.state.userNameError}
@@ -158,7 +158,7 @@ class Login extends Component {
                     </InputAdornment>
                   ),
                 }}
-                onBlur={(e) => this.onBlurPassword(e)}
+                onChange={(e) => this.onChangePassword(e)}
               />
               <div className={this.props.classes.error}>
                 {this.state.passwordError}
