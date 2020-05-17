@@ -3,10 +3,10 @@ import UserIcon from "Atoms/user_icon";
 import getCroppedImgData from "Modules/getCroppedImgData";
 import convertFileToDataURL from "Modules/convertFileToDataURL";
 import dataURLtoFile from "Modules/dataURLtoFile";
-import styles from "./edit_user_icon.css";
 import { Button } from "@material-ui/core";
 import Cropper from "react-easy-crop";
 import Slider from "@material-ui/core/Slider";
+import { withStyles } from "@material-ui/core/styles";
 
 // ユーザ一のアイコン画像を設定
 class EditUserIcon extends Component {
@@ -58,7 +58,7 @@ class EditUserIcon extends Component {
     }
   };
 
-  showResult = async () => {
+  setResult = async () => {
     try {
       this.setState({
         isCropping: true,
@@ -103,15 +103,26 @@ class EditUserIcon extends Component {
         </div>
       );
     }
+
     return (
       <React.Fragment>
-        <div>ユーザアイコン</div>
-        <div>{Icon}</div>
-        <div className={styles.App}>
-          <input type="file" accept="image/*" onChange={this.onFileChange} />
+        <div className={this.props.classes.userIcon}>{Icon}</div>
+        <div className={this.props.classes.App}>
+          <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="raised-button-file"
+            type="file"
+            onChange={this.onFileChange}
+          />
+          <label htmlFor="raised-button-file">
+            <Button variant="outlined" component="span">
+              画像をアップロード
+            </Button>
+          </label>
           {this.state.imageSrc && (
             <div>
-              <div className={styles.cropContainer}>
+              <div className={this.props.classes.cropContainer}>
                 <Cropper
                   image={this.state.imageSrc}
                   crop={this.state.crop}
@@ -123,7 +134,7 @@ class EditUserIcon extends Component {
                   cropShape="round"
                 />
               </div>
-              <div className={styles.controls}>
+              <div className={this.props.classes.controls}>
                 <Slider
                   value={this.state.zoom}
                   min={1}
@@ -131,17 +142,31 @@ class EditUserIcon extends Component {
                   step={0.1}
                   aria-labelledby="Zoom"
                   onChange={(e, zoom) => this.onZoomChange(zoom)}
-                  // classes={{ container: "slider" }}
+                  className={this.props.classes.slider}
                 />
               </div>
-              <div className={styles.button}>
+              <div className={this.props.classes.button}>
                 <Button
                   color="primary"
                   variant="contained"
-                  onClick={this.showResult}
+                  onClick={this.setResult}
                   disabled={this.state.isCropping}
+                  style={{ color: "white", marginRight: "10px" }}
                 >
                   決定
+                </Button>
+                <Button
+                  color="default"
+                  variant="outlined"
+                  onClick={() => {
+                    this.setState({
+                      imageSrc: null,
+                    });
+                  }}
+                  style={{ color: "white", backgroundColor: "#888888" }}
+                  disabled={this.state.isCropping}
+                >
+                  キャンセル
                 </Button>
               </div>
             </div>
@@ -152,4 +177,66 @@ class EditUserIcon extends Component {
   }
 }
 
-export default EditUserIcon;
+const styles = (theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    // backgroundColor: theme.palette.primary.light,
+    backgroundColor: "#888888",
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  error: {
+    color: "red",
+  },
+  // 画像をアップロードするinputを非表示
+  inputFileBtnHide: {
+    opacity: 0,
+    appearance: "none",
+    position: "absolute",
+  },
+  cropContainer: {
+    width: "100%",
+    height: "400px",
+    position: "relative",
+  },
+  controls: {
+    margin: "auto",
+    width: "50%",
+    display: "flex",
+    alignItems: "center",
+  },
+  slider: {
+    padding: "30px 0px",
+    color: "#AAAAAA",
+  },
+  userIcon: {
+    width: "80px",
+    height: "80px",
+    margin: "0 auto",
+    marginBottom: "10px",
+  },
+  button: {
+    textAlign: "center",
+  },
+  // crop画像全体
+  // App: {
+  //   position: "absolute",
+  //   top: 0,
+  //   left: 0,
+  //   right: 0,
+  //   bottom: 0,
+  // },
+});
+
+export default withStyles(styles)(EditUserIcon);

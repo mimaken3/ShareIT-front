@@ -47,7 +47,7 @@ class AllArticlesWithPaging extends Component {
         return (
           <React.Fragment>
             <AllArticles refName="userArticles" userID={this.props.userID} />
-            <div>
+            <div style={{ marginTop: "30px" }}>
               <Paging
                 refName="userArticles"
                 userID={this.props.userID}
@@ -61,29 +61,23 @@ class AllArticlesWithPaging extends Component {
       } else {
         // 記事一覧ページ
         return (
-          <div>
-            <div>
-              <AllArticles refName="articles" />
-            </div>
-            <div>
-              <Paging
-                refName="articles"
-                userID={this.props.userID}
-                refPg={this.props.refPg}
-                allPagingNum={this.props.allPagingNum}
-                callback={() => this.PagingClick()}
-              />
-            </div>
+          <div style={{ clear: "both", paddingTop: "10px" }}>
+            <AllArticles refName="articles" />
+            <Paging
+              refName="articles"
+              userID={this.props.userID}
+              refPg={this.props.refPg}
+              allPagingNum={this.props.allPagingNum}
+              callback={() => this.PagingClick()}
+            />
           </div>
         );
       }
     } else {
       return (
-        <React.Fragment>
-          <div>
-            <Loading />
-          </div>
-        </React.Fragment>
+        <div style={{ clear: "both", paddingTop: "10px" }}>
+          <Loading />
+        </div>
       );
     }
   }

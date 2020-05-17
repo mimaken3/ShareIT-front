@@ -8,6 +8,7 @@ import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { LogoutUserEvent } from "Actions/user";
+import MenuItem from "@material-ui/core/MenuItem";
 
 // ログアウトボタン
 class Logout extends Component {
@@ -18,6 +19,9 @@ class Logout extends Component {
 
   // ログアウトを実行
   onLogoutClick() {
+    // メニューバーを閉じる
+    this.props.callback();
+
     this.props.LogoutUserEvent();
     this.props.history.push("/login");
   }
@@ -35,12 +39,12 @@ class Logout extends Component {
   render() {
     return (
       <React.Fragment>
-        <Button
+        <MenuItem
           style={{ color: this.props.fontColor, fontSize: 17 }}
           onClick={() => this.handleClickOpen()}
         >
           ログアウト
-        </Button>
+        </MenuItem>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}

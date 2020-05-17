@@ -4,6 +4,7 @@ import _ from "lodash";
 import { reduxForm } from "redux-form";
 import Article from "Molecules/articles/article";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
+import getIndexDisplayArr from "Modules/get_index_display_arr";
 
 class AllArticles extends Component {
   // 記事を表示する関数
@@ -36,7 +37,7 @@ const mapDispatchToProps = "";
 const mapStateToProps = (state) => {
   return {
     isEmpty: state.articles.is_empty,
-    articles: state.articles.articles,
+    articles: getIndexDisplayArr(state.articles.articles),
   };
 };
 

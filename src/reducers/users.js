@@ -7,6 +7,7 @@ import {
   LOGIN_FAILED,
   EMPTY_USERS,
 } from "Actions/user";
+import getJSTCreatedDateArr from "Modules/getJST_created_date_arr";
 import _ from "lodash";
 
 let initialState = {
@@ -21,18 +22,23 @@ export default (users = initialState, action) => {
     case SHOW_ALL_USERS:
       localStorage.removeItem("currentPage");
       localStorage.setItem("currentPage", action.response.data.ref_pg);
+      // 作成日を年月日時分に変換
+      const _users = action.response.data.users;
+      const _users2 = getJSTCreatedDateArr(_users);
 
       return Object.assign({}, users, {
         auth_fail: false,
         is_empty: action.response.data.is_empty,
         ref_pg: action.response.data.ref_pg,
         all_paging_num: action.response.data.all_paging_num,
-        users: _.mapKeys(action.response.data.users, "user_id"),
+        users: _.mapKeys(_users2, "user_id"),
       });
 
     case CREATE_USER_EVENT:
     case SHOW_USER_DETAIL:
-      const data = action.response.data;
+      // 作成日を年月日時分に変換
+      const _data = action.response.data;
+      const data = getJSTCreatedDateArr(_data);
       return Object.assign({}, users, {
         auth_fail: false,
         is_empty: false,
@@ -42,11 +48,15 @@ export default (users = initialState, action) => {
       });
 
     case UPDATE_USER_EVENT:
-      const updatedUser = action.response.data;
+      // 作成日を年月日時分に変換
+      const _updatedUser = action.response.data;
+      const updatedUser = getJSTCreatedDateArr(_updatedUser);
 
-      // ヘッダーのユーザアイコンを更新
-      localStorage.removeItem("login_user_icon_URL");
-      localStorage.setItem("login_user_icon_URL", updatedUser.icon_name);
+      if (action.flag) {
+        // ヘッダーのユーザアイコンを更新
+        localStorage.removeItem("login_user_icon_URL");
+        localStorage.setItem("login_user_icon_URL", updatedUser.icon_name);
+      }
 
       return Object.assign({}, users, {
         auth_fail: false,

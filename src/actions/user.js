@@ -3,6 +3,7 @@ import deleteIcon from "Modules/deleteIcon";
 import uploadIcon from "Modules/uploadIcon";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import env from "env";
+import convertJSTToDate from "Modules/convert_JST_to_date";
 
 export const LOGIN_USER_EVENT = "LOGIN_USER_EVENT";
 export const LOGOUT_USER_EVENT = "LOGOUT_USER_EVENT";
@@ -72,6 +73,7 @@ export const showAllUsers = (pageNum) => async (dispatch) => {
   dispatch({ type: SHOW_ALL_USERS, response });
 };
 
+// セレクトボックス用のユーザ一覧を取得
 export const getAllUsersForSelectBox = (userID) => async (dispatch) => {
   const loginUserInfo = getLoginUserInfo();
   const response = await axios.get(
@@ -97,7 +99,9 @@ export const getUserDetail = (userId) => async (dispatch) => {
 // ユーザ情報を更新
 export const putUserEvent = (user, iconImage) => async (dispatch) => {
   const loginUserInfo = getLoginUserInfo();
+  let flag = false;
   if (iconImage) {
+    flag = true;
     let preSignedURL = user.icon_name.split("/")[4];
     const deleteFileName = preSignedURL.split("?")[0];
 
@@ -113,13 +117,14 @@ export const putUserEvent = (user, iconImage) => async (dispatch) => {
       });
     }
   }
+  user.created_date = convertJSTToDate(user.created_date);
 
   const response = await axios.put(
     `${ROOT_URL}/api/users/${user.user_id}`,
     user,
     loginUserInfo.sendConfig
   );
-  dispatch({ type: UPDATE_USER_EVENT, response });
+  dispatch({ type: UPDATE_USER_EVENT, response, flag });
 };
 
 // ユーザを削除

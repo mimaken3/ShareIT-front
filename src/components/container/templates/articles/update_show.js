@@ -14,6 +14,7 @@ import ArticleID from "Atoms/articles/id";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import DeleteButton from "Atoms/buttons/delete_button";
 import Privacy from "Atoms/articles/privacy";
+import convertJSTToDate from "Modules/convert_JST_to_date";
 
 class ArticleUpdate extends Component {
   constructor(props) {
@@ -54,6 +55,8 @@ class ArticleUpdate extends Component {
     values.article_topics = this.refs.TopicSelectBox.getSendTopics(
       values.article_topics
     );
+
+    values.created_date = convertJSTToDate(values.created_date);
 
     // プライバシーを設定
     values.is_private = this.refs.Privacy.privacy;
