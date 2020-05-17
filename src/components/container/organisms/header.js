@@ -16,6 +16,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import IconButton from "@material-ui/core/IconButton";
 import MoreIcon from "@material-ui/icons/MoreVert";
+import CreateArticleButton from "Atoms/buttons/create_article_button";
+import ToAllUsersButton from "Atoms/buttons/to_all_users_button";
+import ToAllArticlesButton from "Atoms/buttons/to_all_articles_button";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -60,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   guest: {
     color: "white",
     fontSize: "18px",
-    marginRight: "20px",
+    marginRight: "10px",
     marginTop: "auto",
     marginBottom: "auto",
   },
@@ -74,13 +77,15 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionDesktop: {
     display: "none",
-    [theme.breakpoints.up("md")]: {
+    // sm: 600px
+    [theme.breakpoints.up("sm")]: {
       display: "flex",
     },
   },
   sectionMobile: {
     display: "flex",
-    [theme.breakpoints.up("md")]: {
+    // sm: 600px
+    [theme.breakpoints.up("sm")]: {
       display: "none",
     },
   },
@@ -100,7 +105,7 @@ const Header = withRouter((props) => {
     setMobileMoreAnchorEl(null);
   };
 
-  // メニューバーを表示
+  // メニューバーをポップアップ表示
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
@@ -113,33 +118,32 @@ const Header = withRouter((props) => {
 
     const mobileMenuId = "primary-search-account-menu-mobile";
     const renderMobileMenu = (
-      <Menu
-        anchorEl={mobileMoreAnchorEl}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        id={mobileMenuId}
-        keepMounted
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-        open={isMobileMenuOpen}
-        onClose={handleMobileMenuClose}
-      >
-        <MenuItem>
-          <Button onClick={() => toUserShowPage(loginUser.userID)}>
-            <div className={classes.memuUserIcon}>
-              <UserIcon iconData={loginUserIconURL} />
-            </div>
-            <div className={classes.memuUserName}>{loginUser.userName}</div>
-          </Button>
-        </MenuItem>
-        <MenuItem>
-          <div>
-            <Logout
-              fontColor="black"
-              callback={handleMobileMenuClose}
-              param="mobile"
-            />
+      <React.Fragment>
+        <Menu
+          anchorEl={mobileMoreAnchorEl}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          id={mobileMenuId}
+          keepMounted
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          open={isMobileMenuOpen}
+          onClose={handleMobileMenuClose}
+        >
+          <div className={classes.sectionMobile}>
+            <MenuItem onClick={() => toUserShowPage(loginUser.userID)}>
+              <div className={classes.memuUserIcon}>
+                <UserIcon iconData={loginUserIconURL} />
+              </div>
+              <div className={classes.memuUserName}>{loginUser.userName}</div>
+            </MenuItem>
           </div>
-        </MenuItem>
-      </Menu>
+
+          <ToAllArticlesButton callback={handleMobileMenuClose} />
+
+          <ToAllUsersButton callback={handleMobileMenuClose} />
+
+          <Logout fontColor="black" callback={handleMobileMenuClose} />
+        </Menu>
+      </React.Fragment>
     );
     Display = (
       <div className={classes.root}>
@@ -154,8 +158,9 @@ const Header = withRouter((props) => {
                 ShareIT
               </Button>
             </Typography>
-
             <div className={classes.grow} />
+
+            <CreateArticleButton />
             <div className={classes.sectionDesktop}>
               <Button onClick={() => toUserShowPage(loginUser.userID)}>
                 <div className={classes.userIcon}>
@@ -163,21 +168,17 @@ const Header = withRouter((props) => {
                 </div>
                 <div className={classes.userName}>{loginUser.userName}</div>
               </Button>
-              <Logout fontColor="white" />
             </div>
-
-            <div className={classes.sectionMobile}>
-              <IconButton
-                aria-label="show more"
-                aria-controls={mobileMenuId}
-                aria-haspopup="true"
-                onClick={handleMobileMenuOpen}
-                color="inherit"
-                className={classes.moreIcon}
-              >
-                <MoreIcon />
-              </IconButton>
-            </div>
+            <IconButton
+              aria-label="show more"
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+              className={classes.moreIcon}
+            >
+              <MoreIcon />
+            </IconButton>
           </Toolbar>
         </AppBar>
         {renderMobileMenu}
@@ -196,20 +197,11 @@ const Header = withRouter((props) => {
         open={isMobileMenuOpen}
         onClose={handleMobileMenuClose}
       >
-        <MenuItem>
-          <Button onClick={() => toUserShowPage(loginUser.userID)}>
-            <div className={classes.memuGuestUserName}>ゲスト</div>
-          </Button>
-        </MenuItem>
-        <MenuItem>
-          <div>
-            <Button
-              onClick={toLoginPage}
-              style={{ color: "black", fontSize: 17 }}
-            >
-              ログイン
-            </Button>
-          </div>
+        <MenuItem
+          onClick={toLoginPage}
+          style={{ color: "black", fontSize: 17 }}
+        >
+          ログイン
         </MenuItem>
       </Menu>
     );
@@ -228,8 +220,8 @@ const Header = withRouter((props) => {
             </Typography>
 
             <div className={classes.grow} />
+            <div className={classes.guest}>ゲスト</div>
             <div className={classes.sectionDesktop}>
-              <div className={classes.guest}>ゲスト</div>
               <Button
                 onClick={toLoginPage}
                 style={{ color: "white", fontSize: 17, marginBottom: 0 }}

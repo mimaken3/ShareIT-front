@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ToAllUsersButton from "Atoms/buttons/to_all_users_button";
-import CreateArticleButton from "Atoms/buttons/create_article_button";
 import AllArticlesWithPaging from "Organisms/all_articles_with_paging";
 import SearchArticles from "Molecules/articles/search";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
@@ -44,14 +43,6 @@ class ArticlesIndex extends Component {
 
           <div>
             <AllArticlesWithPaging historyAction={this.props.history.action} />
-          </div>
-
-          <div>
-            <CreateArticleButton />
-          </div>
-
-          <div>
-            <ToAllUsersButton />
           </div>
         </Container>
       );
