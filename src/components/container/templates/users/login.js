@@ -89,7 +89,11 @@ class Login extends Component {
   render() {
     const { handleSubmit, submitting } = this.props;
     let loginFail;
-    if (this.props.authFail && !this.state.touched) {
+    if (
+      this.props.authFail &&
+      !this.state.userNameTouched &&
+      !this.state.passwordTouched
+    ) {
       loginFail = <div>ユーザ名、もしくはパスワードが間違っています</div>;
     }
 
