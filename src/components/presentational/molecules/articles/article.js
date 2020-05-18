@@ -10,6 +10,8 @@ import CardActions from "@material-ui/core/CardActions";
 import CardHeader from "@material-ui/core/CardHeader";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import { withRouter } from "react-router";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
 
 class Article extends Component {
   constructor(props) {
@@ -22,8 +24,32 @@ class Article extends Component {
   }
 
   render() {
+    const theme = createMuiTheme({
+      overrides: {
+        // セレクトボックスを開いたとき、TextFieldの文字が被るのを
+        // 防ぐため zIndex: 1 -> zIndex: 0
+        MuiTypography: {
+          displayBlock: {
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 1,
+            overflow: "hidden",
+          },
+        },
+        // 記事のタイトルと内容の文字列を...で省略
+        MuiCardContent: {
+          root: {
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 4,
+            overflow: "hidden",
+            padding: "16px 16px 0px", // 下だけ0
+          },
+        },
+      },
+    });
     return (
-      <React.Fragment>
+      <ThemeProvider theme={theme}>
         <Card className={this.props.classes.root}>
           <ButtonBase
             className={this.props.classes.cardBox}
@@ -47,7 +73,7 @@ class Article extends Component {
             />
           </CardActions>
         </Card>
-      </React.Fragment>
+      </ThemeProvider>
     );
   }
 }
