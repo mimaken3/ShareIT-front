@@ -30,6 +30,9 @@ import Button from "@material-ui/core/Button";
 
 const ROOT_URL = env.ROOT_URL;
 
+const CancelToken = axios.CancelToken;
+let cancel;
+
 class SignUp extends Component {
   constructor(props) {
     super(props);
@@ -119,20 +122,9 @@ class SignUp extends Component {
       user_name: this.state.userName,
       email: "",
     };
-    axios
-      .post(`${ROOT_URL}/signUp/check`, userInfo)
-      .then((response) => {
-        const num = response.data.result_user_name_num;
-        if (num === 0) {
-          this.setState({ isUserNameError: false });
-        }
-        this.setState({
-          resultUserNameDuplicationCheck: num,
-        });
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
+
+    // 重複チェック
+    this.duplicationCheck("userName", userInfo);
   }
 
   // 入力されたメアドのチェック
@@ -166,16 +158,40 @@ class SignUp extends Component {
       user_name: "",
       email: this.state.email,
     };
+    // 重複チェック
+    this.duplicationCheck("email", userInfo);
+  }
+
+  // 重複チェック
+  duplicationCheck(checkName, userInfo) {
+    if (cancel) {
+      cancel();
+    }
+
     axios
-      .post(`${ROOT_URL}/signUp/check`, userInfo)
+      .post(`${ROOT_URL}/signUp/check`, userInfo, {
+        cancelToken: new CancelToken(function executor(c) {
+          cancel = c;
+        }),
+      })
       .then((response) => {
-        const num = response.data.result_email_num;
-        if (num === 0) {
-          this.setState({ isEmailError: false });
+        if (checkName === "userName") {
+          const num = response.data.result_user_name_num;
+          if (num === 0) {
+            this.setState({ isUserNameError: false });
+          }
+          this.setState({
+            resultUserNameDuplicationCheck: num,
+          });
+        } else if (checkName === "email") {
+          const num = response.data.result_email_num;
+          if (num === 0) {
+            this.setState({ isEmailError: false });
+          }
+          this.setState({
+            resultEmailDuplicationCheck: response.data.result_email_num,
+          });
         }
-        this.setState({
-          resultEmailDuplicationCheck: response.data.result_email_num,
-        });
       })
       .catch((error) => {
         console.log(error.response);
