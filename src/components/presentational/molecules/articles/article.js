@@ -12,6 +12,7 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import { withRouter } from "react-router";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import TopicTags from "Atoms/topic_tags";
 
 class Article extends Component {
   constructor(props) {
@@ -26,24 +27,14 @@ class Article extends Component {
   render() {
     const theme = createMuiTheme({
       overrides: {
-        // セレクトボックスを開いたとき、TextFieldの文字が被るのを
-        // 防ぐため zIndex: 1 -> zIndex: 0
+        // 記事のタイトル文字列を...で省略
         MuiTypography: {
           displayBlock: {
             display: "-webkit-box",
             WebkitBoxOrient: "vertical",
             WebkitLineClamp: 1,
             overflow: "hidden",
-          },
-        },
-        // 記事のタイトルと内容の文字列を...で省略
-        MuiCardContent: {
-          root: {
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-            WebkitLineClamp: 4,
-            overflow: "hidden",
-            padding: "16px 16px 0px", // 下だけ0
+            fontWeight: "bold",
           },
         },
       },
@@ -54,7 +45,6 @@ class Article extends Component {
           <ButtonBase
             className={this.props.classes.cardBox}
             onClick={() => this.handleEvent()}
-            style={{ width: "100%" }}
           >
             <CardHeader
               titleTypographyProps={{ variant: "h6" }}
@@ -62,7 +52,10 @@ class Article extends Component {
               subheader={this.props.article.created_date}
             />
             <CardContent className={this.props.classes.cardContent}>
-              {this.props.article.article_content}
+              <div className={this.props.classes.content}>
+                {this.props.article.article_content}
+              </div>
+              <TopicTags topics={this.props.article.article_topics} />
             </CardContent>
           </ButtonBase>
           <CardActions disableSpacing>
@@ -91,9 +84,18 @@ const styles = (theme) => ({
   cardBox: {
     display: "block",
     textAlign: "initial",
+    width: "100%",
   },
   cardContent: {
     fontSize: "18px",
+  },
+  // 記事の内容の文字列を...で省略
+  content: {
+    marginBottom: "10px",
+    display: "-webkit-box",
+    WebkitBoxOrient: "vertical",
+    WebkitLineClamp: 2,
+    overflow: "hidden",
   },
 });
 

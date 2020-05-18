@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ToAllUsersButton from "Atoms/buttons/to_all_users_button";
 import AllArticlesWithPaging from "Organisms/all_articles_with_paging";
 import SearchArticles from "Molecules/articles/search";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
@@ -9,7 +8,6 @@ import { getAllUsersForSelectBox } from "Actions/user";
 import { getAllTopics } from "Actions/topic";
 import { searchArticles } from "Actions/article";
 import Loading from "Templates/loading";
-import AllArticleTitle from "Atoms/articles/all_articles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 
@@ -33,11 +31,8 @@ class ArticlesIndex extends Component {
       return (
         <Container component="main" maxWidth="sm">
           <CssBaseline />
-          <div>
-            <AllArticleTitle />
-          </div>
 
-          <div style={{ display: "-webkit-flex" }}>
+          <div style={{ display: "-webkit-flex", marginTop: "20px" }}>
             <SearchArticles />
           </div>
 
