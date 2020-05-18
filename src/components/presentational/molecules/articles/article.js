@@ -54,6 +54,7 @@ class Article extends Component {
           <ButtonBase
             className={this.props.classes.cardBox}
             onClick={() => this.handleEvent()}
+            style={{ width: "100%" }}
           >
             <CardHeader
               titleTypographyProps={{ variant: "h6" }}
