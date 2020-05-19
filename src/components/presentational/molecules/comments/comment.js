@@ -5,6 +5,7 @@ import CommentEdit from "./edit";
 import DeleteButton from "Atoms/buttons/delete_button";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import EditIcon from "@material-ui/icons/Edit";
+import { withRouter } from "react-router";
 
 class Comment extends Component {
   constructor(props) {
@@ -121,4 +122,4 @@ class Comment extends Component {
   }
 }
 
-export default Comment;
+export default withRouter(Comment);
