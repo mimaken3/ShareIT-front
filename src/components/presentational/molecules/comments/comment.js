@@ -89,6 +89,7 @@ class Comment extends Component {
               fontSize: "16px",
               width: "100%",
               whiteSpace: "pre-wrap",
+              marginTop: "4px",
             }}
           >
             {this.props.comment.content}
