@@ -11,7 +11,7 @@ class AllComments extends Component {
   // コメントを表示する関数
   renderComments(loginUserName) {
     return _.map(this.props.comments, (comment, index) => (
-      <div key={index}>
+      <div key={index} style={{ marginBottom: "20px" }}>
         <Comment
           comment={comment}
           loginUserName={loginUserName}
