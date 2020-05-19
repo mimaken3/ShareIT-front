@@ -6,6 +6,7 @@ import DeleteButton from "Atoms/buttons/delete_button";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import EditIcon from "@material-ui/icons/Edit";
 import { withRouter } from "react-router";
+import CreatedDate from "Atoms/created_date";
 
 class Comment extends Component {
   constructor(props) {
@@ -111,9 +112,12 @@ class Comment extends Component {
             </div>
           </Button>
         </div>
-        <div style={{ float: "left", width: "80%" }}>
+        <div style={{ float: "left", width: "82%" }}>
           <div style={{ marginTop: "10px" }}>
             {this.props.comment.user_name}
+            <span style={{ marginLeft: "3px" }}>
+              <CreatedDate createdDate={this.props.comment.created_date} />
+            </span>
           </div>
           {commentDisplay}
         </div>
