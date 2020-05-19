@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { updateComment } from "Actions/comment";
 import { reduxForm } from "redux-form";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import TextField from "@material-ui/core/TextField";
+import { Button } from "@material-ui/core";
+import SendIcon from "@material-ui/icons/Send";
 
 class CommentEdit extends Component {
   constructor(props) {
@@ -13,10 +17,16 @@ class CommentEdit extends Component {
     this.state = {
       inputComment: "",
       commentCheck: false,
+      submitting: false,
     };
   }
 
+  componentDidMount() {
+    this.setState({ inputComment: this.props.comment.content });
+  }
+
   async onSubmit() {
+    this.setState({ submitting: true });
     const commentObj = {
       article_id: this.props.comment.article_id,
       comment_id: this.props.comment.comment_id,
@@ -43,24 +53,66 @@ class CommentEdit extends Component {
   }
 
   render() {
-    const { handleSubmit, submitting } = this.props;
+    // コメントの文字数表示
+    let CommentCount;
+    if (this.state.inputComment.length > 1000) {
+      CommentCount = (
+        <React.Fragment>
+          <span style={{ color: "red" }}>{this.state.inputComment.length}</span>
+          /1000 文字
+        </React.Fragment>
+      );
+    } else {
+      CommentCount = (
+        <React.Fragment>
+          {this.state.inputComment.length}/1000 文字
+        </React.Fragment>
+      );
+    }
+
+    const theme = createMuiTheme({
+      palette: {
+        primary: {
+          main: "#00CCFF", // 水色
+        },
+        secondary: {
+          main: "#888888", // グレー
+        },
+      },
+    });
+
     return (
-      <form id="create-comment-form" onSubmit={handleSubmit(this.onSubmit)}>
-        <TextareaAutosize
-          aria-label="comment"
-          rowsMin={3}
-          rowsMax={20}
-          placeholder="1000文字以内"
-          defaultValue={this.props.comment.content}
+      <ThemeProvider theme={theme}>
+        <TextField
+          id="standard-multiline-flexible"
+          multiline
+          rowsMax={10}
           onChange={this.handleChange}
+          style={{ minWidth: "280px", width: "100%" }}
+          color="secondary"
+          defaultValue={this.props.comment.content}
         />
 
-        <input
-          type="submit"
-          value="Submit"
-          disabled={this.state.commentCheck || submitting}
-        />
-      </form>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ color: "white", float: "right", marginTop: "5px" }}
+          disabled={this.state.commentCheck || this.state.submitting}
+          onClick={this.onSubmit}
+          startIcon={<SendIcon />}
+        >
+          更新
+        </Button>
+        <span
+          style={{
+            float: "right",
+            marginRight: "10px",
+            marginTop: "10px",
+          }}
+        >
+          {CommentCount}
+        </span>
+      </ThemeProvider>
     );
   }
 }

@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import CommentEdit from "./edit";
 import DeleteButton from "Atoms/buttons/delete_button";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
+import EditIcon from "@material-ui/icons/Edit";
 
 class Comment extends Component {
   constructor(props) {
@@ -48,6 +49,19 @@ class Comment extends Component {
     }
 
     // 編集ボタン
+    let editButton;
+    if (this.props.loginUserName === this.props.comment.user_name || isAdmin) {
+      editButton = (
+        <Button
+          onClick={() => this.editComment()}
+          variant="outlined"
+          startIcon={<EditIcon />}
+        >
+          編集
+        </Button>
+      );
+    }
+
     let commentDisplay;
     if (this.state.isEdited) {
       commentDisplay = (
@@ -59,37 +73,49 @@ class Comment extends Component {
               callback={() => this.Edited()}
             />
           </div>
-          <div>
-            <Button onClick={() => this.onEditCancel()}>キャンセル</Button>
+          <div style={{ marginTop: "5px" }}>
+            <Button onClick={() => this.onEditCancel()} variant="outlined">
+              キャンセル
+            </Button>
           </div>
         </div>
       );
     } else {
       commentDisplay = (
-        <div>
-          <div>コメント {this.props.comment.content}</div>
-        </div>
+        <React.Fragment>
+          <div
+            style={{
+              fontSize: "16px",
+              width: "100%",
+              whiteSpace: "pre-wrap",
+            }}
+          >
+            {this.props.comment.content}
+          </div>
+          <div style={{ float: "left", marginRight: "5px" }}>{editButton}</div>
+          <div style={{ float: "left" }}>{deleteButton}</div>
+        </React.Fragment>
       );
-    }
-
-    let editButton;
-    if (this.props.loginUserName === this.props.comment.user_name || isAdmin) {
-      editButton = <Button onClick={() => this.editComment()}>編集</Button>;
     }
 
     return (
       <React.Fragment>
-        <div>
+        <div style={{ float: "left" }}>
           <Button
             onClick={() => this.toUserShowPage(this.props.comment.user_id)}
           >
-            <UserIcon iconData={this.props.comment.icon_name} />
+            <div style={{ width: "50px", height: "50px" }}>
+              <UserIcon iconData={this.props.comment.icon_name} />
+            </div>
           </Button>
-          <div>ユーザ名 {this.props.comment.user_name}</div>
-          <div>{commentDisplay}</div>
-          <div>{editButton}</div>
-          <div>{deleteButton}</div>
         </div>
+        <div style={{ float: "left", width: "80%" }}>
+          <div style={{ marginTop: "10px" }}>
+            {this.props.comment.user_name}
+          </div>
+          {commentDisplay}
+        </div>
+        <div style={{ clear: "both" }}></div>
       </React.Fragment>
     );
   }

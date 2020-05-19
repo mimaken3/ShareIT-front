@@ -72,8 +72,8 @@ class Like extends Component {
     }
     return (
       <React.Fragment>
-        <div>{isLiked}</div>
-        <div className={this.props.classes.likeNum}>
+        <div style={{ float: "left" }}>{isLiked}</div>
+        <div style={{ float: "left" }} className={this.props.classes.likeNum}>
           <LikeNum likeNum={this.state.likeNum} />
         </div>
       </React.Fragment>

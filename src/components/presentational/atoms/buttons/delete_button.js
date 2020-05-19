@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { deleteUserEvent } from "Actions/user";
 import { deleteEvent } from "Actions/article";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 // 削除ボタン
 class DeleteButton extends Component {
@@ -65,7 +66,7 @@ class DeleteButton extends Component {
         <div>
           <Button
             variant="outlined"
-            color="primary"
+            startIcon={<DeleteIcon />}
             onClick={() => this.handleClickOpen()}
           >
             削除

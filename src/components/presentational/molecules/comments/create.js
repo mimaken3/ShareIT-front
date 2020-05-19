@@ -2,8 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { postComment } from "Actions/comment";
 import { reduxForm } from "redux-form";
-import getLoginUserInfo from "Modules/getLoginUserInfo";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import UserIcon from "Atoms/user_icon";
+import TextField from "@material-ui/core/TextField";
+import { Button } from "@material-ui/core";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import SendIcon from "@material-ui/icons/Send";
 
 class CommentNew extends Component {
   constructor(props) {
@@ -14,10 +18,12 @@ class CommentNew extends Component {
     this.state = {
       inputComment: "",
       commentCheck: true,
+      submitting: false,
     };
   }
 
   async onSubmit() {
+    this.setState({ submitting: true });
     const commentObj = {
       articleID: this.props.articleID,
       comment: this.state.inputComment,
@@ -28,7 +34,7 @@ class CommentNew extends Component {
 
     // コメントの入力欄を空に
     document.getElementById("create-comment-form").reset();
-    this.setState({ inputComment: "", commentCheck: true });
+    this.setState({ inputComment: "", commentCheck: true, submitting: false });
   }
 
   // 入力欄のチェック
@@ -36,7 +42,7 @@ class CommentNew extends Component {
     const content = e.target.value;
 
     this.setState({ inputComment: content });
-    if (content.match(/\S/g) && content.length < 1000) {
+    if (content.match(/\S/g) && content.length <= 1000) {
       this.setState({ commentCheck: false });
     } else {
       this.setState({ commentCheck: true });
@@ -44,36 +50,88 @@ class CommentNew extends Component {
   }
 
   // コメント入力フォーム
-  renderCreateComment(loginUserName) {
-    const { handleSubmit, submitting } = this.props;
+  renderCreateComment() {
+    const loginUserIconURL = localStorage.getItem("login_user_icon_URL");
+
+    // コメントの文字数表示
+    let CommentCount;
+    if (this.state.inputComment.length > 1000) {
+      CommentCount = (
+        <React.Fragment>
+          <span style={{ color: "red" }}>{this.state.inputComment.length}</span>
+          /1000 文字
+        </React.Fragment>
+      );
+    } else {
+      CommentCount = (
+        <React.Fragment>
+          {this.state.inputComment.length}/1000 文字
+        </React.Fragment>
+      );
+    }
+
+    const theme = createMuiTheme({
+      palette: {
+        primary: {
+          main: "#00CCFF", // 水色
+        },
+        secondary: {
+          main: "#888888", // グレー
+        },
+      },
+    });
+
     return (
-      <div>
-        <div>コメント入力欄</div>
-        <form id="create-comment-form" onSubmit={handleSubmit(this.onSubmit)}>
-          {loginUserName}
+      <ThemeProvider theme={theme}>
+        <form id="create-comment-form">
+          <div style={{ marginTop: "30px" }}>
+            <div style={{ float: "left", width: "100%" }}>
+              <div style={{ width: "50px", height: "50px", float: "left" }}>
+                <UserIcon iconData={loginUserIconURL} />
+              </div>
 
-          <TextareaAutosize
-            aria-label="comment"
-            rowsMin={3}
-            rowsMax={20}
-            placeholder="1000文字以内"
-            onChange={this.handleChange}
-          />
+              <div style={{ float: "left", marginLeft: "5px", width: "85%" }}>
+                <TextField
+                  id="standard-multiline-flexible"
+                  label="コメント"
+                  multiline
+                  rowsMax={10}
+                  onChange={this.handleChange}
+                  style={{ minWidth: "280px", width: "100%" }}
+                  color="secondary"
+                  value={this.state.inputComment}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ color: "white", float: "right", marginTop: "5px" }}
+                  disabled={this.state.commentCheck || this.state.submitting}
+                  onClick={this.onSubmit}
+                  startIcon={<SendIcon />}
+                >
+                  送信
+                </Button>
+                <span
+                  style={{
+                    float: "right",
+                    marginRight: "10px",
+                    marginTop: "10px",
+                  }}
+                >
+                  {CommentCount}
+                </span>
+              </div>
+            </div>
 
-          <input
-            type="submit"
-            value="Submit"
-            disabled={this.state.commentCheck || submitting}
-          />
+            <div style={{ clear: "both" }}></div>
+          </div>
         </form>
-      </div>
+      </ThemeProvider>
     );
   }
 
   render() {
-    const loginUser = getLoginUserInfo();
-    const loginUserName = loginUser.userName;
-    return <div>{this.renderCreateComment(loginUserName)}</div>;
+    return <div>{this.renderCreateComment()}</div>;
   }
 }
 

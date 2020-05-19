@@ -5,6 +5,7 @@ import { reduxForm } from "redux-form";
 import Comment from "Molecules/comments/comment";
 import { postComment } from "Actions/comment";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
+import CommentOutlinedIcon from "@material-ui/icons/CommentOutlined";
 
 class AllComments extends Component {
   // コメントを表示する関数
@@ -23,17 +24,29 @@ class AllComments extends Component {
   render() {
     const loginUser = getLoginUserInfo();
     const loginUserName = loginUser.userName;
+    let commentBox = (
+      <React.Fragment>
+        <div style={{ float: "left" }}>
+          <CommentOutlinedIcon style={{ float: "left" }} />
+          <h3 style={{ float: "left", marginTop: "0px", marginLeft: "3px" }}>
+            コメント欄
+          </h3>
+        </div>
+        <div style={{ clear: "both" }}></div>
+      </React.Fragment>
+    );
+
     if (Object.values(this.props.comments).length !== 0) {
       return (
         <React.Fragment>
-          <div>コメント欄</div>
+          {commentBox}
           {this.renderComments(loginUserName)}
         </React.Fragment>
       );
     } else {
       return (
         <React.Fragment>
-          <div>コメント欄</div>
+          {commentBox}
           <div>コメントはありません</div>
         </React.Fragment>
       );

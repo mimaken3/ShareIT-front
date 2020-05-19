@@ -18,6 +18,9 @@ import AllComments from "Organisms/all_comments";
 import CommentNew from "Molecules/comments/create";
 import DeleteButton from "Atoms/buttons/delete_button";
 import NotFoundPage from "Templates/not_found_page";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+import TopicTags from "Atoms/topic_tags";
 
 class ArticleShow extends Component {
   constructor(props) {
@@ -54,32 +57,37 @@ class ArticleShow extends Component {
       if (loginUserID === this.props.article.created_user_id || isAdmin) {
         const sendObj = { articleID: this.props.article.article_id };
         AuthorizedEditButton = (
-          <div>
-            <EditButton path="articles" id={this.props.article.article_id} />
-            <DeleteButton param="article" sendObj={sendObj} />
+          <div
+            style={{ float: "left", marginTop: "30px", marginBottom: "100px" }}
+          >
+            <div style={{ float: "left", marginRight: "5px" }}>
+              <EditButton path="articles" id={this.props.article.article_id} />
+            </div>
+            <div style={{ float: "left" }}>
+              <DeleteButton param="article" sendObj={sendObj} />
+            </div>
           </div>
         );
       }
 
       return (
-        <React.Fragment>
-          <div>記事詳細</div>
-          <div>
-            <ArticleID articleID={this.props.article.article_id} />
+        <Container component="main" maxWidth="md">
+          <CssBaseline />
+
+          <div style={{ marginTop: "20px" }}>
+            <CreatedDate createdDate={this.props.article.created_date} />
           </div>
 
           <div>
-            <ArticleTitle articleTitle={this.props.article.article_title} />
+            <h2>{this.props.article.article_title}</h2>
           </div>
 
-          <div>
-            <Topic topic={this.props.article.article_topics} />
-          </div>
+          <TopicTags topics={this.props.article.article_topics} />
 
           <div>
-            <ArticleContent
-              articleContent={this.props.article.article_content}
-            />
+            <p style={{ fontSize: "18px", minHeight: "30px" }}>
+              {this.props.article.article_content}
+            </p>
           </div>
 
           <Like
@@ -89,44 +97,30 @@ class ArticleShow extends Component {
             loginUserID={loginUserID}
           />
 
-          <div>
-            <CreatedDate createdDate={this.props.article.created_date} />
-          </div>
+          <div style={{ clear: "both" }}>{AuthorizedEditButton}</div>
 
-          <div>{AuthorizedEditButton}</div>
-
-          <div>
-            <CreateArticleButton />
-          </div>
-
-          <div>
-            <ToAllArticlesButton />
-          </div>
-
-          <div>
+          <div style={{ clear: "both", marginTop: "40px" }}>
             <AllComments articleID={this.props.article.article_id} />
           </div>
 
           <div>
             <CommentNew articleID={this.props.article.article_id} />
           </div>
-        </React.Fragment>
+        </Container>
       );
     } else if (this.props.isEmpty && !this.state.loading) {
       return (
-        <React.Fragment>
-          <div>
-            <NotFoundPage />
-          </div>
-        </React.Fragment>
+        <Container component="main" maxWidth="md">
+          <CssBaseline />
+          <NotFoundPage />
+        </Container>
       );
     } else {
       return (
-        <React.Fragment>
-          <div>
-            <Loading />
-          </div>
-        </React.Fragment>
+        <Container component="main" maxWidth="md">
+          <CssBaseline />
+          <Loading />
+        </Container>
       );
     }
   }

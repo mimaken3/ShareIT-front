@@ -1,13 +1,26 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Button from "@material-ui/core/Button";
+import EditIcon from "@material-ui/icons/Edit";
+import { withRouter } from "react-router";
 
 // 編集ボタン
-const EditButton = (props) => {
+const EditButton = withRouter((props) => {
   return (
     <React.Fragment>
-      <Link to={`/api/${props.path}/${props.id}/edit`}>編集</Link>
+      <Button
+        variant="outlined"
+        startIcon={<EditIcon />}
+        onClick={() => Edit()}
+      >
+        編集
+      </Button>
     </React.Fragment>
   );
-};
+
+  // 編集画面へ
+  function Edit() {
+    props.history.push("/api/" + props.path + "/" + props.id + "/edit");
+  }
+});
 
 export default EditButton;
