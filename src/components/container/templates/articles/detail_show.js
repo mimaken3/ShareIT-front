@@ -79,7 +79,13 @@ class ArticleShow extends Component {
           <TopicTags topics={this.props.article.article_topics} />
 
           <div>
-            <p style={{ fontSize: "18px", minHeight: "30px" }}>
+            <p
+              style={{
+                fontSize: "18px",
+                minHeight: "30px",
+                whiteSpace: "pre-wrap",
+              }}
+            >
               {this.props.article.article_content}
             </p>
           </div>
