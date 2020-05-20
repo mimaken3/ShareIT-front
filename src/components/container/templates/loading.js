@@ -6,7 +6,8 @@ export default function Loading() {
   return (
     <React.Fragment>
       <div>
-        <CylinderSpinLoader size={18} color="#00CCFF" />
+        {/* 青にしたい場合は color="#00CCFF" */}
+        <CylinderSpinLoader size={18} />
       </div>
     </React.Fragment>
   );
