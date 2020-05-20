@@ -448,25 +448,27 @@ class SignUp extends Component {
                   />
                 </div>
 
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  id="user_name"
-                  label="ユーザ名 *必須"
-                  name="user_name"
-                  autoComplete="user_name"
-                  disabled={submitting}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <PermIdentityIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  onChange={(e) => this.onChangeUserName(e)}
-                />
-                {userNameResult}
+                <div style={{ marginBottom: "10px" }}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    id="user_name"
+                    label="ユーザ名 *必須"
+                    name="user_name"
+                    autoComplete="user_name"
+                    disabled={submitting}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <PermIdentityIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    onChange={(e) => this.onChangeUserName(e)}
+                  />
+                  {userNameResult}
+                </div>
                 {/* <TextField
                   variant="outlined"
                   margin="normal"
