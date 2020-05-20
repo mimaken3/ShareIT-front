@@ -62,7 +62,6 @@ const User = withRouter((props) => {
             }
             titleTypographyProps={{ variant: "h6" }}
             title={props.user.user_name}
-            subheader={props.user.created_date}
           />
           <CardContent className={classes.cardContent}>
             <div className={classes.content}>{props.user.profile}</div>

@@ -20,6 +20,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import BackButton from "Atoms/buttons/back";
+import SendIcon from "@material-ui/icons/Send";
 
 class ArticleUpdate extends Component {
   constructor(props) {
@@ -293,6 +294,7 @@ class ArticleUpdate extends Component {
                     this.state.submitting
                   }
                   onClick={this.onSubmit}
+                  startIcon={<SendIcon />}
                 >
                   更新
                 </Button>

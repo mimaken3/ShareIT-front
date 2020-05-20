@@ -14,6 +14,7 @@ import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import SendIcon from "@material-ui/icons/Send";
 
 class articleNew extends Component {
   constructor(props) {
@@ -235,8 +236,9 @@ class articleNew extends Component {
                 this.state.submitting
               }
               onClick={this.onSubmit}
+              startIcon={<SendIcon />}
             >
-              送信
+              作成
             </Button>
           </Container>
         </ThemeProvider>
