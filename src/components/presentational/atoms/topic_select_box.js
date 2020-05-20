@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Select from "react-select";
 import isNumber from "Modules/is_number";
+import selectBoxStyles from "Atoms/select_box_styles";
 
 // トピックのセレクトボックス
 class TopicSelectBox extends Component {
@@ -124,6 +125,7 @@ class TopicSelectBox extends Component {
 
   render() {
     let TopicSelectBox;
+
     if (this.props.param === "search") {
       // 検索用セレクト(一つのみ)
       TopicSelectBox = (
@@ -133,6 +135,7 @@ class TopicSelectBox extends Component {
           options={this.state.allTopicsArr}
           placeholder="トピックを選択して下さい"
           value={this.state.selectedOption}
+          styles={selectBoxStyles}
         />
       );
     } else {
@@ -145,7 +148,7 @@ class TopicSelectBox extends Component {
           isMulti
           placeholder="トピックを選択して下さい"
           value={this.state.selectedOption}
-          // styles={{ zIndex: 999 }}
+          styles={selectBoxStyles}
         />
       );
     }

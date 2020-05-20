@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Select from "react-select";
+import selectBoxStyles from "Atoms/select_box_styles";
 
 // ユーザのセレクトボックス
 class UserSelectBox extends Component {
@@ -67,6 +68,7 @@ class UserSelectBox extends Component {
             options={allUsersArr}
             placeholder="ユーザを選択して下さい"
             value={this.state.selectedOption}
+            styles={selectBoxStyles}
           />
         </div>
       </React.Fragment>
