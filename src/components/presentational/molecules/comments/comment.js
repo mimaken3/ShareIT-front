@@ -8,7 +8,6 @@ import EditIcon from "@material-ui/icons/Edit";
 import { withRouter } from "react-router";
 import CreatedDate from "Atoms/created_date";
 import { withStyles } from "@material-ui/core/styles";
-import { compose } from "redux";
 
 class Comment extends Component {
   constructor(props) {
@@ -77,7 +76,7 @@ class Comment extends Component {
               callback={() => this.Edited()}
             />
           </div>
-          <div style={{ marginTop: "5px" }}>
+          <div className={this.props.classes.cancelButton}>
             <Button onClick={() => this.onEditCancel()} variant="outlined">
               キャンセル
             </Button>
@@ -87,49 +86,39 @@ class Comment extends Component {
     } else {
       commentDisplay = (
         <React.Fragment>
-          <div
-            style={{
-              fontSize: "16px",
-              width: "100%",
-              whiteSpace: "pre-wrap",
-              marginTop: "4px",
-            }}
-          >
+          <div className={this.props.classes.createdComment}>
             {this.props.comment.content}
           </div>
-          <div style={{ float: "left", marginRight: "5px" }}>{editButton}</div>
-          <div style={{ float: "left" }}>{deleteButton}</div>
+          <div className={this.props.classes.editButton}>{editButton}</div>
+          <div className={this.props.classes.deleteButton}>{deleteButton}</div>
         </React.Fragment>
       );
     }
 
     return (
       <React.Fragment>
-        <div style={{ float: "left" }}>
+        <div className={this.props.classes.userIconButton}>
           <Button
             onClick={() => this.toUserShowPage(this.props.comment.user_id)}
           >
-            <div style={{ width: "50px", height: "50px", float: "left" }}>
+            <div className={this.props.classes.userIcon}>
               <UserIcon iconData={this.props.comment.icon_name} />
             </div>
           </Button>
         </div>
 
-        {/* <div style={{ float: "left", width: "82%" }}> */}
-        <div style={{ marginTop: "10px", float: "left" }}>
-          <div style={{ float: "left", marginRight: "3px" }}>
+        <div className={this.props.classes.userNameAndComment}>
+          <div className={this.props.classes.userName}>
             {this.props.comment.user_name}
           </div>
-          {/* <div style={{ float: "left" }}> */}
+
           <div className={this.props.classes.createdDate}>
             <CreatedDate createdDate={this.props.comment.created_date} />
           </div>
         </div>
 
-        {/* <div style={{ float: "right", width: "82%" }}> */}
-        {/* <div style={{ float: "left", width: "82%" }}> */}
         <div className={this.props.classes.comment}>{commentDisplay}</div>
-        <div style={{ clear: "both" }}></div>
+        <div className={this.props.classes.stopFloat}></div>
       </React.Fragment>
     );
   }
@@ -153,6 +142,41 @@ const styles = (theme) => ({
     [theme.breakpoints.down(500)]: {
       clear: "both",
     },
+  },
+  userName: {
+    float: "left",
+    marginRight: "3px",
+  },
+  userIcon: {
+    width: "50px",
+    height: "50px",
+    float: "left",
+  },
+  userIconButton: {
+    float: "left",
+  },
+  userNameAndComment: {
+    marginTop: "10px",
+    float: "left",
+  },
+  cancelButton: {
+    marginTop: "5px",
+  },
+  editButton: {
+    float: "left",
+    marginRight: "5px",
+  },
+  deleteButton: {
+    float: "left",
+  },
+  createdComment: {
+    fontSize: "16px",
+    width: "100%",
+    whiteSpace: "pre-wrap",
+    marginTop: "4px",
+  },
+  stopFloat: {
+    clear: "both",
   },
 });
 
