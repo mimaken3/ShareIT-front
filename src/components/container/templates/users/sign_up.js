@@ -19,13 +19,13 @@ import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import MailOutlineIcon from "@material-ui/icons/MailOutline";
+// import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import ResultUserNameDuplicationCheck from "Atoms/users/name_check";
-import ResultEmailDuplicationCheck from "Atoms/users/email_check";
+// import ResultEmailDuplicationCheck from "Atoms/users/email_check";
 import Button from "@material-ui/core/Button";
 
 const ROOT_URL = env.ROOT_URL;
@@ -47,11 +47,11 @@ class SignUp extends Component {
       resultUserNameDuplicationCheck: 2, // 2はチェック前の数値(0: 重複なし、1: 重複)
       userNameTouched: false,
       // メアド
-      email: "",
-      emailError: "",
-      isEmailError: true,
-      resultEmailDuplicationCheck: 2, // 2はチェック前の数値(0: 重複なし、1: 重複)
-      emailTouched: false,
+      // email: "",
+      // emailError: "",
+      // isEmailError: true,
+      // resultEmailDuplicationCheck: 2, // 2はチェック前の数値(0: 重複なし、1: 重複)
+      // emailTouched: false,
       // パスワード
       password: "",
       passwordError: "",
@@ -128,41 +128,41 @@ class SignUp extends Component {
   }
 
   // 入力されたメアドのチェック
-  onChangeEmail = (e) => {
-    this.setState({ emailTouched: true });
-    this.setState({ isEmailError: true });
-    const email = e.target.value;
-    if (email) {
-      let regexp = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/;
-      if (!regexp.test(email)) {
-        this.setState({ emailError: "メールアドレスの書式が間違っています" });
-      } else {
-        this.setState({ emailError: "" });
-        this.setState({
-          resultEmailDuplicationCheck: 2,
-        });
-        this.setState({ email }, () => {
-          // メアドの重複チェック
-          this.emailDuplicationCheck();
-        });
-      }
-    } else {
-      this.setState({ emailError: "メールアドレスを入力して下さい" });
-    }
-  };
+  // onChangeEmail = (e) => {
+  //   this.setState({ emailTouched: true });
+  //   this.setState({ isEmailError: true });
+  //   const email = e.target.value;
+  //   if (email) {
+  //     let regexp = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/;
+  //     if (!regexp.test(email)) {
+  //       this.setState({ emailError: "メールアドレスの書式が間違っています" });
+  //     } else {
+  //       this.setState({ emailError: "" });
+  //       this.setState({
+  //         resultEmailDuplicationCheck: 2,
+  //       });
+  //       this.setState({ email }, () => {
+  //         // メアドの重複チェック
+  //         this.emailDuplicationCheck();
+  //       });
+  //     }
+  //   } else {
+  //     this.setState({ emailError: "メールアドレスを入力して下さい" });
+  //   }
+  // };
 
   // メアドの重複チェック
-  emailDuplicationCheck(e) {
-    // フォーカスが外れたときの処理
-    const userInfo = {
-      user_name: "",
-      email: this.state.email,
-    };
-    // 重複チェック
-    this.duplicationCheck("email", userInfo);
-  }
+  // emailDuplicationCheck(e) {
+  //   // フォーカスが外れたときの処理
+  //   const userInfo = {
+  //     user_name: "",
+  //     email: this.state.email,
+  //   };
+  //   // 重複チェック
+  //   this.duplicationCheck("email", userInfo);
+  // }
 
-  // 重複チェック
+  // // 重複チェック
   duplicationCheck(checkName, userInfo) {
     if (cancel) {
       cancel();
@@ -345,24 +345,24 @@ class SignUp extends Component {
       }
 
       // メアドの入力 or 重複チェックの結果
-      let emailResult;
-      if (this.state.emailTouched) {
-        if (this.state.emailError) {
-          emailResult = (
-            <div className={this.props.classes.error}>
-              {this.state.emailError}
-            </div>
-          );
-        } else {
-          emailResult = (
-            <div>
-              <ResultEmailDuplicationCheck
-                result={this.state.resultEmailDuplicationCheck}
-              />
-            </div>
-          );
-        }
-      }
+      // let emailResult;
+      // if (this.state.emailTouched) {
+      //   if (this.state.emailError) {
+      //     emailResult = (
+      //       <div className={this.props.classes.error}>
+      //         {this.state.emailError}
+      //       </div>
+      //     );
+      //   } else {
+      //     emailResult = (
+      //       <div>
+      //         <ResultEmailDuplicationCheck
+      //           result={this.state.resultEmailDuplicationCheck}
+      //         />
+      //       </div>
+      //     );
+      //   }
+      // }
 
       // プロフィールの入力チェック結果
       let profileResult;
@@ -467,7 +467,7 @@ class SignUp extends Component {
                   onChange={(e) => this.onChangeUserName(e)}
                 />
                 {userNameResult}
-                <TextField
+                {/* <TextField
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -485,9 +485,9 @@ class SignUp extends Component {
                   }}
                   onChange={(e) => this.onChangeEmail(e)}
                 />
-                {emailResult}
+                {emailResult} */}
                 <div>
-                  興味のあるトピック
+                  興味のあるトピック *任意
                   <TopicSelectBox
                     allTopics={allTopics}
                     initTopics={initTopics}
@@ -500,7 +500,7 @@ class SignUp extends Component {
                   margin="normal"
                   fullWidth
                   id="outlined-multiline-static"
-                  label="プロフィール"
+                  label="プロフィール *任意"
                   // style={styles}
                   multiline
                   rows={4}
@@ -561,7 +561,7 @@ class SignUp extends Component {
                   disabled={
                     submitting ||
                     this.state.isUserNameError ||
-                    this.state.isEmailError ||
+                    // this.state.isEmailError ||
                     !(this.state.profileError === "") ||
                     !(this.state.passwordError === "") ||
                     !(this.state.confirmPasswordError === "") ||
