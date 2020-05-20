@@ -7,6 +7,8 @@ import getLoginUserInfo from "Modules/getLoginUserInfo";
 import EditIcon from "@material-ui/icons/Edit";
 import { withRouter } from "react-router";
 import CreatedDate from "Atoms/created_date";
+import { withStyles } from "@material-ui/core/styles";
+import { compose } from "redux";
 
 class Comment extends Component {
   constructor(props) {
@@ -107,24 +109,51 @@ class Comment extends Component {
           <Button
             onClick={() => this.toUserShowPage(this.props.comment.user_id)}
           >
-            <div style={{ width: "50px", height: "50px" }}>
+            <div style={{ width: "50px", height: "50px", float: "left" }}>
               <UserIcon iconData={this.props.comment.icon_name} />
             </div>
           </Button>
         </div>
-        <div style={{ float: "left", width: "82%" }}>
-          <div style={{ marginTop: "10px" }}>
+
+        {/* <div style={{ float: "left", width: "82%" }}> */}
+        <div style={{ marginTop: "10px", float: "left" }}>
+          <div style={{ float: "left", marginRight: "3px" }}>
             {this.props.comment.user_name}
-            <span style={{ marginLeft: "3px" }}>
-              <CreatedDate createdDate={this.props.comment.created_date} />
-            </span>
           </div>
-          {commentDisplay}
+          {/* <div style={{ float: "left" }}> */}
+          <div className={this.props.classes.createdDate}>
+            <CreatedDate createdDate={this.props.comment.created_date} />
+          </div>
         </div>
+
+        {/* <div style={{ float: "right", width: "82%" }}> */}
+        {/* <div style={{ float: "left", width: "82%" }}> */}
+        <div className={this.props.classes.comment}>{commentDisplay}</div>
         <div style={{ clear: "both" }}></div>
       </React.Fragment>
     );
   }
 }
 
-export default withRouter(Comment);
+const styles = (theme) => ({
+  comment: {
+    [theme.breakpoints.up(400)]: {
+      float: "left",
+      width: "82%",
+    },
+    [theme.breakpoints.down(400)]: {
+      float: "right",
+      width: "81%",
+    },
+  },
+  createdDate: {
+    [theme.breakpoints.up(500)]: {
+      float: "left",
+    },
+    [theme.breakpoints.down(500)]: {
+      clear: "both",
+    },
+  },
+});
+
+export default withRouter(withStyles(styles)(Comment));

@@ -90,7 +90,7 @@ class CommentNew extends Component {
                 <UserIcon iconData={loginUserIconURL} />
               </div>
 
-              <div style={{ float: "left", marginLeft: "5px", width: "85%" }}>
+              <div style={{ float: "left", marginLeft: "5px", width: "80%" }}>
                 <TextField
                   id="standard-multiline-flexible"
                   label="コメント"
