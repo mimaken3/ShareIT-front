@@ -180,7 +180,6 @@ class articleNew extends Component {
             <CssBaseline />
             <div style={{ marginBottom: "30px", marginTop: "20px" }}>
               <TextField
-                required
                 id="standard-required"
                 label="タイトル *必須"
                 value={this.state.title}
@@ -197,7 +196,7 @@ class articleNew extends Component {
                 label="内容 *必須"
                 multiline
                 rows={20}
-                defaultValue=""
+                value={this.state.content}
                 variant="outlined"
                 inputRef={(input) => {
                   this.textInput = input;
