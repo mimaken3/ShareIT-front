@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
+import { reduxForm } from "redux-form";
 import Loading from "Templates/loading";
 import { getAllTopics } from "Actions/topic";
 import { postArticleEvent, emptyArticles } from "Actions/article";
@@ -62,7 +62,7 @@ class articleNew extends Component {
     this.setState({ content: content });
 
     if (content.match(/\S/g)) {
-      if (content.length > 1000) {
+      if (content.length > 10000) {
         this.setState({
           isContentError: true,
         });
@@ -110,7 +110,6 @@ class articleNew extends Component {
   }
 
   render() {
-    const { handleSubmit } = this.props;
     const loginUserInfo = getLoginUserInfo();
     const loginUserID = loginUserInfo.userID;
 
@@ -131,16 +130,16 @@ class articleNew extends Component {
 
     // 記事内容の文字数表示
     let ContentCount;
-    if (this.state.content.length > 1000) {
+    if (this.state.content.length > 10000) {
       ContentCount = (
         <React.Fragment>
           <span style={{ color: "red" }}>{this.state.content.length}</span>
-          /1000 文字
+          /10000 文字
         </React.Fragment>
       );
     } else {
       ContentCount = (
-        <React.Fragment>{this.state.content.length}/1000 文字</React.Fragment>
+        <React.Fragment>{this.state.content.length}/10000 文字</React.Fragment>
       );
     }
 
@@ -212,7 +211,7 @@ class articleNew extends Component {
               style={{
                 maxWidth: "400px",
                 marginBottom: "10px",
-                marginLeft: "5px",
+                marginLeft: "8px",
               }}
             >
               関連トピック
@@ -223,14 +222,14 @@ class articleNew extends Component {
               />
             </div>
 
-            <div style={{ maxWidth: "100px", marginBottom: "8px" }}>
+            <div style={{ maxWidth: "100px", marginBottom: "10px" }}>
               <Privacy initPrivacy={0} ref="Privacy" />
             </div>
 
             <Button
               variant="contained"
               color="secondary"
-              style={{ color: "white" }}
+              style={{ color: "white", marginLeft: "8px" }}
               disabled={
                 this.state.isTitleError ||
                 this.state.isContentError ||
