@@ -18,22 +18,22 @@ isBrowzerBack.current = false;
 // 記事一覧ページ
 class ArticlesIndex extends Component {
   componentDidMount() {
-    window.onpopstate = () => {
-      isBrowzerBack.current = true;
-    };
+    // window.onpopstate = () => {
+    //   isBrowzerBack.current = true;
+    // };
 
-    if (isBrowzerBack.current) {
-      isBrowzerBack.current = false;
-    } else {
-      const loginUser = getLoginUserInfo();
-      if (loginUser !== null) {
-        // 全トピックの取得
-        this.props.getAllTopics().then(() => {
-          // セレクトボックス用の全ユーザを取得
-          this.props.getAllUsersForSelectBox(loginUser.userID);
-        });
-      }
+    // if (isBrowzerBack.current) {
+    //   isBrowzerBack.current = false;
+    // } else {
+    const loginUser = getLoginUserInfo();
+    if (loginUser !== null) {
+      // 全トピックの取得
+      this.props.getAllTopics().then(() => {
+        // セレクトボックス用の全ユーザを取得
+        this.props.getAllUsersForSelectBox(loginUser.userID);
+      });
     }
+    // }
   }
 
   render() {
@@ -53,7 +53,7 @@ class ArticlesIndex extends Component {
           <div>
             <AllArticlesWithPaging
               historyAction={this.props.history.action}
-              load={!isBrowzerBack.current}
+              // load={!isBrowzerBack.current}
             />
           </div>
         </Container>

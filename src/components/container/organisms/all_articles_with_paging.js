@@ -20,21 +20,21 @@ class AllArticlesWithPaging extends Component {
   }
 
   componentDidMount() {
-    if (this.props.load) {
-      if (this.props.param === "userDetailShow") {
-        // ユーザ詳細の記事一覧
-        this.props.getAllArticlesByUserID(this.props.userID, 1).then(() => {
-          this.setState({ loading: false });
-        });
-      } else {
-        // 記事一覧ページ
-        this.props.showAllArticles(1).then(() => {
-          this.setState({ loading: false });
-        });
-      }
+    // if (this.props.load) {
+    if (this.props.param === "userDetailShow") {
+      // ユーザ詳細の記事一覧
+      this.props.getAllArticlesByUserID(this.props.userID, 1).then(() => {
+        this.setState({ loading: false });
+      });
     } else {
-      this.setState({ loading: false });
+      // 記事一覧ページ
+      this.props.showAllArticles(1).then(() => {
+        this.setState({ loading: false });
+      });
     }
+    // } else {
+    //   this.setState({ loading: false });
+    // }
   }
 
   PagingClick() {
