@@ -8,8 +8,29 @@ class UserSelectBox extends Component {
 
     this.state = {
       selectedOption: null,
+      initUserID: null,
     };
   }
+
+  componentDidMount() {
+    this.setInitTopics();
+  }
+
+  // 初期表示ユーザをセット
+  setInitTopics = () => {
+    const allUsers = this.props.allUsers;
+    const initUser = this.props.initUser;
+
+    let userObj = {};
+
+    for (let i = 0; i < allUsers.length; i++) {
+      if (initUser === allUsers[i].user_id) {
+        userObj.value = allUsers[i].user_id;
+        userObj.label = allUsers[i].user_name;
+        this.setState({ selectedOption: userObj });
+      }
+    }
+  };
 
   // 選択されたユーザを設定
   handleChange = (selectedOption) => {
@@ -45,7 +66,7 @@ class UserSelectBox extends Component {
             onChange={this.handleChange}
             options={allUsersArr}
             placeholder="ユーザを選択して下さい"
-            defaultValue={allUsersArr[0]}
+            value={this.state.selectedOption}
           />
         </div>
       </React.Fragment>

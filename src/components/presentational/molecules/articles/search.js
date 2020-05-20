@@ -33,22 +33,23 @@ class SearchArticles extends Component {
     // 全トピック
     const allTopics = this.props.allTopics;
 
-    // 初期表示トピック
-    const initTopics = "全トピック";
-
     // 全ユーザ
     const allUsers = this.props.allUsers;
 
     return (
       <React.Fragment>
         <div style={{ width: 170, marginRight: "5px" }}>
-          <UserSelectBox allUsers={allUsers} ref="UserSelectBox" />
+          <UserSelectBox
+            allUsers={allUsers}
+            ref="UserSelectBox"
+            initUser={this.props.searchUser}
+          />
         </div>
 
         <div style={{ width: 250, marginRight: "5px" }}>
           <TopicSelectBox
             allTopics={allTopics}
-            initTopics={initTopics}
+            initTopics={this.props.searchTopics}
             ref="TopicSelectBox"
             param="search"
           />
@@ -73,9 +74,15 @@ const mapStateToProps = (state) => {
   // 全ユーザ
   const allUsers = state.selectUser.users;
 
+  // 検索ユーザ、トピック
+  const searchUser = state.articles.search_user;
+  const searchTopics = state.articles.search_topics;
+
   return {
     allTopics: allTopics,
     allUsers: allUsers,
+    searchUser,
+    searchTopics,
   };
 };
 

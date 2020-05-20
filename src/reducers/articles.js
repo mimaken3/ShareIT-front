@@ -19,7 +19,7 @@ import _ from "lodash";
 let initialState = {
   is_searched: false,
   search_user: 0,
-  search_topics: "",
+  search_topics: "0",
   is_empty: true,
   ref_pg: 0,
   all_paging_num: 0,

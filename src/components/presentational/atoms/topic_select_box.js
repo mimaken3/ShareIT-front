@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Select from "react-select";
+import isNumber from "Modules/is_number";
 
 // トピックのセレクトボックス
 class TopicSelectBox extends Component {
@@ -63,8 +64,8 @@ class TopicSelectBox extends Component {
 
   // 全トピックをセット
   setAllTopics = (allTopics) => {
-    //   // object to array
-    const allTopicsArr = [];
+    // object to array
+    let allTopicsArr = [];
     const topicObjArr = Object.values(allTopics);
 
     if (this.props.param === "search") {
@@ -93,16 +94,31 @@ class TopicSelectBox extends Component {
 
   // 初期表示トピックをセット
   setInitTopics = (allTopicsArr, initTopics) => {
-    let topicsUserArr = initTopics.split("/");
     let initTopicsArr = [];
 
-    for (let i = 0; i < topicsUserArr.length; i++) {
-      for (let j = 0; j < allTopicsArr.length; j++) {
-        if (topicsUserArr[i] === allTopicsArr[j].label) {
-          initTopicsArr.push(allTopicsArr[j]);
+    if (isNumber(initTopics)) {
+      // 0/3/4/ の場合
+      let topicsSearchArr = initTopics.split("/");
+      for (let i = 0; i < topicsSearchArr.length; i++) {
+        for (let j = 0; j < allTopicsArr.length; j++) {
+          if (parseInt(topicsSearchArr[i]) === allTopicsArr[j].value) {
+            initTopicsArr.push(allTopicsArr[j]);
+          }
+        }
+      }
+    } else {
+      // その他/Ruby/C/ の場合
+      let topicsUserArr = initTopics.split("/");
+
+      for (let i = 0; i < topicsUserArr.length; i++) {
+        for (let j = 0; j < allTopicsArr.length; j++) {
+          if (topicsUserArr[i] === allTopicsArr[j].label) {
+            initTopicsArr.push(allTopicsArr[j]);
+          }
         }
       }
     }
+
     return initTopicsArr;
   };
 

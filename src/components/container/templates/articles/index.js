@@ -10,24 +10,38 @@ import { searchArticles } from "Actions/article";
 import Loading from "Templates/loading";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
+import { withRouter } from "react-router";
+
+let isBrowzerBack = React.createRef();
+isBrowzerBack.current = false;
 
 // 記事一覧ページ
 class ArticlesIndex extends Component {
-  constructor(props) {
-    super(props);
-    const loginUser = getLoginUserInfo();
-    if (loginUser !== null) {
-      // 全トピックの取得
-      this.props.getAllTopics().then(() => {
-        // セレクトボックス用の全ユーザを取得
-        this.props.getAllUsersForSelectBox(loginUser.userID);
-      });
+  componentDidMount() {
+    window.onpopstate = () => {
+      isBrowzerBack.current = true;
+    };
+
+    if (isBrowzerBack.current) {
+      isBrowzerBack.current = false;
+    } else {
+      const loginUser = getLoginUserInfo();
+      if (loginUser !== null) {
+        // 全トピックの取得
+        this.props.getAllTopics().then(() => {
+          // セレクトボックス用の全ユーザを取得
+          this.props.getAllUsersForSelectBox(loginUser.userID);
+        });
+      }
     }
   }
 
   render() {
     // セレクトボックスの中身が読み込まれたら表示
-    if (Object.values(this.props.allUsers).length > 0) {
+    if (
+      Object.values(this.props.allUsers).length > 0 &&
+      Object.values(this.props.allTopics).length > 0
+    ) {
       return (
         <Container component="main" maxWidth="sm">
           <CssBaseline />
@@ -37,7 +51,10 @@ class ArticlesIndex extends Component {
           </div>
 
           <div>
-            <AllArticlesWithPaging historyAction={this.props.history.action} />
+            <AllArticlesWithPaging
+              historyAction={this.props.history.action}
+              load={!isBrowzerBack.current}
+            />
           </div>
         </Container>
       );
@@ -61,10 +78,15 @@ const mapStateToProps = (state) => {
   // 全ユーザ
   const allUsers = state.selectUser.users;
 
-  return { allUsers: allUsers };
+  // 全トピック
+  const allTopics = state.topics;
+
+  return { allUsers, allTopics };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(reduxForm({ form: "articlesIndexForm" })(ArticlesIndex));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(reduxForm({ form: "articlesIndexForm" })(ArticlesIndex))
+);
