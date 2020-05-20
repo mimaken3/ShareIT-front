@@ -6,15 +6,31 @@ import { getAllTopics } from "Actions/topic";
 import { postArticleEvent, emptyArticles } from "Actions/article";
 import TopicSelectBox from "Atoms/topic_select_box";
 import { Redirect } from "react-router-dom";
-import ToAllArticlesButton from "Atoms/buttons/to_all_articles_button";
+import { Button } from "@material-ui/core";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import Privacy from "Atoms/articles/privacy";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+import TextField from "@material-ui/core/TextField";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
 
 class articleNew extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      // 記事タイトル
+      title: "",
+      isTitleError: true,
+      // 記事内容
+      content: "",
+      isContentError: true,
+
+      submitting: false,
+    };
     this.onSubmit = this.onSubmit.bind(this);
     this.childRef = React.createRef();
+    this._onKeyPress = this._onKeyPress.bind(this);
   }
 
   componentDidMount() {
@@ -22,51 +38,129 @@ class articleNew extends Component {
     this.props.getAllTopics();
   }
 
-  // タイトルと内容の入力ボックス
-  renderField(field) {
-    const {
-      input,
-      label,
-      type,
-      // mata: { visited, error }
-      meta: { error },
-    } = field;
+  // タイトルの入力チェック
+  handleTitleChange = (e) => {
+    const title = e.target.value;
+    this.setState({ title: title });
 
-    return (
-      <div>
-        <input {...input} placeholder={label} type={type} />
-        {error && <span>{error}</span>}
-        {/* {visited && error && <span>{error}</span>} */}
-      </div>
-    );
-  }
+    if (title.match(/\S/g)) {
+      if (title.length > 255) {
+        this.setState({
+          isTitleError: true,
+        });
+      } else {
+        this.setState({ isTitleError: false });
+      }
+    } else {
+      this.setState({ isTitleError: true });
+    }
+  };
+
+  // 記事内容の入力チェック
+  handleContentChange = (e) => {
+    const content = e.target.value;
+    this.setState({ content: content });
+
+    if (content.match(/\S/g)) {
+      if (content.length > 1000) {
+        this.setState({
+          isContentError: true,
+        });
+      } else {
+        this.setState({ isContentError: false });
+      }
+    } else {
+      this.setState({ isContentError: true });
+    }
+  };
 
   // 記事を送信
-  async onSubmit(values) {
+  async onSubmit() {
+    this.setState({ submitting: true });
+
+    let article = {};
+    article.article_title = this.state.title;
+    article.article_content = this.state.content;
+
     // 投稿するユーザのIDをセット
-    values.created_user_id = this.props.userID;
+    article.created_user_id = this.props.userID;
 
     // 送信するトピックをセット
-    values.article_topics = this.refs.TopicSelectBox.getSendTopics("その他");
+    article.article_topics = this.refs.TopicSelectBox.getSendTopics("その他");
 
-    // プライバシーを設定
-    values.is_private = this.refs.Privacy.privacy;
+    // // プライバシーを設定
+    article.is_private = this.refs.Privacy.privacy;
 
     Promise.all([
       // storeの記事一覧を削除
       await this.props.emptyArticles(),
       // 記事作成
-      await this.props.postArticleEvent(values),
+      await this.props.postArticleEvent(article),
     ]).then(() => {
       // ボタンを押した後に遷移するURL
       this.props.history.push("/api/users/" + this.props.userID);
     });
   }
 
+  // タイトルをEnterで内容に移動
+  _onKeyPress(event) {
+    if (event.key === "Enter") {
+      this.textInput.focus();
+    }
+  }
+
   render() {
     const { handleSubmit } = this.props;
     const loginUserInfo = getLoginUserInfo();
     const loginUserID = loginUserInfo.userID;
+
+    // タイトルの文字数表示
+    let TitleCount;
+    if (this.state.title.length > 255) {
+      TitleCount = (
+        <React.Fragment>
+          <span style={{ color: "red" }}>{this.state.title.length}</span>
+          /255 文字
+        </React.Fragment>
+      );
+    } else {
+      TitleCount = (
+        <React.Fragment>{this.state.title.length}/255 文字</React.Fragment>
+      );
+    }
+
+    // 記事内容の文字数表示
+    let ContentCount;
+    if (this.state.content.length > 1000) {
+      ContentCount = (
+        <React.Fragment>
+          <span style={{ color: "red" }}>{this.state.content.length}</span>
+          /1000 文字
+        </React.Fragment>
+      );
+    } else {
+      ContentCount = (
+        <React.Fragment>{this.state.content.length}/1000 文字</React.Fragment>
+      );
+    }
+
+    const theme = createMuiTheme({
+      palette: {
+        primary: {
+          main: "#888888", // グレー
+        },
+        secondary: {
+          main: "#00CCFF", // 水色
+        },
+      },
+      overrides: {
+        MuiFormControl: {
+          root: {
+            width: "100%",
+          },
+        },
+      },
+    });
 
     if (loginUserID !== this.props.userID) {
       return (
@@ -82,30 +176,46 @@ class articleNew extends Component {
       const initTopics = "";
 
       return (
-        <React.Fragment>
-          <form onSubmit={handleSubmit(this.onSubmit)}>
-            <div>記事更新画面</div>
-            <div>
-              タイトル:
-              <Field
-                label="タイトル"
-                name="article_title"
-                type="text"
-                component={this.renderField}
+        <ThemeProvider theme={theme}>
+          <Container component="main" maxWidth="md">
+            <CssBaseline />
+            <div style={{ marginBottom: "30px", marginTop: "20px" }}>
+              <TextField
+                required
+                id="standard-required"
+                label="タイトル *必須"
+                value={this.state.title}
+                variant="outlined"
+                onKeyPress={this._onKeyPress}
+                onChange={(e) => this.handleTitleChange(e)}
               />
-            </div>
-            <div>
-              内容:
-              <Field
-                label="内容"
-                name="article_content"
-                type="text"
-                component={this.renderField}
-              />
+              <div style={{ float: "right" }}>{TitleCount}</div>
             </div>
 
-            <div>
-              トピック
+            <div style={{ marginBottom: "30px" }}>
+              <TextField
+                id="outlined-multiline-static"
+                label="内容 *必須"
+                multiline
+                rows={20}
+                defaultValue=""
+                variant="outlined"
+                inputRef={(input) => {
+                  this.textInput = input;
+                }}
+                onChange={(e) => this.handleContentChange(e)}
+              />
+              <div style={{ float: "right" }}>{ContentCount}</div>
+            </div>
+
+            <div
+              style={{
+                maxWidth: "400px",
+                marginBottom: "10px",
+                marginLeft: "5px",
+              }}
+            >
+              関連トピック
               <TopicSelectBox
                 allTopics={allTopics}
                 initTopics={initTopics}
@@ -113,27 +223,32 @@ class articleNew extends Component {
               />
             </div>
 
-            <div>
+            <div style={{ maxWidth: "100px", marginBottom: "8px" }}>
               <Privacy initPrivacy={0} ref="Privacy" />
             </div>
 
-            <div>
-              <input type="submit" value="Submit" />
-            </div>
-
-            <div>
-              <ToAllArticlesButton />
-            </div>
-          </form>
-        </React.Fragment>
+            <Button
+              variant="contained"
+              color="secondary"
+              style={{ color: "white" }}
+              disabled={
+                this.state.isTitleError ||
+                this.state.isContentError ||
+                this.state.submitting
+              }
+              onClick={this.onSubmit}
+            >
+              送信
+            </Button>
+          </Container>
+        </ThemeProvider>
       );
     } else {
       return (
-        <React.Fragment>
-          <div>
-            <Loading />
-          </div>
-        </React.Fragment>
+        <Container component="main" maxWidth="md">
+          <CssBaseline />
+          <Loading />
+        </Container>
       );
     }
   }
