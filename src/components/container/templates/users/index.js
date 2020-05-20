@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { showAllUsers, emptyUsers } from "Actions/user";
-import ToAllArticlesButton from "Atoms/buttons/to_all_articles_button";
 import Loading from "Templates/loading";
-import CreateArticleButton from "Atoms/buttons/create_article_button";
 import AllUsers from "Organisms/all_users";
 import Paging from "Atoms/paging";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
 
 class UsersIndex extends Component {
   constructor(props) {
@@ -33,7 +33,9 @@ class UsersIndex extends Component {
   render() {
     if (this.props.users && this.props.allPagingNum && !this.state.loading) {
       return (
-        <React.Fragment>
+        <Container component="main" maxWidth="sm">
+          <CssBaseline />
+
           <AllUsers />
 
           <div>
@@ -45,23 +47,14 @@ class UsersIndex extends Component {
               callback={() => this.PagingClick()}
             />
           </div>
-
-          <div>
-            <CreateArticleButton />
-          </div>
-
-          <div>
-            <ToAllArticlesButton />
-          </div>
-        </React.Fragment>
+        </Container>
       );
     } else {
       return (
-        <React.Fragment>
-          <div>
-            <Loading />
-          </div>
-        </React.Fragment>
+        <Container component="main" maxWidth="sm">
+          <CssBaseline />
+          <Loading />
+        </Container>
       );
     }
   }

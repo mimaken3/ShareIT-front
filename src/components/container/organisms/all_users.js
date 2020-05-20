@@ -1,19 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import _ from "lodash";
-import { Link } from "react-router-dom";
 import { reduxForm } from "redux-form";
-import UserIcon from "Atoms/user_icon";
 import getIndexDisplayArr from "Modules/get_index_display_arr";
+import User from "Molecules/users/user";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
 
 class AllUsers extends Component {
   // ユーザ一覧を表示する関数
-  renderUsers() {
+  renderUsers(loginUserID) {
     return _.map(this.props.users, (user) => (
       <div key={user.user_id}>
-        {user.user_id} <UserIcon iconData={user.icon_name} />
-        <Link to={`/api/users/${user.user_id}`}>{user.user_name}</Link>{" "}
-        {user.email} {user.interested_topics}
+        <User user={user} loginUserID={loginUserID} />
       </div>
     ));
   }
@@ -22,16 +20,13 @@ class AllUsers extends Component {
     if (this.props.isEmpty) {
       return (
         <React.Fragment>
-          <div>ユーザ一覧</div>
           <div>ユーザはいません</div>
         </React.Fragment>
       );
     } else {
+      let loginUser = getLoginUserInfo();
       return (
-        <React.Fragment>
-          <div>ユーザ一覧</div>
-          {this.renderUsers()}
-        </React.Fragment>
+        <React.Fragment>{this.renderUsers(loginUser.userID)}</React.Fragment>
       );
     }
   }
