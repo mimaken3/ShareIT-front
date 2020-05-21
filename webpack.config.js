@@ -7,7 +7,7 @@ module.exports = {
     "./src/index.js",
   ],
   output: {
-    path: path.resolve(__dirname, "./dest"),
+    path: path.resolve(__dirname, "./dist"),
     filename: "bundle.js",
     publicPath: "/", // ブラウザからバンドルにアクセスする際のパス
   },
@@ -56,21 +56,17 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          // style-loader
+          // 読み込んだスタイルをstyle要素としてページに反映させる
           { loader: "style-loader" },
-          // css-loader
-          {
-            loader: "css-loader",
-            options: {
-              modules: true,
-            },
-          },
-          // sass-loader
-          { loader: "sass-loader" },
+          //  cssファイルを読み込む
+          { loader: "css-loader" },
+          // sass
+          // { loader: "sass-loader" },
         ],
       },
       {
         test: /\.(jpg|png)$/,
+        // 画像ファイルをDataURL化して.jsファイルとして読み込む
         use: [{ loader: "url-loader" }],
       },
     ],
