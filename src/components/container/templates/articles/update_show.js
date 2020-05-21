@@ -80,7 +80,7 @@ class ArticleUpdate extends Component {
     this.setState({ content: content });
 
     if (content.match(/\S/g)) {
-      if (content.length > 10000) {
+      if (content.length > 9999) {
         this.setState({
           isContentError: true,
         });
