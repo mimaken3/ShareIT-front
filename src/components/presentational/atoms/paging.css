@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 /* ページングボタンを中央に移動 */
 .paging ul li {
   float: left;

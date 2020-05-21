@@ -7,7 +7,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import { ScrollTo } from "react-scroll-to";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import styles from "./paging.css";
+import "./paging.css";
 // import injectSheet from "react-jss";
 
 // ページング
@@ -46,7 +46,7 @@ const Paging = ({
               variant="outlined"
               color="primary"
               page={refPg}
-              className={styles.paging}
+              className="paging"
               onChange={(event, page) => {
                 if (isSearched) {
                   const values = {
