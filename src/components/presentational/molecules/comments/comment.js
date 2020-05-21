@@ -8,6 +8,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import { withRouter } from "react-router";
 import CreatedDate from "Atoms/created_date";
 import { withStyles } from "@material-ui/core/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
 
 class Comment extends Component {
   constructor(props) {
@@ -95,8 +97,21 @@ class Comment extends Component {
       );
     }
 
+    const theme = createMuiTheme({
+      overrides: {
+        MuiButton: {
+          root: {
+            minWidth: "58px",
+          },
+          text: {
+            padding: "6px 0px",
+          },
+        },
+      },
+    });
+
     return (
-      <React.Fragment>
+      <ThemeProvider theme={theme}>
         <div className={this.props.classes.userIconButton}>
           <Button
             onClick={() => this.toUserShowPage(this.props.comment.user_id)}
@@ -119,7 +134,7 @@ class Comment extends Component {
 
         <div className={this.props.classes.comment}>{commentDisplay}</div>
         <div className={this.props.classes.stopFloat}></div>
-      </React.Fragment>
+      </ThemeProvider>
     );
   }
 }
