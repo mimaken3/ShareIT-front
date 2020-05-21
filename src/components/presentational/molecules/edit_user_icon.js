@@ -7,6 +7,8 @@ import { Button } from "@material-ui/core";
 import Cropper from "react-easy-crop";
 import Slider from "@material-ui/core/Slider";
 import { withStyles } from "@material-ui/core/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
 
 // ユーザ一のアイコン画像を設定
 class EditUserIcon extends Component {
@@ -104,8 +106,19 @@ class EditUserIcon extends Component {
       );
     }
 
+    const theme = createMuiTheme({
+      palette: {
+        primary: {
+          main: "#00CCFF", // 水色
+        },
+        secondary: {
+          main: "#888888", // グレー
+        },
+      },
+    });
+
     return (
-      <React.Fragment>
+      <ThemeProvider theme={theme}>
         <div className={this.props.classes.userIcon}>{Icon}</div>
         <div className={this.props.classes.App}>
           <input
@@ -172,7 +185,7 @@ class EditUserIcon extends Component {
             </div>
           )}
         </div>
-      </React.Fragment>
+      </ThemeProvider>
     );
   }
 }
