@@ -15,6 +15,7 @@ import TextField from "@material-ui/core/TextField";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import SendIcon from "@material-ui/icons/Send";
+import Count from "Atoms/count";
 
 class articleNew extends Component {
   constructor(props) {
@@ -63,7 +64,7 @@ class articleNew extends Component {
     this.setState({ content: content });
 
     if (content.match(/\S/g)) {
-      if (content.length > 10000) {
+      if (content.length > 9999) {
         this.setState({
           isContentError: true,
         });
@@ -114,36 +115,6 @@ class articleNew extends Component {
     const loginUserInfo = getLoginUserInfo();
     const loginUserID = loginUserInfo.userID;
 
-    // タイトルの文字数表示
-    let TitleCount;
-    if (this.state.title.length > 255) {
-      TitleCount = (
-        <React.Fragment>
-          <span style={{ color: "red" }}>{this.state.title.length}</span>
-          /255 文字
-        </React.Fragment>
-      );
-    } else {
-      TitleCount = (
-        <React.Fragment>{this.state.title.length}/255 文字</React.Fragment>
-      );
-    }
-
-    // 記事内容の文字数表示
-    let ContentCount;
-    if (this.state.content.length > 10000) {
-      ContentCount = (
-        <React.Fragment>
-          <span style={{ color: "red" }}>{this.state.content.length}</span>
-          /10000 文字
-        </React.Fragment>
-      );
-    } else {
-      ContentCount = (
-        <React.Fragment>{this.state.content.length}/10000 文字</React.Fragment>
-      );
-    }
-
     const theme = createMuiTheme({
       palette: {
         primary: {
@@ -188,7 +159,7 @@ class articleNew extends Component {
                 onKeyPress={this._onKeyPress}
                 onChange={(e) => this.handleTitleChange(e)}
               />
-              <div style={{ float: "right" }}>{TitleCount}</div>
+              <Count text={this.state.title} param="articleTitle" />
             </div>
 
             <div style={{ marginBottom: "30px" }}>
@@ -204,7 +175,7 @@ class articleNew extends Component {
                 }}
                 onChange={(e) => this.handleContentChange(e)}
               />
-              <div style={{ float: "right" }}>{ContentCount}</div>
+              <Count text={this.state.content} param="articleContent" />
             </div>
 
             <div

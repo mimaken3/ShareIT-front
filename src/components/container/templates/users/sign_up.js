@@ -27,6 +27,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import ResultUserNameDuplicationCheck from "Atoms/users/name_check";
 // import ResultEmailDuplicationCheck from "Atoms/users/email_check";
 import Button from "@material-ui/core/Button";
+import Count from "Atoms/count";
 
 const ROOT_URL = env.ROOT_URL;
 
@@ -62,7 +63,7 @@ class SignUp extends Component {
       confirmPasswordTouched: false,
       // プロフィール
       profile: "",
-      profileError: "",
+      isProfileError: false,
       // アイコン
       defaultIconURL: null,
       textbox: "",
@@ -200,13 +201,13 @@ class SignUp extends Component {
 
   // プロフィールの入力チェック
   handleProfileChange(e) {
-    if (e.target.value.length > 1000) {
+    if (e.target.value.length > 999) {
       this.setState({
         profile: e.target.value,
-        profileError: "1000文字以内で入力して下さい",
+        isProfileError: true,
       });
     } else {
-      this.setState({ profile: e.target.value, profileError: "" });
+      this.setState({ profile: e.target.value, isProfileError: false });
     }
   }
 
@@ -364,31 +365,6 @@ class SignUp extends Component {
       //   }
       // }
 
-      // プロフィールの入力チェック結果
-      let profileResult;
-      if (this.state.profileError) {
-        profileResult = (
-          <div className={this.props.classes.error}>
-            {this.state.profileError}
-          </div>
-        );
-      }
-
-      // プロフィールの文字数表示
-      let ProfileCount;
-      if (this.state.profile.length > 1000) {
-        ProfileCount = (
-          <React.Fragment>
-            <span style={{ color: "red" }}>{this.state.profile.length}</span>
-            /1000 文字
-          </React.Fragment>
-        );
-      } else {
-        ProfileCount = (
-          <React.Fragment>{this.state.profile.length}/1000 文字</React.Fragment>
-        );
-      }
-
       // パスワードの入力チェックの結果
       let passwordResult;
       if (this.state.passwordTouched) {
@@ -507,8 +483,7 @@ class SignUp extends Component {
                   rows={4}
                   onChange={(e) => this.handleProfileChange(e)}
                 />
-                <div style={{ float: "right" }}>{ProfileCount}</div>
-                <div style={{ float: "left" }}>{profileResult}</div>
+                <Count text={this.state.profile} param="profile" />
 
                 <TextField
                   variant="outlined"
@@ -563,7 +538,7 @@ class SignUp extends Component {
                     submitting ||
                     this.state.isUserNameError ||
                     // this.state.isEmailError ||
-                    !(this.state.profileError === "") ||
+                    this.state.isProfileError ||
                     !(this.state.passwordError === "") ||
                     !(this.state.confirmPasswordError === "") ||
                     !this.state.passwordTouched ||

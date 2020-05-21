@@ -7,6 +7,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
+import Count from "Atoms/count";
 
 class CommentEdit extends Component {
   constructor(props) {
@@ -45,7 +46,7 @@ class CommentEdit extends Component {
     const content = e.target.value;
 
     this.setState({ inputComment: content });
-    if (content.match(/\S/g) && content.length < 1000) {
+    if (content.match(/\S/g) && content.length <= 999) {
       this.setState({ commentCheck: false });
     } else {
       this.setState({ commentCheck: true });
@@ -53,23 +54,6 @@ class CommentEdit extends Component {
   }
 
   render() {
-    // コメントの文字数表示
-    let CommentCount;
-    if (this.state.inputComment.length > 1000) {
-      CommentCount = (
-        <React.Fragment>
-          <span style={{ color: "red" }}>{this.state.inputComment.length}</span>
-          /1000 文字
-        </React.Fragment>
-      );
-    } else {
-      CommentCount = (
-        <React.Fragment>
-          {this.state.inputComment.length}/1000 文字
-        </React.Fragment>
-      );
-    }
-
     const theme = createMuiTheme({
       palette: {
         primary: {
@@ -105,12 +89,12 @@ class CommentEdit extends Component {
         </Button>
         <span
           style={{
-            float: "right",
             marginRight: "10px",
             marginTop: "10px",
+            float: "right",
           }}
         >
-          {CommentCount}
+          <Count text={this.state.inputComment} param="comment" />
         </span>
       </ThemeProvider>
     );

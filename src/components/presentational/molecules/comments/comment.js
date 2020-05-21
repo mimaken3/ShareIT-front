@@ -68,7 +68,7 @@ class Comment extends Component {
     let commentDisplay;
     if (this.state.isEdited) {
       commentDisplay = (
-        <div>
+        <React.Fragment>
           <div>
             <CommentEdit
               comment={this.props.comment}
@@ -81,7 +81,7 @@ class Comment extends Component {
               キャンセル
             </Button>
           </div>
-        </div>
+        </React.Fragment>
       );
     } else {
       commentDisplay = (
@@ -132,7 +132,7 @@ const styles = (theme) => ({
     },
     [theme.breakpoints.down(400)]: {
       float: "right",
-      width: "81%",
+      width: "83%",
     },
   },
   createdDate: {

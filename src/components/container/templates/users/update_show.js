@@ -20,6 +20,7 @@ import BackButton from "Atoms/buttons/back";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import SendIcon from "@material-ui/icons/Send";
+import Count from "Atoms/count";
 
 class UserUpdateShow extends Component {
   constructor(props) {
@@ -77,7 +78,7 @@ class UserUpdateShow extends Component {
 
   // プロフィールの入力チェック
   handleProfileChange(e) {
-    if (e.target.value.length > 1000) {
+    if (e.target.value.length > 999) {
       this.setState({
         profile: e.target.value,
         isProfileError: true,
@@ -111,23 +112,6 @@ class UserUpdateShow extends Component {
         const initTopics = this.props.user.interested_topics;
 
         const sendObj = { user: this.props.user };
-
-        // プロフィールの文字数表示
-        let ProfileCount;
-        if (this.state.profile.length > 1000) {
-          ProfileCount = (
-            <React.Fragment>
-              <span style={{ color: "red" }}>{this.state.profile.length}</span>
-              /1000 文字
-            </React.Fragment>
-          );
-        } else {
-          ProfileCount = (
-            <React.Fragment>
-              {this.state.profile.length}/1000 文字
-            </React.Fragment>
-          );
-        }
 
         // 戻る先のURL
         const backURL = "/api/users/" + this.props.user.user_id;
@@ -189,7 +173,7 @@ class UserUpdateShow extends Component {
                   value={this.state.profile}
                   onChange={(e) => this.handleProfileChange(e)}
                 />
-                <div style={{ float: "right" }}>{ProfileCount}</div>
+                <Count text={this.state.profile} param="profile" />
               </div>
 
               <div className={this.props.classes.stopFloat}></div>
