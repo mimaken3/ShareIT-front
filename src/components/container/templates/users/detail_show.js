@@ -1,23 +1,25 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-// 入力フォーム作成で使う
 import { reduxForm } from "redux-form";
 import { getUserDetail } from "Actions/user";
 import { getAllArticlesByUserID } from "Actions/article";
-import ToAllUsersButton from "Atoms/buttons/to_all_users_button";
 import UserName from "Atoms/users/name";
-import UserID from "Atoms/users/id";
 import Profile from "Atoms/users/profile";
-import CreatedDate from "Atoms/created_date.js";
-import Topic from "Atoms/topics/topic";
+import { withStyles } from "@material-ui/core/styles";
 import Loading from "Templates/loading";
 import EditButton from "Atoms/buttons/edit_button";
-import CreateArticleButton from "Atoms/buttons/create_article_button";
+import TopicTags from "Atoms/topic_tags";
 import UserIcon from "Atoms/user_icon";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import DeleteButton from "Atoms/buttons/delete_button";
 import NotFoundPage from "Templates/not_found_page";
 import AllArticlesWithPaging from "Organisms/all_articles_with_paging";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+import { compose } from "redux";
+import "react-tabs/style/react-tabs.css";
+
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 class UserShow extends Component {
   constructor(props) {
@@ -32,7 +34,13 @@ class UserShow extends Component {
     // 複雑な処理はcomponentに書かずに外(action)に記述
     const { userId } = this.props.match.params;
     if (userId) {
-      Promise.all([this.props.getUserDetail(userId)]).then(() => {
+      Promise.all(
+        // ユーザの詳細情報を取得
+        [this.props.getUserDetail(userId)],
+
+        // ユーザの記事一覧を取得
+        [this.props.getAllArticlesByUserID(userId, 1)]
+      ).then(() => {
         this.setState({ loading: false });
       });
     }
@@ -52,75 +60,77 @@ class UserShow extends Component {
       const loginUser = getLoginUserInfo();
       const loginUserID = loginUser.userID;
       const isAdmin = loginUser.admin;
-      var AuthorizedEditButton;
+      var AuthorizedButton;
       if (loginUserID === this.props.user.user_id || isAdmin) {
         const sendObj = { user: this.props.user };
-        AuthorizedEditButton = (
-          <div>
-            <EditButton path="users" id={this.props.user.user_id} />
-            <DeleteButton param="user" sendObj={sendObj} />
+        AuthorizedButton = (
+          <div style={{ float: "left" }}>
+            <div className={this.props.classes.editButton}>
+              <EditButton path="users" id={this.props.user.user_id} />
+            </div>
+            <div className={this.props.classes.deleteButton}>
+              <DeleteButton param="user" sendObj={sendObj} />
+            </div>
           </div>
         );
       }
       return (
-        <React.Fragment>
-          <div>ユーザ詳細</div>
+        <Container component="main" maxWidth="sm">
+          <CssBaseline />
 
-          <UserIcon iconData={this.props.user.icon_name} />
+          <div className={this.props.classes.userDetailBox}>
+            <div className={this.props.classes.userIcon}>
+              <UserIcon iconData={this.props.user.icon_name} />
+            </div>
 
-          <div>
-            <UserID userID={this.props.user.user_id} />
+            <div className={this.props.classes.userName}>
+              <UserName userName={this.props.user.user_name} />
+            </div>
+
+            <div className={this.props.classes.topicTags}>
+              <TopicTags topics={this.props.user.interested_topics} />
+            </div>
+
+            <div>
+              <Profile profile={this.props.user.profile} />
+            </div>
+
+            {AuthorizedButton}
+
+            <div className={this.props.classes.stopFloat}></div>
           </div>
 
-          <div>
-            <UserName userName={this.props.user.user_name} />
-          </div>
+          <Tabs className={this.props.classes.tabs}>
+            <TabList>
+              <Tab>投稿一覧</Tab>
+              <Tab>いいねした記事</Tab>
+            </TabList>
 
-          <div>
-            <Topic topic={this.props.user.interested_topics} />
-          </div>
-
-          <div>
-            <Profile profile={this.props.user.profile} />
-          </div>
-
-          <div>
-            <CreatedDate createdDate={this.props.user.created_date} />
-          </div>
-
-          <div>{AuthorizedEditButton}</div>
-
-          <div>
-            <CreateArticleButton />
-          </div>
-
-          <div>
-            <ToAllUsersButton />
-          </div>
-
-          <div>
-            <AllArticlesWithPaging
-              param="userDetailShow"
-              userID={this.props.user.user_id}
-              historyAction={this.props.history.action}
-            />
-          </div>
-        </React.Fragment>
+            <TabPanel>
+              <div>
+                <AllArticlesWithPaging
+                  param="userDetailShow"
+                  userID={this.props.user.user_id}
+                  historyAction={this.props.history.action}
+                />
+              </div>
+            </TabPanel>
+            <TabPanel>
+              <h2>Any content 2</h2>
+            </TabPanel>
+          </Tabs>
+        </Container>
       );
     } else if (this.props.isEmpty && !this.state.loading) {
       return (
         <React.Fragment>
-          <div>
-            <NotFoundPage />
-          </div>
+          <NotFoundPage />
         </React.Fragment>
       );
     } else {
       return (
         <React.Fragment>
-          <div>
-            <Loading />
-          </div>
+          <Loading />
         </React.Fragment>
       );
     }
@@ -132,9 +142,6 @@ const mapDispatchToProps = {
   getAllArticlesByUserID,
 };
 
-// stateとactionをcomponentに関連付ける実装
-// このstatusは状態のトップレベルを表す
-// ReduxのStoreを第一引数にとる関数で、Componentにpropsとして渡すものをフィルタリングするときに使う。
 const mapStateToProps = (state, ownProps) => {
   // 詳細画面で必要な各種情報を取得
   const user = state.users.users[ownProps.match.params.userId];
@@ -151,17 +158,42 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-// connect 第一引数はcomponentに渡すpropsを制御する
-// 第二引数はreducerを呼び出して、reduxで管理しているstateを更新する
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
-  // enableReinitialize: When set to true, the form will reinitialize
-  // every time the initialValues prop change. Defaults to false.
-  // titleとbody属性を表示するときに使う
-  // 直接詳細画面へアクセスしたとき(本来なら最初に記事一覧を取得して、それらの情報がブラウザのメモリに残った状態で、
-  // 詳細へ行くとメモリから詳細を取得する)適宜、該当のイベントをAPIサーバから取得する
-  // formにはユニークな名前を渡す
-  reduxForm({ form: "userShowForm", enableReinitialize: true })(UserShow)
-);
+const styles = (theme) => ({
+  userDetailBox: {
+    marginTop: "30px",
+    width: "60%",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  userIcon: {
+    width: "100px",
+    height: "100px",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  userName: {
+    textAlign: "center",
+  },
+  topicTags: {
+    textAlign: "center",
+  },
+  editButton: {
+    float: "left",
+    marginRight: "5px",
+  },
+  deleteButton: {
+    float: "left",
+  },
+  stopFloat: {
+    clear: "both",
+  },
+  tabs: {
+    marginTop: "30px",
+  },
+});
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({ form: "userShowForm" }),
+  withStyles(styles)
+)(UserShow);

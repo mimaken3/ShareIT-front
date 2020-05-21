@@ -1,13 +1,16 @@
 import React from "react";
-import ToAllArticlesButton from "Atoms/buttons/to_all_articles_button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
 
 class NotFoundPage extends React.Component {
   render() {
     return (
-      <React.Fragment>
-        <div>404 Not Found</div>
-        <ToAllArticlesButton />
-      </React.Fragment>
+      <Container component="main" maxWidth="sm">
+        <CssBaseline />
+        <div style={{ textAlign: "center", marginTop: "40px" }}>
+          <h2>404 Not Found</h2>
+        </div>
+      </Container>
     );
   }
 }

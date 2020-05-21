@@ -19,24 +19,6 @@ class AllArticlesWithPaging extends Component {
     };
   }
 
-  componentDidMount() {
-    // if (this.props.load) {
-    if (this.props.param === "userDetailShow") {
-      // ユーザ詳細の記事一覧
-      this.props.getAllArticlesByUserID(this.props.userID, 1).then(() => {
-        this.setState({ loading: false });
-      });
-    } else {
-      // 記事一覧ページ
-      this.props.showAllArticles(1).then(() => {
-        this.setState({ loading: false });
-      });
-    }
-    // } else {
-    //   this.setState({ loading: false });
-    // }
-  }
-
   PagingClick() {
     this.props.emptyArticles();
     if (this.props.allPagingNum) {
@@ -45,7 +27,7 @@ class AllArticlesWithPaging extends Component {
   }
 
   render() {
-    if (this.props.articles && this.props.allPagingNum && !this.state.loading) {
+    if (this.props.articles && this.props.allPagingNum) {
       if (this.props.param === "userDetailShow") {
         // ユーザ詳細の記事一覧
         return (

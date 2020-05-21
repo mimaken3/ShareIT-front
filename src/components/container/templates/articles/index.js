@@ -11,6 +11,7 @@ import Loading from "Templates/loading";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import { withRouter } from "react-router";
+import { showAllArticles } from "Actions/article";
 
 let isBrowzerBack = React.createRef();
 isBrowzerBack.current = false;
@@ -18,22 +19,17 @@ isBrowzerBack.current = false;
 // 記事一覧ページ
 class ArticlesIndex extends Component {
   componentDidMount() {
-    // window.onpopstate = () => {
-    //   isBrowzerBack.current = true;
-    // };
-
-    // if (isBrowzerBack.current) {
-    //   isBrowzerBack.current = false;
-    // } else {
     const loginUser = getLoginUserInfo();
     if (loginUser !== null) {
       // 全トピックの取得
       this.props.getAllTopics().then(() => {
         // セレクトボックス用の全ユーザを取得
         this.props.getAllUsersForSelectBox(loginUser.userID);
+
+        // 記事一覧を取得
+        this.props.showAllArticles(1);
       });
     }
-    // }
   }
 
   render() {
@@ -51,10 +47,7 @@ class ArticlesIndex extends Component {
           </div>
 
           <div>
-            <AllArticlesWithPaging
-              historyAction={this.props.history.action}
-              // load={!isBrowzerBack.current}
-            />
+            <AllArticlesWithPaging historyAction={this.props.history.action} />
           </div>
         </Container>
       );
@@ -72,6 +65,7 @@ const mapDispatchToProps = {
   getAllTopics,
   searchArticles,
   getAllUsersForSelectBox,
+  showAllArticles,
 };
 
 const mapStateToProps = (state) => {
