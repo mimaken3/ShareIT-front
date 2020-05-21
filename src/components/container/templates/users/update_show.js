@@ -4,26 +4,37 @@ import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { getAllTopics } from "Actions/topic";
 import { getUserDetail, putUserEvent } from "Actions/user";
-import { Link } from "react-router-dom";
-import ToAllUsersButton from "Atoms/buttons/to_all_users_button";
-import UserID from "Atoms/users/id";
+import Button from "@material-ui/core/Button";
 import Loading from "Templates/loading";
 import TopicSelectBox from "Atoms/topic_select_box";
 import UnauthorizedPage from "Atoms/unauthorized_page";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import EditUserIcon from "Molecules/edit_user_icon";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import DeleteButton from "Atoms/buttons/delete_button";
+import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import { compose } from "redux";
+import { withStyles } from "@material-ui/core/styles";
+import BackButton from "Atoms/buttons/back";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import SendIcon from "@material-ui/icons/Send";
 
 class UserUpdateShow extends Component {
   constructor(props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleProfileChange = this.handleProfileChange.bind(this);
     this.state = {
       textbox: "",
       textBoxFlag: false,
       isTouch: false,
+      loading: true,
+      submitting: false,
+      // プロフィール
+      profile: "",
+      isProfileError: false,
     };
   }
 
@@ -33,45 +44,55 @@ class UserUpdateShow extends Component {
 
     // ユーザ情報を取得
     const { userId } = this.props.match.params;
-    if (userId) this.props.getUserDetail(userId);
+    if (userId)
+      this.props.getUserDetail(userId).then(() => {
+        this.setState({ profile: this.props.user.profile, loading: false });
+      });
   }
 
   // ユーザ情報を更新して送信
-  async onSubmit(values) {
-    // 送信するトピックをセット
-    values.interested_topics = this.refs.TopicSelectBox.getSendTopics(
-      values.interested_topics
-    );
+  async onSubmit() {
+    this.setState({ submitting: true });
 
-    if (this.state.isTouch) {
-      values.profile = this.state.textbox;
-    } else {
-      values.profile = this.props.user.profile;
-    }
+    let user = {
+      user_id: this.props.user.user_id,
+      user_name: this.props.user.user_name,
+      icon_name: this.props.user.icon_name,
+      created_date: this.props.user.created_date,
+      interested_topics: this.refs.TopicSelectBox.getSendTopics(
+        this.props.user.interested_topics
+      ),
+      profile: this.state.profile,
+    };
 
     // ユーザのアイコンをセット
     let iconImage = this.refs.EditUserIcon.getUserIcon();
 
     // 更新
-    await this.props.putUserEvent(values, iconImage);
+    await this.props.putUserEvent(user, iconImage);
 
     // 更新ボタンを押した後に遷移するURL
-    this.props.history.push("/api/users/" + values.user_id);
+    this.props.history.push("/api/users/" + this.props.user.user_id);
   }
 
-  // プロフィール
-  handleChange(e) {
-    this.setState({ isTouch: true });
+  // プロフィールの入力チェック
+  handleProfileChange(e) {
     if (e.target.value.length > 1000) {
-      this.setState({ textBoxFlag: true });
+      this.setState({
+        profile: e.target.value,
+        isProfileError: true,
+      });
     } else {
-      this.setState({ textbox: e.target.value, textBoxFlag: false });
+      this.setState({ profile: e.target.value, isProfileError: false });
     }
   }
 
   render() {
-    if (this.props.user && Object.values(this.props.allTopics).length !== 0) {
-      const { handleSubmit, submitting, invalid } = this.props;
+    if (
+      this.props.user &&
+      Object.values(this.props.allTopics).length !== 0 &&
+      !this.state.loading
+    ) {
       const loginUserInfo = getLoginUserInfo();
       const loginUserID = loginUserInfo.userID;
       const isAdmin = loginUserInfo.admin;
@@ -90,20 +111,64 @@ class UserUpdateShow extends Component {
         const initTopics = this.props.user.interested_topics;
 
         const sendObj = { user: this.props.user };
+
+        // プロフィールの文字数表示
+        let ProfileCount;
+        if (this.state.profile.length > 1000) {
+          ProfileCount = (
+            <React.Fragment>
+              <span style={{ color: "red" }}>{this.state.profile.length}</span>
+              /1000 文字
+            </React.Fragment>
+          );
+        } else {
+          ProfileCount = (
+            <React.Fragment>
+              {this.state.profile.length}/1000 文字
+            </React.Fragment>
+          );
+        }
+
+        // 戻る先のURL
+        const backURL = "/api/users/" + this.props.user.user_id;
+
+        const theme = createMuiTheme({
+          palette: {
+            primary: {
+              main: "#888888", // グレー
+            },
+            secondary: {
+              main: "#00CCFF", // 水色
+            },
+          },
+          overrides: {
+            // セレクトボックスを開いたとき、TextFieldの文字が被るのを
+            // 防ぐため zIndex: 1 -> zIndex: 0
+            MuiInputLabel: {
+              outlined: {
+                zIndex: 0,
+              },
+            },
+          },
+        });
+
         return (
-          <React.Fragment>
-            <form onSubmit={handleSubmit(this.onSubmit)}>
-              ユーザ情報更新画面
-              <div>
-                <UserID userID={this.props.user.user_id} />
+          <ThemeProvider theme={theme}>
+            <Container component="main" maxWidth="xs">
+              <CssBaseline />
+              <div className={this.props.classes.editUserIcon}>
+                <EditUserIcon
+                  defaultIconURL=""
+                  icon={this.props.user.icon_name}
+                  ref="EditUserIcon"
+                />
               </div>
-              <EditUserIcon
-                defaultIconURL=""
-                icon={this.props.user.icon_name}
-                ref="EditUserIcon"
-              />
-              <div>ユーザ名: {this.props.user.user_name}</div>
-              <div>
+
+              <div className={this.props.classes.userName}>
+                {this.props.user.user_name}
+              </div>
+
+              <div className={this.props.classes.interestedTopics}>
                 興味のあるトピック
                 <TopicSelectBox
                   allTopics={allTopics}
@@ -111,46 +176,56 @@ class UserUpdateShow extends Component {
                   ref="TopicSelectBox"
                 />
               </div>
-              <div>
-                プロフィール
-                <div>
-                  <TextareaAutosize
-                    aria-label="profile"
-                    rowsMin={3}
-                    rowsMax={20}
-                    placeholder="1000文字以内"
-                    defaultValue={this.props.user.profile}
-                    onChange={this.handleChange}
-                  />
+
+              <div className={this.props.classes.profile}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  id="outlined-multiline-static"
+                  label="プロフィール *任意"
+                  multiline
+                  rows={4}
+                  value={this.state.profile}
+                  onChange={(e) => this.handleProfileChange(e)}
+                />
+                <div style={{ float: "right" }}>{ProfileCount}</div>
+              </div>
+
+              <div className={this.props.classes.stopFloat}></div>
+
+              <div>作成日: {this.props.user.created_date}</div>
+
+              <div className={this.props.classes.backAndDeleteButton}>
+                <div className={this.props.classes.backButton}>
+                  <BackButton backURL={backURL} />
+                </div>
+
+                <div className={this.props.classes.deleteButton}>
+                  <DeleteButton param="user" sendObj={sendObj} />
                 </div>
               </div>
-              <div>作成日: {this.props.user.created_date}</div>
-              <div>
-                <DeleteButton param="user" sendObj={sendObj} />
-              </div>
-              <div>
-                <input
-                  type="submit"
-                  value="Submit"
-                  disabled={submitting || invalid || this.state.textBoxFlag}
-                />
-              </div>
-            </form>
-            <div>
-              <Link to={`/api/users/${this.props.user.user_id}`}>戻る</Link>
-            </div>
-            <div>
-              <ToAllUsersButton />
-            </div>
-          </React.Fragment>
+
+              <div className={this.props.classes.stopFloat}></div>
+
+              <Button
+                onClick={this.onSubmit}
+                variant="contained"
+                color="secondary"
+                className={this.props.classes.updateButton}
+                disabled={this.state.isProfileError || this.state.submitting}
+                startIcon={<SendIcon />}
+              >
+                更新
+              </Button>
+            </Container>
+          </ThemeProvider>
         );
       }
     } else {
       return (
         <React.Fragment>
-          <div>
-            <Loading />
-          </div>
+          <Loading />
         </React.Fragment>
       );
     }
@@ -173,11 +248,48 @@ const mapStateToProps = (state, ownProps) => {
 };
 const mapDispatchToProps = { getAllTopics, getUserDetail, putUserEvent };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
-  reduxForm({ form: "userUpdateShowForm", enableReinitialize: true })(
-    UserUpdateShow
-  )
-);
+const styles = (theme) => ({
+  editUserIcon: {
+    textAlign: "center",
+    marginTop: "20px",
+  },
+  userName: {
+    marginTop: "20px",
+    textAlign: "center",
+  },
+  interestedTopics: {
+    marginTop: "20px",
+  },
+  profile: {
+    marginTop: "20px",
+  },
+  stopFloat: {
+    clear: "both",
+  },
+  submitButton: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  backButton: {
+    float: "left",
+    marginRight: "5px",
+  },
+  deleteButton: {
+    float: "left",
+  },
+  backAndDeleteButton: {
+    float: "left",
+    marginTop: "10px",
+    marginBottom: "20px",
+    marginLeft: "8px",
+  },
+  updateButton: {
+    color: "white",
+    marginLeft: "8px",
+  },
+});
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({ form: "userUpdateShowForm", enableReinitialize: true }),
+  withStyles(styles)
+)(UserUpdateShow);

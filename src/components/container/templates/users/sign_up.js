@@ -198,7 +198,7 @@ class SignUp extends Component {
       });
   }
 
-  // プロフィール
+  // プロフィールの入力チェック
   handleProfileChange(e) {
     if (e.target.value.length > 1000) {
       this.setState({
@@ -268,9 +268,9 @@ class SignUp extends Component {
 
   // ユーザ情報を登録
   async onSubmit() {
-    let users = {
+    let user = {
       user_name: this.state.userName,
-      email: this.state.email,
+      // email: this.state.email,
       interested_topics: this.refs.TopicSelectBox.getSendTopics("その他"),
       profile: this.state.profile,
       password: this.state.password,
@@ -280,7 +280,7 @@ class SignUp extends Component {
     let iconImage = this.refs.EditUserIcon.getUserIcon();
 
     // 登録
-    await this.props.postUserEvent(users, iconImage);
+    await this.props.postUserEvent(user, iconImage);
 
     // 登録後の遷移先
     this.props.history.push("/login");
@@ -503,7 +503,6 @@ class SignUp extends Component {
                   fullWidth
                   id="outlined-multiline-static"
                   label="プロフィール *任意"
-                  // style={styles}
                   multiline
                   rows={4}
                   onChange={(e) => this.handleProfileChange(e)}

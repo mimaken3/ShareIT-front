@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { getArticleDetail, putEvent } from "Actions/article";
 import { getAllTopics } from "Actions/topic";
-import { Link } from "react-router-dom";
 import TopicSelectBox from "Atoms/topic_select_box";
 import CreatedDate from "Atoms/created_date.js";
 import { Button } from "@material-ui/core";
