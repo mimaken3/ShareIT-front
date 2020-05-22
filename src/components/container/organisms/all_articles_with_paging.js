@@ -7,6 +7,7 @@ import {
   showAllArticles,
   emptyArticles,
   getAllArticlesByUserID,
+  emptyLikedArticles,
 } from "Actions/article";
 import Loading from "Templates/loading";
 
@@ -20,7 +21,13 @@ class AllArticlesWithPaging extends Component {
   }
 
   PagingClick() {
-    this.props.emptyArticles();
+    if (this.props.param === "userDetailShow") {
+      // ユーザ詳細の記事一覧
+      this.props.emptyArticles();
+    } else if (this.props.param === "userLikedArticles") {
+      // ユーザがいいねした記事一覧
+      this.props.emptyLikedArticles();
+    }
     if (this.props.allPagingNum) {
       this.setState({ loading: false });
     }
@@ -36,6 +43,25 @@ class AllArticlesWithPaging extends Component {
             <div style={{ marginTop: "30px" }}>
               <Paging
                 refName="userArticles"
+                userID={this.props.userID}
+                refPg={this.props.refPg}
+                allPagingNum={this.props.allPagingNum}
+                callback={() => this.PagingClick()}
+              />
+            </div>
+          </React.Fragment>
+        );
+      } else if (this.props.param === "userLikedArticles") {
+        // ユーザがいいねした記事一覧
+        return (
+          <React.Fragment>
+            <AllArticles
+              refName="userLikedArticles"
+              userID={this.props.userID}
+            />
+            <div style={{ marginTop: "30px" }}>
+              <Paging
+                refName="userLikedArticles"
                 userID={this.props.userID}
                 refPg={this.props.refPg}
                 allPagingNum={this.props.allPagingNum}
@@ -73,14 +99,25 @@ const mapDispatchToProps = {
   showAllArticles,
   emptyArticles,
   getAllArticlesByUserID,
+  emptyLikedArticles,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    allPagingNum: state.articles.all_paging_num,
-    articles: state.articles.articles,
-    refPg: state.articles.ref_pg,
-  };
+const mapStateToProps = (state, ownProps) => {
+  if (ownProps.param === "userLikedArticles") {
+    // ユーザがいいねした記事一覧
+    return {
+      allPagingNum: state.likeArticles.all_paging_num,
+      articles: state.likeArticles.articles,
+      refPg: state.likeArticles.ref_pg,
+    };
+  } else {
+    // ユーザの記事一覧 or 記事一覧ページ
+    return {
+      allPagingNum: state.articles.all_paging_num,
+      articles: state.articles.articles,
+      refPg: state.articles.ref_pg,
+    };
+  }
 };
 
 export default connect(

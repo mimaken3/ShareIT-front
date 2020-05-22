@@ -13,6 +13,8 @@ export const DELETE_ARTICLE_EVENT = "DELETE_ARTICLE_EVENT";
 export const CREATE_ARTICLE_EVENT = "CREATE_ARTICLE_EVENT";
 export const ARTICLE_NOT_EXIST = "ARTICLE_NOT_EXIST";
 export const EMPTY_ARTICELS = "EMPTY_ARTICELS";
+export const EMPTY_LIKED_ARTICLES = "EMPTY_LIKED_ARTICLES";
+export const SHOW_LIKED_ARTICLES_BY_USER_ID = "SHOW_LIKED_ARTICLES_BY_USER_ID";
 
 const ROOT_URL = env.ROOT_URL;
 
@@ -63,6 +65,20 @@ export const searchArticles = (values, param) => async (dispatch) => {
   );
 
   dispatch({ type: SHOW_SEARCHING_FOR_ALL_ARTICLES, response });
+};
+
+// ユーザがいいねした記事
+export const showLikedArticlesByUserID = (userID, pageNum) => async (
+  dispatch
+) => {
+  const loginUserInfo = getLoginUserInfo();
+  const loginUserID = loginUserInfo.userID;
+
+  const response = await axios.get(
+    `${ROOT_URL}/api/users/${userID}/like/articles?ref_pg=${pageNum}&user_id=${loginUserID}`,
+    loginUserInfo.sendConfig
+  );
+  dispatch({ type: SHOW_LIKED_ARTICLES_BY_USER_ID, response });
 };
 
 // ユーザIDの全記事を取得
@@ -148,4 +164,9 @@ export const deleteEvent = (articleId) => async (dispatch) => {
 // storeのarticlesを空に
 export const emptyArticles = () => (dispatch) => {
   dispatch({ type: EMPTY_ARTICELS });
+};
+
+// storeのいいねした記事一覧を空に
+export const emptyLikedArticles = () => (dispatch) => {
+  dispatch({ type: EMPTY_LIKED_ARTICLES });
 };

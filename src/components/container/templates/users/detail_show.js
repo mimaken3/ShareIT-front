@@ -2,7 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { getUserDetail } from "Actions/user";
-import { getAllArticlesByUserID } from "Actions/article";
+import {
+  getAllArticlesByUserID,
+  showLikedArticlesByUserID,
+  emptyLikedArticles,
+  emptyArticles,
+} from "Actions/article";
 import UserName from "Atoms/users/name";
 import Profile from "Atoms/users/profile";
 import { withStyles } from "@material-ui/core/styles";
@@ -27,6 +32,9 @@ class UserShow extends Component {
     this.state = {
       loading: true,
     };
+
+    this.props.emptyArticles();
+    this.props.emptyLikedArticles();
   }
 
   // 初回読み込み用
@@ -39,7 +47,10 @@ class UserShow extends Component {
         [this.props.getUserDetail(userId)],
 
         // ユーザの記事一覧を取得
-        [this.props.getAllArticlesByUserID(userId, 1)]
+        [this.props.getAllArticlesByUserID(userId, 1)],
+
+        // ユーザのいいねした記事一覧を取得
+        [this.props.showLikedArticlesByUserID(userId, 1)]
       ).then(() => {
         this.setState({ loading: false });
       });
@@ -48,11 +59,22 @@ class UserShow extends Component {
 
   // propsの値が変わったら呼ばれる
   // 主にヘッダーから用
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    const { user } = prevProps;
     const { userId } = this.props.match.params;
-    if (userId && this.props.user) {
-      this.props.getUserDetail(userId);
-    }
+    this.props.getUserDetail(userId).then(() => {
+      if (user && user.user_name !== this.props.user.user_name) {
+        Promise.all(
+          // ユーザの記事一覧を取得
+          [this.props.getAllArticlesByUserID(userId, 1)],
+
+          // ユーザのいいねした記事一覧を取得
+          [this.props.showLikedArticlesByUserID(userId, 1)]
+        ).then(() => {
+          this.setState({ loading: false });
+        });
+      }
+    });
   }
 
   render() {
@@ -107,16 +129,19 @@ class UserShow extends Component {
             </TabList>
 
             <TabPanel>
-              <div>
-                <AllArticlesWithPaging
-                  param="userDetailShow"
-                  userID={this.props.user.user_id}
-                  historyAction={this.props.history.action}
-                />
-              </div>
+              <AllArticlesWithPaging
+                param="userDetailShow"
+                userID={this.props.user.user_id}
+                historyAction={this.props.history.action}
+              />
             </TabPanel>
+
             <TabPanel>
-              <h2>Any content 2</h2>
+              <AllArticlesWithPaging
+                param="userLikedArticles"
+                userID={this.props.user.user_id}
+                historyAction={this.props.history.action}
+              />
             </TabPanel>
           </Tabs>
         </Container>
@@ -140,6 +165,9 @@ class UserShow extends Component {
 const mapDispatchToProps = {
   getUserDetail,
   getAllArticlesByUserID,
+  showLikedArticlesByUserID,
+  emptyArticles,
+  emptyLikedArticles,
 };
 
 const mapStateToProps = (state, ownProps) => {

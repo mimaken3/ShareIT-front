@@ -1,6 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { showAllArticles, searchArticles } from "Actions/article";
+import {
+  showAllArticles,
+  searchArticles,
+  showLikedArticlesByUserID,
+} from "Actions/article";
 import { showAllUsers } from "Actions/user";
 import { getAllArticlesByUserID } from "Actions/article";
 import Pagination from "@material-ui/lab/Pagination";
@@ -8,7 +12,6 @@ import { ScrollTo } from "react-scroll-to";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import "./paging.css";
-// import injectSheet from "react-jss";
 
 // ページング
 const Paging = ({
@@ -24,6 +27,7 @@ const Paging = ({
   isSearched,
   searchUser,
   searchTopics,
+  showLikedArticlesByUserID,
 }) => {
   const theme = createMuiTheme({
     // ページングボタンを中央に
@@ -69,6 +73,10 @@ const Paging = ({
                   getAllArticlesByUserID(userID, page);
                   scroll({ x: 0, y: 0 });
                   callback();
+                } else if (refName === "userLikedArticles") {
+                  showLikedArticlesByUserID(userID, page);
+                  scroll({ x: 0, y: 0 });
+                  callback();
                 }
               }}
             />
@@ -79,18 +87,29 @@ const Paging = ({
   );
 };
 
-const mapStateToProps = (state) => {
-  const isSearched = state.articles.is_searched;
-  const searchUser = state.articles.search_user;
-  const searchTopics = state.articles.search_topics;
+const mapStateToProps = (state, ownProps) => {
+  if (ownProps.refName === "userLikedArticles") {
+    // ユーザがいいねした記事一覧
+    const isSearched = state.likeArticles.is_searched;
+    const searchUser = state.likeArticles.search_user;
+    const searchTopics = state.likeArticles.search_topics;
 
-  return { isSearched: isSearched, searchUser: searchUser, searchTopics };
+    return { isSearched: isSearched, searchUser: searchUser, searchTopics };
+  } else {
+    // ユーザの記事一覧 or 記事一覧ページ
+    const isSearched = state.articles.is_searched;
+    const searchUser = state.articles.search_user;
+    const searchTopics = state.articles.search_topics;
+
+    return { isSearched: isSearched, searchUser: searchUser, searchTopics };
+  }
 };
 const mapDispatchToProps = {
   showAllArticles,
   showAllUsers,
   getAllArticlesByUserID,
   searchArticles,
+  showLikedArticlesByUserID,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Paging);

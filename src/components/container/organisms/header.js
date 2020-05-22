@@ -269,11 +269,15 @@ const Header = withRouter((props) => {
   // ユーザ詳細画面へ
   function toUserShowPage(loginUserID) {
     handleMobileMenuClose();
-    props.emptyArticles();
-    props.emptyUsers();
-    props.getUserDetail(loginUserID);
+    if (props.history.location.pathname === "/api/users/" + loginUserID) {
+      window.location.reload(false);
+    } else {
+      props.emptyArticles();
+      props.emptyUsers();
+      props.getUserDetail(loginUserID);
 
-    props.history.push("/api/users/" + loginUserID);
+      props.history.push("/api/users/" + loginUserID);
+    }
   }
 
   return <React.Fragment>{Display}</React.Fragment>;

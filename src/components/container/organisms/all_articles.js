@@ -34,11 +34,20 @@ class AllArticles extends Component {
 
 const mapDispatchToProps = "";
 
-const mapStateToProps = (state) => {
-  return {
-    isEmpty: state.articles.is_empty,
-    articles: getIndexDisplayArr(state.articles.articles),
-  };
+const mapStateToProps = (state, ownProps) => {
+  if (ownProps.refName === "userLikedArticles") {
+    // ユーザがいいねした記事一覧
+    return {
+      isEmpty: state.likeArticles.is_empty,
+      articles: getIndexDisplayArr(state.likeArticles.articles),
+    };
+  } else {
+    // ユーザの記事一覧 or 記事一覧
+    return {
+      isEmpty: state.articles.is_empty,
+      articles: getIndexDisplayArr(state.articles.articles),
+    };
+  }
 };
 
 export default connect(
