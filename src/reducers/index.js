@@ -4,6 +4,8 @@ import articles from "./articles";
 import topics from "./topics";
 import comments from "./comments";
 import auth from "./auth";
+import selectUser from "./select_user";
+import likeArticles from "./like_articles";
 import { reducer as form } from "redux-form";
 
 const appReducer = combineReducers({
@@ -13,10 +15,15 @@ const appReducer = combineReducers({
   comments,
   auth,
   form,
+  selectUser,
+  likeArticles,
 });
 
 const rootReducer = (state, action) => {
-  if (action.type === "LOGOUT_USER_EVENT") {
+  if (
+    action.type === "LOGOUT_USER_EVENT" ||
+    action.type === "DELETE_USER_EVENT"
+  ) {
     localStorage.removeItem("shareIT_token");
     localStorage.removeItem("login_user_icon_URL");
     localStorage.removeItem("currentPage");

@@ -3,8 +3,9 @@ import {
   CREATE_COMMENT,
   DELETE_COMMENT,
   UPDATE_COMMENT,
-} from "../actions/comment";
-import getIteratoredObjArr from "../modules/getIteratoredObjArr";
+} from "Actions/comment";
+import getIteratoredObjArr from "Modules/getIteratoredObjArr";
+import getJSTCreatedDateArr from "Modules/getJST_created_date_arr";
 
 // reducerは関数として定義(引数は2つ)
 // 第一引数の初期値はないので{}
@@ -12,10 +13,15 @@ import getIteratoredObjArr from "../modules/getIteratoredObjArr";
 export default (comments = {}, action) => {
   switch (action.type) {
     case SHOW_ALL_COMMENTS:
-      return action.response.data;
+      // 作成日を年月日時分に変換
+      const _allComments = action.response.data;
+      const allComments = getJSTCreatedDateArr(_allComments);
+      return allComments;
 
     case CREATE_COMMENT:
-      const comment = action.response.data;
+      // 作成日を年月日時分に変換
+      const _comment = action.response.data;
+      const comment = getJSTCreatedDateArr(_comment);
 
       // イテレータ付きのオブジェクト配列を返す
       const iteratoredCreateCommentsObj = getIteratoredObjArr(comments);
@@ -23,7 +29,9 @@ export default (comments = {}, action) => {
       return [...iteratoredCreateCommentsObj, comment];
 
     case UPDATE_COMMENT:
-      const updatedComment = action.response.data;
+      // 作成日を年月日時分に変換
+      const _updatedComment = action.response.data;
+      const updatedComment = getJSTCreatedDateArr(_updatedComment);
 
       // イテレータ付きのオブジェクト配列を返す
       const iteratoredCreateCommentsObj2 = getIteratoredObjArr(comments);

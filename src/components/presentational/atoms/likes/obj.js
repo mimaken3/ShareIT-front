@@ -1,17 +1,19 @@
 import React from "react";
+import like from "./like.png";
+import unlike from "./unlike.png";
 
 // いいねのオブジェクト
 const LikeObj = (props) => {
   if (props.obj) {
     return (
       <React.Fragment>
-        <div>❤</div>
+        <img src={like} alt="like" width="20px" height="20px" />
       </React.Fragment>
     );
   } else {
     return (
       <React.Fragment>
-        <div>♡</div>
+        <img src={unlike} alt="unlike" width="20px" height="20px" />
       </React.Fragment>
     );
   }

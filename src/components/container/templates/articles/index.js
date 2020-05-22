@@ -1,60 +1,86 @@
 import React, { Component } from "react";
+import AllArticlesWithPaging from "Organisms/all_articles_with_paging";
+import SearchArticles from "Molecules/articles/search";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
 import { connect } from "react-redux";
-import { showAllArticles } from "../../../../actions/article";
-import ToAllUsersButton from "../../../presentational/atoms/to_all_users_button";
-import Loading from "../loading";
-import CreateArticleButton from "../../../presentational/atoms/create_article_button";
-import AllArticles from "../../organisms/all_articles";
+import { reduxForm } from "redux-form";
+import { getAllUsersForSelectBox } from "Actions/user";
+import { getAllTopics } from "Actions/topic";
+import { searchArticles } from "Actions/article";
+import Loading from "Templates/loading";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+import { withRouter } from "react-router";
+import { showAllArticles } from "Actions/article";
 
+let isBrowzerBack = React.createRef();
+isBrowzerBack.current = false;
+
+// 記事一覧ページ
 class ArticlesIndex extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-    };
-  }
-
-  // 外部のAPIに対してイベントを取得する
   componentDidMount() {
-    // 複雑な処理はcomponentに書かずに外(action)に書く
-    this.props.showAllArticles(1).then(() => {
-      this.setState({ loading: false });
-    });
+    const loginUser = getLoginUserInfo();
+    if (loginUser !== null) {
+      // 全トピックの取得
+      this.props.getAllTopics().then(() => {
+        // セレクトボックス用の全ユーザを取得
+        this.props.getAllUsersForSelectBox(loginUser.userID);
+
+        // 記事一覧を取得
+        this.props.showAllArticles(1);
+      });
+    }
   }
 
   render() {
-    if (this.props.articles && this.props.allPagingNum && !this.state.loading) {
+    // セレクトボックスの中身が読み込まれたら表示
+    if (
+      Object.values(this.props.allUsers).length > 0 &&
+      Object.values(this.props.allTopics).length > 0
+    ) {
       return (
-        <React.Fragment>
-          <AllArticles refName="articles" />
+        <Container component="main" maxWidth="sm">
+          <CssBaseline />
+
+          <div style={{ display: "-webkit-flex", marginTop: "20px" }}>
+            <SearchArticles />
+          </div>
 
           <div>
-            <CreateArticleButton />
+            <AllArticlesWithPaging historyAction={this.props.history.action} />
           </div>
-          <div>
-            <ToAllUsersButton />
-          </div>
-        </React.Fragment>
+        </Container>
       );
     } else {
       return (
-        <React.Fragment>
-          <div>
-            <Loading />
-          </div>
-        </React.Fragment>
+        <Container component="main" maxWidth="sm">
+          <CssBaseline />
+          <Loading />
+        </Container>
       );
     }
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-    allPagingNum: state.articles.all_paging_num,
-    articles: state.articles.articles,
-  };
+const mapDispatchToProps = {
+  getAllTopics,
+  searchArticles,
+  getAllUsersForSelectBox,
+  showAllArticles,
 };
 
-const mapDispatchToProps = { showAllArticles };
+const mapStateToProps = (state) => {
+  // 全ユーザ
+  const allUsers = state.selectUser.users;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ArticlesIndex);
+  // 全トピック
+  const allTopics = state.topics;
+
+  return { allUsers, allTopics };
+};
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(reduxForm({ form: "articlesIndexForm" })(ArticlesIndex))
+);

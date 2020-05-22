@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { reduxForm } from "redux-form";
-import Paging from "../../presentational/atoms/paging";
-import Article from "../../presentational/molecules/articles/article";
-import getLoginUserInfo from "../../../modules/getLoginUserInfo";
+import Article from "Molecules/articles/article";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
+import getIndexDisplayArr from "Modules/get_index_display_arr";
 
 class AllArticles extends Component {
   // 記事を表示する関数
@@ -20,34 +20,13 @@ class AllArticles extends Component {
     if (this.props.isEmpty) {
       return (
         <React.Fragment>
-          <div>記事一覧</div>
           <div>記事はありません</div>
-          <div>
-            <Paging
-              refName={this.props.refName}
-              userID={this.props.userID}
-              refPg={this.props.refPg}
-              allPagingNum={this.props.allPagingNum}
-            />
-          </div>
         </React.Fragment>
       );
     } else {
       let loginUser = getLoginUserInfo();
       return (
-        <React.Fragment>
-          <div>記事一覧</div>
-          {this.renderArticles(loginUser.userID)}
-
-          <div>
-            <Paging
-              refName={this.props.refName}
-              userID={this.props.userID}
-              refPg={this.props.refPg}
-              allPagingNum={this.props.allPagingNum}
-            />
-          </div>
-        </React.Fragment>
+        <React.Fragment>{this.renderArticles(loginUser.userID)}</React.Fragment>
       );
     }
   }
@@ -55,17 +34,22 @@ class AllArticles extends Component {
 
 const mapDispatchToProps = "";
 
-const mapStateToProps = (state) => {
-  return {
-    isEmpty: state.articles.is_empty,
-    articles: state.articles.articles,
-    refPg: state.articles.ref_pg,
-    allPagingNum: state.articles.all_paging_num,
-  };
+const mapStateToProps = (state, ownProps) => {
+  if (ownProps.refName === "userLikedArticles") {
+    // ユーザがいいねした記事一覧
+    return {
+      isEmpty: state.likeArticles.is_empty,
+      articles: getIndexDisplayArr(state.likeArticles.articles),
+    };
+  } else {
+    // ユーザの記事一覧 or 記事一覧
+    return {
+      isEmpty: state.articles.is_empty,
+      articles: getIndexDisplayArr(state.articles.articles),
+    };
+  }
 };
 
-// connect 第一引数はcomponentに渡すpropsを制御する
-// 第二引数はreducerを呼び出して、reduxで管理しているstateを更新する
 export default connect(
   mapStateToProps,
   mapDispatchToProps

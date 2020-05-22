@@ -1,40 +1,60 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { showAllUsers } from "../../../../actions/user";
-import ToAllArticlesButton from "../../../presentational/atoms/to_all_articles_button";
-import Loading from "../../../container/templates/loading";
-import CreateArticleButton from "../../../presentational/atoms/create_article_button";
-import AllUsers from "../../../container/organisms/all_users";
+import { showAllUsers, emptyUsers } from "Actions/user";
+import Loading from "Templates/loading";
+import AllUsers from "Organisms/all_users";
+import Paging from "Atoms/paging";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
 
 class UsersIndex extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+    };
+  }
+
   // 外部のAPIに対してイベントを取得する
   componentDidMount() {
     // 複雑な処理はcomponentに書かずに外(action)に書く
-    this.props.showAllUsers(1);
+    this.props.showAllUsers(1).then(() => {
+      this.setState({ loading: false });
+    });
+  }
+
+  PagingClick() {
+    this.props.emptyUsers();
+    if (this.props.allPagingNum) {
+      this.setState({ loading: false });
+    }
   }
 
   render() {
-    if (this.props.users && this.props.allPagingNum) {
+    if (this.props.users && this.props.allPagingNum && !this.state.loading) {
       return (
-        <React.Fragment>
-          <AllUsers refName="users" />
+        <Container component="main" maxWidth="sm">
+          <CssBaseline />
+
+          <AllUsers />
 
           <div>
-            <CreateArticleButton />
+            <Paging
+              refName="users"
+              userID={this.props.userID}
+              refPg={this.props.refPg}
+              allPagingNum={this.props.allPagingNum}
+              callback={() => this.PagingClick()}
+            />
           </div>
-
-          <div>
-            <ToAllArticlesButton />
-          </div>
-        </React.Fragment>
+        </Container>
       );
     } else {
       return (
-        <React.Fragment>
-          <div>
-            <Loading />
-          </div>
-        </React.Fragment>
+        <Container component="main" maxWidth="sm">
+          <CssBaseline />
+          <Loading />
+        </Container>
       );
     }
   }
@@ -46,9 +66,10 @@ const mapStateToProps = (state) => {
   return {
     users: state.users.users,
     allPagingNum: state.users.all_paging_num,
+    refPg: state.users.ref_pg,
   };
 };
 
-const mapDispatchToProps = { showAllUsers };
+const mapDispatchToProps = { showAllUsers, emptyUsers };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersIndex);

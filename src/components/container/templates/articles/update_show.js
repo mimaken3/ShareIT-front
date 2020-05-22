@@ -1,27 +1,42 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 // 入力フォーム作成で使う
-import { Field, reduxForm } from "redux-form";
-import {
-  getArticleDetail,
-  putEvent,
-  deleteEvent,
-} from "../../../../actions/article";
-import { getAllTopics } from "../../../../actions/topic";
-import { Link } from "react-router-dom";
-import TopicSelectBox from "../../../presentational/atoms/topic_select_box";
-import CreatedDate from "../../../presentational/atoms/created_date.js";
-import ToAllArticlesButton from "../../../presentational/atoms/to_all_articles_button";
-import Loading from "../loading";
-import UnauthorizedPage from "../../../presentational/atoms/unauthorized_page";
-import ArticleID from "../../../presentational/atoms/articles/id";
-import getLoginUserInfo from "../../../../modules/getLoginUserInfo";
+import { reduxForm } from "redux-form";
+import { getArticleDetail, putEvent } from "Actions/article";
+import { getAllTopics } from "Actions/topic";
+import TopicSelectBox from "Atoms/topic_select_box";
+import CreatedDate from "Atoms/created_date.js";
+import { Button } from "@material-ui/core";
+import Loading from "Templates/loading";
+import UnauthorizedPage from "Atoms/unauthorized_page";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
+import DeleteButton from "Atoms/buttons/delete_button";
+import Privacy from "Atoms/articles/privacy";
+import convertJSTToDate from "Modules/convert_JST_to_date";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+import TextField from "@material-ui/core/TextField";
+import BackButton from "Atoms/buttons/back";
+import SendIcon from "@material-ui/icons/Send";
+import Count from "Atoms/count";
 
 class ArticleUpdate extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      // 記事タイトル
+      title: "",
+      isTitleError: false,
+      // 記事内容
+      content: "",
+      isContentError: false,
+
+      submitting: false,
+      loading: true,
+    };
     this.onSubmit = this.onSubmit.bind(this);
-    this.onDeleteClick = this.onDeleteClick.bind(this);
   }
 
   // 外部のAPIに対してイベントを取得する
@@ -31,157 +46,254 @@ class ArticleUpdate extends Component {
 
     // 記事情報を取得
     const { articleId } = this.props.match.params;
-    if (articleId) this.props.getArticleDetail(articleId);
+    if (articleId)
+      this.props.getArticleDetail(articleId).then(() => {
+        this.setState({
+          title: this.props.article.article_title,
+          content: this.props.article.article_content,
+          loading: false,
+        });
+      });
   }
 
-  // タイトルと内容の入力ボックス
-  renderField(field) {
-    const {
-      input,
-      label,
-      type,
-      // mata: { visited, error }
-      meta: { error },
-    } = field;
+  // タイトルの入力チェック
+  handleTitleChange = (e) => {
+    const title = e.target.value;
+    this.setState({ title: title });
 
-    return (
-      <div>
-        <input {...input} placeholder={label} type={type} />
-        {error && <span>{error}</span>}
-        {/* {visited && error && <span>{error}</span>} */}
-      </div>
-    );
+    if (title.match(/\S/g)) {
+      if (title.length > 255) {
+        this.setState({
+          isTitleError: true,
+        });
+      } else {
+        this.setState({ isTitleError: false });
+      }
+    } else {
+      this.setState({ isTitleError: true });
+    }
+  };
+
+  // 記事内容の入力チェック
+  handleContentChange = (e) => {
+    const content = e.target.value;
+    this.setState({ content: content });
+
+    if (content.match(/\S/g)) {
+      if (content.length > 9999) {
+        this.setState({
+          isContentError: true,
+        });
+      } else {
+        this.setState({ isContentError: false });
+      }
+    } else {
+      this.setState({ isContentError: true });
+    }
+  };
+
+  // タイトルをEnterで内容に移動
+  _onKeyPress(event) {
+    if (event.key === "Enter") {
+      this.textInput.focus();
+    }
   }
 
   // 記事を更新して送信
-  async onSubmit(values) {
+  async onSubmit() {
+    this.setState({ submitting: true });
+
+    let article = this.props.article;
+    article.article_title = this.state.title;
+    article.article_content = this.state.content;
+
     // 送信するトピックをセット
-    values.article_topics = this.refs.TopicSelectBox.getSendTopics(
-      values.article_topics
+    article.article_topics = this.refs.TopicSelectBox.getSendTopics(
+      this.props.article.article_topics
     );
 
-    await this.props.putEvent(values);
+    article.created_date = convertJSTToDate(this.props.article.created_date);
+
+    // プライバシーを設定
+    article.is_private = this.refs.Privacy.privacy;
+
+    await this.props.putEvent(article);
     // 更新ボタンを押したとに表示するPATH
-    this.props.history.push("/api/articles/" + values.article_id);
-  }
-
-  // 記事の削除
-  async onDeleteClick() {
-    const article_id = this.props.match.params.articleId;
-
-    await this.props.deleteEvent(article_id);
+    this.props.history.push("/api/articles/" + this.props.article.article_id);
   }
 
   render() {
-    // pristine:
-    // submitting: submitボタンを一度押したら非活性にする
-    // invalid: submitボタンを押したらtrueになる状態
-    const { handleSubmit, submitting, invalid } = this.props;
     const loginUserInfo = getLoginUserInfo();
     const loginUserID = loginUserInfo.userID;
-    if (
-      this.props.article &&
-      Object.values(this.props.allTopics).length !== 0
-    ) {
-      if (loginUserID !== this.props.article.created_user_id) {
-        // 別ユーザがアクセスしようとした場合
-        return (
-          <React.Fragment>
-            <UnauthorizedPage page="articles" />
-          </React.Fragment>
-        );
+    const isAdmin = loginUserInfo.admin;
+
+    const theme = createMuiTheme({
+      palette: {
+        primary: {
+          main: "#888888", // グレー
+        },
+        secondary: {
+          main: "#00CCFF", // 水色
+        },
+      },
+      overrides: {
+        MuiFormControl: {
+          root: {
+            width: "100%",
+          },
+        },
+      },
+    });
+
+    if (this.state.loading) {
+      return (
+        <Container component="main" maxWidth="md">
+          <CssBaseline />
+          <Loading />
+        </Container>
+      );
+    } else {
+      if (
+        this.props.article &&
+        Object.values(this.props.allTopics).length !== 0
+      ) {
+        if (loginUserID !== this.props.article.created_user_id && !isAdmin) {
+          // 別ユーザ(admin以外)がアクセスしようとした場合
+          return (
+            <React.Fragment>
+              <UnauthorizedPage page="articles" />
+            </React.Fragment>
+          );
+        } else {
+          // 全トピック
+          const allTopics = this.props.allTopics;
+
+          // 初期表示トピック
+          const initTopics = this.props.article.article_topics;
+
+          const sendObjArticleID = { articleID: this.props.article.article_id };
+
+          const backURL = "/api/articles/" + this.props.article.article_id;
+
+          return (
+            <ThemeProvider theme={theme}>
+              <Container component="main" maxWidth="md">
+                <CssBaseline />
+
+                <div style={{ marginTop: "20px" }}>
+                  <span>作成日 </span>
+                  <CreatedDate createdDate={this.props.article.created_date} />
+                </div>
+
+                <div style={{ marginBottom: "30px", marginTop: "20px" }}>
+                  <TextField
+                    id="standard-required"
+                    label="タイトル *必須"
+                    value={this.state.title}
+                    variant="outlined"
+                    onKeyPress={this._onKeyPress}
+                    onChange={(e) => this.handleTitleChange(e)}
+                  />
+                  <Count text={this.state.title} param="articleTitle" />
+                </div>
+
+                <div style={{ marginBottom: "30px" }}>
+                  <TextField
+                    id="outlined-multiline-static"
+                    label="内容 *必須"
+                    multiline
+                    rows={20}
+                    value={this.state.content}
+                    variant="outlined"
+                    inputRef={(input) => {
+                      this.textInput = input;
+                    }}
+                    onChange={(e) => this.handleContentChange(e)}
+                  />
+                  <Count text={this.state.content} param="articleContent" />
+                </div>
+
+                <div
+                  style={{
+                    maxWidth: "400px",
+                    marginBottom: "10px",
+                    marginLeft: "8px",
+                  }}
+                >
+                  関連トピック:
+                  <TopicSelectBox
+                    allTopics={allTopics}
+                    initTopics={initTopics}
+                    ref="TopicSelectBox"
+                  />
+                </div>
+
+                <div style={{ maxWidth: "100px", marginBottom: "10px" }}>
+                  <Privacy
+                    initPrivacy={this.props.article.is_private}
+                    ref="Privacy"
+                  />
+                </div>
+
+                <div
+                  style={{
+                    float: "left",
+                    marginTop: "10px",
+                    marginBottom: "20px",
+                    marginLeft: "8px",
+                  }}
+                >
+                  <div style={{ float: "left", marginRight: "5px" }}>
+                    <BackButton backURL={backURL} />
+                  </div>
+
+                  <div style={{ float: "left" }}>
+                    <DeleteButton param="article" sendObj={sendObjArticleID} />
+                  </div>
+                </div>
+
+                <div style={{ clear: "both" }}></div>
+
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  style={{ color: "white", marginLeft: "8px" }}
+                  disabled={
+                    this.state.isTitleError ||
+                    this.state.isContentError ||
+                    this.state.submitting
+                  }
+                  onClick={this.onSubmit}
+                  startIcon={<SendIcon />}
+                >
+                  更新
+                </Button>
+              </Container>
+            </ThemeProvider>
+          );
+        }
       } else {
-        // 全トピック
-        const allTopics = this.props.allTopics;
-
-        // 初期表示トピック
-        const initTopics = this.props.article.article_topics;
-
         return (
-          <form onSubmit={handleSubmit(this.onSubmit)}>
-            <div>
-              <div>
-                <ArticleID articleID={this.props.article.article_id} />
-              </div>
-              タイトル:
-              <Field
-                label="article_title"
-                name="article_title"
-                type="text"
-                component={this.renderField}
-              />
-            </div>
-            <div>
-              内容:
-              <Field
-                label="article_content"
-                name="article_content"
-                type="text"
-                component={this.renderField}
-              />
-            </div>
-
-            <div>
-              トピック:
-              <TopicSelectBox
-                allTopics={allTopics}
-                initTopics={initTopics}
-                ref="TopicSelectBox"
-              />
-            </div>
-
-            <div>
-              <CreatedDate createdDate={this.props.article.created_date} />
-            </div>
-
-            <div>
-              <input
-                type="submit"
-                value="Submit"
-                disabled={submitting || invalid}
-              />
-            </div>
-
-            <div>
-              <Link to={`/api/articles/${this.props.article.article_id}`}>
-                戻る
-              </Link>
-            </div>
-
-            <div>
-              <Link to="/api/articles" onClick={this.onDeleteClick}>
-                削除
-              </Link>
-            </div>
-
-            <div>
-              <ToAllArticlesButton />
-            </div>
-          </form>
+          <Container component="main" maxWidth="md">
+            <CssBaseline />
+            <Loading />
+          </Container>
         );
       }
-    } else {
-      return (
-        <React.Fragment>
-          <div>
-            <Loading />
-          </div>
-        </React.Fragment>
-      );
     }
   }
 }
 
 // バリデーションを行う関数
-const validate = (values) => {
-  const errors = {};
-  if (!values.article_title)
-    errors.article_title = "タイトルを入力してください";
-  if (!values.article_content)
-    errors.article_content = "内容を入力してください";
+// const validate = (values) => {
+//   const errors = {};
+//   if (!values.article_title)
+//     errors.article_title = "タイトルを入力してください";
+//   if (!values.article_content)
+//     errors.article_content = "内容を入力してください";
 
-  return errors;
-};
+//   return errors;
+// };
 
 // stateとactionをcomponentに関連付ける実装
 // このstatusは状態のトップレベルを表す
@@ -206,7 +318,6 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = {
   getArticleDetail,
   putEvent,
-  deleteEvent,
   getAllTopics,
 };
 
@@ -223,7 +334,7 @@ export default connect(
   // 詳細へ行くとメモリから詳細を取得する)適宜、該当のイベントをAPIサーバから取得する
   // formにはユニークな名前を渡す
   // reduxForm()の引数には設定に関するオブジェクトを渡す validataionのルールやformの名前などを渡す
-  reduxForm({ validate, form: "articleUpdateForm", enableReinitialize: true })(
+  reduxForm({ form: "articleUpdateForm", enableReinitialize: true })(
     ArticleUpdate
   )
 );

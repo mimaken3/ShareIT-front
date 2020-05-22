@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Route, withRouter } from "react-router";
 import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import getLoginUserInfo from "./modules/getLoginUserInfo";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
 
 class Auth extends Component {
   static propTypes = {

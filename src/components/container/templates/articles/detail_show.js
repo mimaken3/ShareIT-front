@@ -1,21 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
-import { getArticleDetail, deleteEvent } from "../../../../actions/article";
-import { getAllComments } from "../../../../actions/comment";
-import ArticleTitle from "../../../presentational/atoms/articles/title";
-import ArticleContent from "../../../presentational/atoms/articles/content";
-import CreatedDate from "../../../presentational/atoms/created_date.js";
-import Topic from "../../../presentational/atoms/topics/topic";
-import ArticleID from "../../../presentational/atoms/articles/id";
-import ToAllArticlesButton from "../../../presentational/atoms/to_all_articles_button";
-import Loading from "../loading";
-import EditButton from "../../../presentational/atoms/edit_button";
-import CreateArticleButton from "../../../presentational/atoms/create_article_button";
-import Like from "../../../presentational/molecules/likes/like";
-import getLoginUserInfo from "../../../../modules/getLoginUserInfo";
-import AllComments from "../../../container/organisms/all_comments";
-import CommentNew from "../../../presentational/molecules/comments/create";
+import { getArticleDetail, deleteEvent } from "Actions/article";
+import { getAllComments } from "Actions/comment";
+import CreatedDate from "Atoms/created_date.js";
+import Loading from "Templates/loading";
+import EditButton from "Atoms/buttons/edit_button";
+import Like from "Molecules/likes/like";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
+import AllComments from "Organisms/all_comments";
+import CommentNew from "Molecules/comments/create";
+import DeleteButton from "Atoms/buttons/delete_button";
+import NotFoundPage from "Templates/not_found_page";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+import TopicTags from "Atoms/topic_tags";
 
 class ArticleShow extends Component {
   constructor(props) {
@@ -25,11 +24,12 @@ class ArticleShow extends Component {
   }
 
   componentDidMount() {
-    // 複雑な処理はcomponentに書かずに外(action)に記述
     const { articleId } = this.props.match.params;
     if (articleId) {
-      this.props.getAllComments(articleId).then(() => {
-        this.props.getArticleDetail(articleId);
+      Promise.all([
+        this.props.getAllComments(articleId),
+        this.props.getArticleDetail(articleId),
+      ]).then(() => {
         this.setState({ loading: false });
       });
     }
@@ -45,35 +45,49 @@ class ArticleShow extends Component {
   render() {
     const loginUser = getLoginUserInfo();
     const loginUserID = loginUser.userID;
+    const isAdmin = loginUser.admin;
     if (this.props.article && !this.state.loading) {
       var AuthorizedEditButton;
-      if (loginUserID === this.props.article.created_user_id) {
+      if (loginUserID === this.props.article.created_user_id || isAdmin) {
+        const sendObj = { articleID: this.props.article.article_id };
         AuthorizedEditButton = (
-          <div>
-            <EditButton path="articles" id={this.props.article.article_id} />
+          <div
+            style={{ float: "left", marginTop: "30px", marginBottom: "100px" }}
+          >
+            <div style={{ float: "left", marginRight: "5px" }}>
+              <EditButton path="articles" id={this.props.article.article_id} />
+            </div>
+            <div style={{ float: "left" }}>
+              <DeleteButton param="article" sendObj={sendObj} />
+            </div>
           </div>
         );
       }
 
       return (
-        <React.Fragment>
-          <div>記事詳細</div>
-          <div>
-            <ArticleID articleID={this.props.article.article_id} />
+        <Container component="main" maxWidth="md">
+          <CssBaseline />
+
+          <div style={{ marginTop: "20px" }}>
+            <CreatedDate createdDate={this.props.article.created_date} />
           </div>
 
           <div>
-            <ArticleTitle articleTitle={this.props.article.article_title} />
+            <h2>{this.props.article.article_title}</h2>
           </div>
 
-          <div>
-            <Topic topic={this.props.article.article_topics} />
-          </div>
+          <TopicTags topics={this.props.article.article_topics} />
 
           <div>
-            <ArticleContent
-              articleContent={this.props.article.article_content}
-            />
+            <p
+              style={{
+                fontSize: "18px",
+                minHeight: "30px",
+                whiteSpace: "pre-wrap",
+              }}
+            >
+              {this.props.article.article_content}
+            </p>
           </div>
 
           <Like
@@ -83,36 +97,30 @@ class ArticleShow extends Component {
             loginUserID={loginUserID}
           />
 
-          <div>
-            <CreatedDate createdDate={this.props.article.created_date} />
-          </div>
+          <div style={{ clear: "both" }}>{AuthorizedEditButton}</div>
 
-          <div>{AuthorizedEditButton}</div>
-
-          <div>
-            <CreateArticleButton />
-          </div>
-
-          <div>
-            <ToAllArticlesButton />
-          </div>
-
-          <div>
+          <div style={{ clear: "both", marginTop: "40px" }}>
             <AllComments articleID={this.props.article.article_id} />
           </div>
 
           <div>
             <CommentNew articleID={this.props.article.article_id} />
           </div>
-        </React.Fragment>
+        </Container>
+      );
+    } else if (this.props.isEmpty && !this.state.loading) {
+      return (
+        <Container component="main" maxWidth="md">
+          <CssBaseline />
+          <NotFoundPage />
+        </Container>
       );
     } else {
       return (
-        <React.Fragment>
-          <div>
-            <Loading />
-          </div>
-        </React.Fragment>
+        <Container component="main" maxWidth="md">
+          <CssBaseline />
+          <Loading />
+        </Container>
       );
     }
   }
@@ -124,8 +132,12 @@ class ArticleShow extends Component {
 const mapStateToProps = (state, ownProps) => {
   // 詳細画面で必要な各種情報を取得
   const article = state.articles.articles[ownProps.match.params.articleId];
+
+  // 記事の存在
+  const isEmpty = state.articles.is_empty;
+
   // 初期状態でどんな値を表示するかをinitialValuesで設定
-  return { initialValues: article, article: article };
+  return { initialValues: article, article: article, isEmpty: isEmpty };
 };
 
 const mapDispatchToProps = { getArticleDetail, deleteEvent, getAllComments };

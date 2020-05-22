@@ -1,16 +1,35 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-import { Link } from "react-router-dom";
+import { compose } from "redux";
+import { reduxForm } from "redux-form";
 import PropTypes from "prop-types";
-import { loginUserEvent } from "../../../../actions/user";
+import { loginUserEvent } from "Actions/user";
+import TextField from "@material-ui/core/TextField";
+import Container from "@material-ui/core/Container";
+import Button from "@material-ui/core/Button";
+import Avatar from "@material-ui/core/Avatar";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
+import PermIdentityIcon from "@material-ui/icons/PermIdentity";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import LockOpenIcon from "@material-ui/icons/LockOpen";
+import { ThemeProvider } from "@material-ui/styles";
 
-let isUserNameCheck = false;
-let isEmailCheck = false;
 class Login extends Component {
   constructor(props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
+    this.state = {
+      userName: "",
+      userNameError: "",
+      password: "",
+      passwordError: "",
+      userNameTouched: false,
+      passwordTouched: false,
+    };
   }
 
   static propTypes = {
@@ -18,22 +37,11 @@ class Login extends Component {
     dispatch: PropTypes.func.isRequired,
   };
 
-  // componentWillReceiveProps(nextProps) {
-  //   console.log("componentWillReceiveProps");
-  //   console.log("nextProps.session: " + nextProps.session);
-  //   if (nextProps.session) {
-  //     this.setState({ session: nextProps.session });
-  //     localStorage.setItem("session", this.state.session);
-  //   } else {
-  //     this.setState({ message: nextProps.message });
-  //   }
-  // }
-
   // ログイン
   async onSubmit(values) {
     const userInfo = {
-      user_name: values.user_name,
-      password: values.password,
+      user_name: this.state.userName,
+      password: this.state.password,
     };
     // 送信
     await this.props.loginUserEvent(userInfo).then(() => {
@@ -41,120 +49,197 @@ class Login extends Component {
     });
   }
 
-  renderField(field) {
-    const {
-      input,
-      label,
-      type,
-      meta: { touched, error },
-    } = field;
+  // ユーザ名を入力
+  onChangeUserName = (e) => {
+    this.setState({ userNameTouched: true });
+    const userName = e.target.value;
+    if (userName) {
+      if (userName.length > 10 || userName.length < 2) {
+        this.setState({ userNameError: "ユーザ名は2文字以上10文字以内です" });
+      } else {
+        this.setState({ userName: e.target.value });
+        this.setState({ userNameError: "" });
+      }
+    } else {
+      this.setState({ userNameError: "ユーザ名を入力して下さい" });
+    }
+  };
 
-    return (
-      <div>
-        <input {...input} placeholder={label} type={type} />
-        {touched && error && <span>{error}</span>}
-      </div>
-    );
+  // パスワードを入力
+  onChangePassword = (e) => {
+    this.setState({ passwordTouched: true });
+    const password = e.target.value;
+    if (password) {
+      if (password.length > 16 || password.length < 8) {
+        this.setState({ passwordError: "パスワードは8文字以上16文字以内です" });
+      } else {
+        this.setState({ password: e.target.value });
+        this.setState({ passwordError: "" });
+      }
+    } else {
+      this.setState({ passwordError: "パスワードを入力して下さい" });
+    }
+  };
+
+  // アカウント作成画面へ
+  toSignUpPage() {
+    this.props.history.push("/signUp");
   }
 
   render() {
     const { handleSubmit, submitting } = this.props;
+    let loginFail;
+    if (
+      this.props.authFail &&
+      !this.state.userNameTouched &&
+      !this.state.passwordTouched
+    ) {
+      loginFail = <div>ユーザ名、もしくはパスワードが間違っています</div>;
+    }
+
+    const theme = createMuiTheme({
+      palette: {
+        primary: {
+          main: "#00CCFF", // 水色
+        },
+        secondary: {
+          main: "#888888", // グレー
+        },
+      },
+    });
+
     return (
-      <React.Fragment>
-        <div>Login</div>
-        <form onSubmit={handleSubmit(this.onSubmit)}>
-          <div>
-            ユーザ名:
-            <Field
-              label="ユーザ名"
-              name="user_name"
-              disabled={submitting}
-              type="text"
-              component={this.renderField}
-            />
-          </div>
+      <ThemeProvider theme={theme}>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <div className={this.props.classes.paper}>
+            <Avatar className={this.props.classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              ログイン
+            </Typography>
+            <form
+              onSubmit={handleSubmit(this.onSubmit)}
+              className={this.props.classes.form}
+            >
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="user_name"
+                label="ユーザ名 *必須"
+                name="user_name"
+                autoComplete="user_name"
+                disabled={submitting}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PermIdentityIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => this.onChangeUserName(e)}
+              />
+              <div className={this.props.classes.error}>
+                {this.state.userNameError}
+              </div>
 
-          <div>
-            パスワード
-            <Field
-              label="パスワード"
-              name="password"
-              type="password"
-              component={this.renderField}
-            />
-          </div>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                name="password"
+                label="パスワード *必須"
+                type="password"
+                id="password"
+                disabled={submitting}
+                autoComplete="current-password"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LockOpenIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => this.onChangePassword(e)}
+              />
+              <div className={this.props.classes.error}>
+                {this.state.passwordError}
+              </div>
 
-          <div>
-            <input
-              type="submit"
-              value="Submit"
-              disabled={submitting || !isUserNameCheck || !isEmailCheck}
-            />
+              <div className={this.props.classes.error}>{loginFail}</div>
+
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                style={{ color: "white" }}
+                className={this.props.classes.submit}
+                disabled={
+                  submitting ||
+                  !(this.state.userNameError === "") ||
+                  !(this.state.passwordError === "") ||
+                  !this.state.passwordTouched ||
+                  !this.state.userNameTouched
+                }
+              >
+                ログイン
+              </Button>
+            </form>
+            <Button
+              fullWidth
+              variant="contained"
+              color="secondary"
+              style={{ color: "white" }}
+              onClick={() => this.toSignUpPage()}
+            >
+              アカウントを作成
+            </Button>
           </div>
-        </form>
-        <div>
-          <Link to={`/signUp`}>アカウントを作成</Link>
-        </div>
-      </React.Fragment>
+          {/* paper */}
+        </Container>
+      </ThemeProvider>
     );
   }
 }
 
-const validate = (values) => {
-  const errors = {};
-
-  // ユーザ名
-  if (values.user_name) {
-    if (values.user_name.length > 20 || values.user_name.length < 2) {
-      errors.user_name = "ユーザ名は2文字以上20文字以内です";
-      isUserNameCheck = false;
-    } else {
-      isUserNameCheck = true;
-    }
-  } else {
-    errors.user_name = "ユーザ名を入力して下さい";
-    isUserNameCheck = false;
-  }
-
-  // パスワード
-  if (values.password) {
-    if (values.password.length > 16 || values.password.length < 8) {
-      errors.password = "パスワードは8文字以上16文字以内です";
-      isEmailCheck = false;
-    } else {
-      isEmailCheck = true;
-    }
-  } else {
-    errors.password = "パスワードを入力して下さい";
-    isEmailCheck = false;
-  }
-
-  return errors;
-};
+const styles = (theme) => ({
+  paper: {
+    marginTop: theme.spacing(3),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    // backgroundColor: theme.palette.primary.light,
+    backgroundColor: "#888888",
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  error: {
+    color: "red",
+  },
+});
 
 const mapDispatchToProps = { loginUserEvent };
 
-const mapStateToProps = "";
-// (state) => {
-// TODO: ログイン失敗時、入力していたフォームを表示?
-// };
+const mapStateToProps = (state) => {
+  const authFail = state.users.auth_fail;
+  const failUserInfo = state.users.users;
 
-// stateとactionをcomponentに関連付ける実装
-// このstatusは状態のトップレベルを表す
-// ReduxのStoreを第一引数にとる関数で、Componentにpropsとして渡すものをフィルタリングするときに使う。
-// const mapStateToProps = "";
+  return { authFail: authFail, failUserInfo: failUserInfo };
+};
 
-// connect 第一引数はcomponentに渡すpropsを制御する
-// 第二引数はreducerを呼び出して、reduxで管理しているstateを更新する
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
-  // enableReinitialize: When set to true, the form will reinitialize
-  // every time the initialValues prop change. Defaults to false.
-  // titleとbody属性を表示するときに使う
-  // 直接詳細画面へアクセスしたとき(本来なら最初に記事一覧を取得して、それらの情報がブラウザのメモリに残った状態で、
-  // 詳細へ行くとメモリから詳細を取得する)適宜、該当のイベントをAPIサーバから取得する
-  // formにはユニークな名前を渡す
-  reduxForm({ validate, form: "loginForm", enableReinitialize: true })(Login)
-);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({ form: "loginForm" }),
+  withStyles(styles)
+)(Login);

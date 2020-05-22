@@ -1,29 +1,16 @@
 import React from "react";
-import ToAllArticlesButton from "./to_all_articles_button";
-import ToAllUsersButton from "./to_all_users_button";
+import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 // 許可されていないページ
 const UnauthorizedPage = (props) => {
-  var ToSomething;
-  if (props.page === "articles") {
-    ToSomething = (
-      <div>
-        <ToAllArticlesButton />
-      </div>
-    );
-  } else if (props.page === "users") {
-    ToSomething = (
-      <div>
-        <ToAllUsersButton />
-      </div>
-    );
-  }
-
   return (
-    <React.Fragment>
-      <div>許可されていません</div>
-      {ToSomething}
-    </React.Fragment>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div style={{ marginTop: "20px", textAlign: "center" }}>
+        <h2>許可されていないページです</h2>
+      </div>
+    </Container>
   );
 };
 

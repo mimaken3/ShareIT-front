@@ -3,79 +3,295 @@ import { withRouter } from "react-router";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
-import { LogoutUserEvent } from "/Users/mimaken/react/share-it-front/src/actions/user.js";
-import UserIcon from "../../container/../presentational/atoms/user_icon";
-import getLoginUserInfo from "../../../modules/getLoginUserInfo";
+import UserIcon from "Atoms/user_icon";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
+import { emptyArticles } from "Actions/article";
+import { emptyUsers, getUserDetail } from "Actions/user";
+import Logout from "Atoms/buttons/logout";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import IconButton from "@material-ui/core/IconButton";
+import MoreIcon from "@material-ui/icons/MoreVert";
+import CreateArticleButton from "Atoms/buttons/create_article_button";
+import ToAllUsersButton from "Atoms/buttons/to_all_users_button";
+import ToAllArticlesButton from "Atoms/buttons/to_all_articles_button";
+
+const useStyles = makeStyles((theme) => ({
+  grow: {
+    flexGrow: 1,
+  },
+  root: {
+    flexGrow: 1,
+  },
+  appBar: {
+    backgroundColor: "#00CCFF", // 水色
+  },
+  toolBar: {
+    height: "85px",
+    width: "100%",
+    maxWidth: "850px",
+    marginRight: "auto",
+    marginLeft: "auto",
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+  shareIT: {
+    fontSize: 30, // shareITタイトルの文字サイズ
+  },
+  userIcon: {
+    width: "50px",
+    height: "50px",
+    marginRight: "10px",
+  },
+  memuUserIcon: {
+    width: "50px",
+    height: "50px",
+    marginRight: "10px",
+  },
+  userName: {
+    color: "white",
+    fontSize: "18px",
+  },
+  guest: {
+    color: "white",
+    fontSize: "18px",
+    marginRight: "10px",
+    marginTop: "auto",
+    marginBottom: "auto",
+  },
+  memuUserName: {
+    color: "black",
+    fontSize: "18px",
+  },
+  memuGuestUserName: {
+    color: "black",
+    fontSize: "18px",
+  },
+  sectionDesktop: {
+    display: "none",
+    // sm: 600px
+    [theme.breakpoints.up("sm")]: {
+      display: "flex",
+    },
+  },
+  sectionMobile: {
+    display: "flex",
+    // sm: 600px
+    [theme.breakpoints.up("sm")]: {
+      display: "none",
+    },
+  },
+  moreIcon: {
+    marginRight: "0px", // 今後変更の可能性あり
+  },
+}));
 
 // ヘッダー
 const Header = withRouter((props) => {
+  const classes = useStyles();
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  // メニューバーを非表示
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
+
+  // メニューバーをポップアップ表示
+  const handleMobileMenuOpen = (event) => {
+    setMobileMoreAnchorEl(event.currentTarget);
+  };
+
   const loginUser = getLoginUserInfo();
   var Display;
   if (loginUser !== null) {
     // ログイン状態
     const loginUserIconURL = localStorage.getItem("login_user_icon_URL");
 
-    Display = (
-      <div>
-        <Button onClick={toAllArticlesPage}>ShareIT</Button>
-        <Button onClick={() => toUserShowPage(loginUser.userID)}>
-          <UserIcon iconData={loginUserIconURL} />
-          {loginUser.userName}
-        </Button>
+    const mobileMenuId = "primary-search-account-menu-mobile";
+    const renderMobileMenu = (
+      <React.Fragment>
+        <Menu
+          anchorEl={mobileMoreAnchorEl}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          id={mobileMenuId}
+          keepMounted
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          open={isMobileMenuOpen}
+          onClose={handleMobileMenuClose}
+        >
+          <div className={classes.sectionMobile}>
+            <MenuItem onClick={() => toUserShowPage(loginUser.userID)}>
+              <div className={classes.memuUserIcon}>
+                <UserIcon iconData={loginUserIconURL} />
+              </div>
+              <div className={classes.memuUserName}>{loginUser.userName}</div>
+            </MenuItem>
+          </div>
 
-        <Button onClick={toLogOutage}>Logout</Button>
+          <ToAllArticlesButton callback={handleMobileMenuClose} />
+
+          <ToAllUsersButton callback={handleMobileMenuClose} />
+
+          <Logout fontColor="black" callback={handleMobileMenuClose} />
+        </Menu>
+      </React.Fragment>
+    );
+    Display = (
+      <div className={classes.root}>
+        <AppBar position="static" className={classes.appBar}>
+          <Toolbar className={classes.toolBar}>
+            <Typography className={classes.title}>
+              <Button
+                color="inherit"
+                className={classes.shareIT}
+                onClick={toAllArticlesPage}
+              >
+                ShareIT
+              </Button>
+            </Typography>
+            <div className={classes.grow} />
+
+            <CreateArticleButton />
+            <div className={classes.sectionDesktop}>
+              <Button onClick={() => toUserShowPage(loginUser.userID)}>
+                <div className={classes.userIcon}>
+                  <UserIcon iconData={loginUserIconURL} />
+                </div>
+                <div className={classes.userName}>{loginUser.userName}</div>
+              </Button>
+            </div>
+            <IconButton
+              aria-label="show more"
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+              className={classes.moreIcon}
+            >
+              <MoreIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        {renderMobileMenu}
       </div>
     );
   } else {
     // 未ログイン状態
+    const mobileMenuId = "primary-search-account-menu-mobile";
+    const renderMobileMenu = (
+      <Menu
+        anchorEl={mobileMoreAnchorEl}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        id={mobileMenuId}
+        keepMounted
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={isMobileMenuOpen}
+        onClose={handleMobileMenuClose}
+      >
+        <MenuItem
+          onClick={toLoginPage}
+          style={{ color: "black", fontSize: 17 }}
+        >
+          ログイン
+        </MenuItem>
+      </Menu>
+    );
     Display = (
-      <div>
-        SHAREIT ゲストさんようこそ
-        <Button onClick={toLoginPage}>Login</Button>
+      <div className={classes.root}>
+        <AppBar position="static" className={classes.appBar}>
+          <Toolbar className={classes.toolBar}>
+            <Typography className={classes.title}>
+              <Button
+                color="inherit"
+                className={classes.shareIT}
+                onClick={toAllArticlesPage}
+              >
+                ShareIT
+              </Button>
+            </Typography>
+
+            <div className={classes.grow} />
+            <div className={classes.guest}>ゲスト</div>
+            <div className={classes.sectionDesktop}>
+              <Button
+                onClick={toLoginPage}
+                style={{ color: "white", fontSize: 17, marginBottom: 0 }}
+              >
+                <div>ログイン</div>
+              </Button>
+            </div>
+
+            <div className={classes.sectionMobile}>
+              <IconButton
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+                className={classes.moreIcon}
+              >
+                <MoreIcon />
+              </IconButton>
+            </div>
+          </Toolbar>
+        </AppBar>
+        {renderMobileMenu}
       </div>
     );
   }
 
+  // 記事一覧画面へ
   function toAllArticlesPage() {
-    props.history.push("/api/articles");
+    handleMobileMenuClose();
+    if (props.history.location.pathname === "/api/articles") {
+      window.location.reload(false);
+    } else {
+      props.emptyArticles();
+      props.history.push("/api/articles");
+    }
   }
 
+  // ログインページへ
   function toLoginPage() {
+    handleMobileMenuClose();
     props.history.push("/login");
   }
 
+  // ユーザ詳細画面へ
   function toUserShowPage(loginUserID) {
-    props.history.push("/api/users/" + loginUserID);
-  }
+    handleMobileMenuClose();
+    if (props.history.location.pathname === "/api/users/" + loginUserID) {
+      window.location.reload(false);
+    } else {
+      props.emptyArticles();
+      props.emptyUsers();
+      props.getUserDetail(loginUserID);
 
-  function toLogOutage() {
-    props.LogoutUserEvent();
-    props.history.push("/login");
+      props.history.push("/api/users/" + loginUserID);
+    }
   }
 
   return <React.Fragment>{Display}</React.Fragment>;
 });
 
-const mapDispatchToProps = { LogoutUserEvent };
+const mapDispatchToProps = {
+  emptyArticles,
+  emptyUsers,
+  getUserDetail,
+};
 
 const mapStateToProps = "";
 
-// stateとactionをcomponentに関連付ける実装
-// このstatusは状態のトップレベルを表す
-// ReduxのStoreを第一引数にとる関数で、Componentにpropsとして渡すものをフィルタリングするときに使う。
-// const mapStateToProps = "";
-
-// connect 第一引数はcomponentに渡すpropsを制御する
-// 第二引数はreducerを呼び出して、reduxで管理しているstateを更新する
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(
-  // enableReinitialize: When set to true, the form will reinitialize
-  // every time the initialValues prop change. Defaults to false.
-  // titleとbody属性を表示するときに使う
-  // 直接詳細画面へアクセスしたとき(本来なら最初に記事一覧を取得して、それらの情報がブラウザのメモリに残った状態で、
-  // 詳細へ行くとメモリから詳細を取得する)適宜、該当のイベントをAPIサーバから取得する
-  // formにはユニークな名前を渡す
-  reduxForm({ form: "looutForm" })(Header)
-);
+)(reduxForm({ form: "HeaderForm" })(Header));
