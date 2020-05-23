@@ -2,7 +2,10 @@ import React from "react";
 
 // 作成日
 const CreatedDate = (props) => {
-  return <React.Fragment>{props.createdDate}</React.Fragment>;
+  // 秒数のない日付
+  const displayDate = props.createdDate.slice(0, -3);
+
+  return <React.Fragment>{displayDate}</React.Fragment>;
 };
 
 export default CreatedDate;

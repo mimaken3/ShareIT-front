@@ -5,7 +5,7 @@ import { reduxForm } from "redux-form";
 import { getArticleDetail, putEvent } from "Actions/article";
 import { getAllTopics } from "Actions/topic";
 import TopicSelectBox from "Atoms/topic_select_box";
-import CreatedDate from "Atoms/created_date.js";
+import CreatedDate from "Atoms/created_date";
 import { Button } from "@material-ui/core";
 import Loading from "Templates/loading";
 import UnauthorizedPage from "Atoms/unauthorized_page";
@@ -180,11 +180,6 @@ class ArticleUpdate extends Component {
               <Container component="main" maxWidth="md">
                 <CssBaseline />
 
-                <div style={{ marginTop: "20px" }}>
-                  <span>作成日 </span>
-                  <CreatedDate createdDate={this.props.article.created_date} />
-                </div>
-
                 <div style={{ marginBottom: "30px", marginTop: "20px" }}>
                   <TextField
                     id="standard-required"
@@ -233,6 +228,11 @@ class ArticleUpdate extends Component {
                     initPrivacy={this.props.article.is_private}
                     ref="Privacy"
                   />
+                </div>
+
+                <div style={{ marginTop: "20px", marginLeft: "8px" }}>
+                  <span>作成日 </span>
+                  <CreatedDate createdDate={this.props.article.created_date} />
                 </div>
 
                 <div

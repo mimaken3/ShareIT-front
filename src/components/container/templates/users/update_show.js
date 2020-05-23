@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-// 入力フォーム作成で使う
+import CreatedDate from "Atoms/created_date";
 import { reduxForm } from "redux-form";
 import { getAllTopics } from "Actions/topic";
 import { getUserDetail, putUserEvent } from "Actions/user";
@@ -178,7 +178,10 @@ class UserUpdateShow extends Component {
 
               <div className={this.props.classes.stopFloat}></div>
 
-              <div>作成日: {this.props.user.created_date}</div>
+              <div>
+                <span>作成日 </span>
+                <CreatedDate createdDate={this.props.user.created_date} />
+              </div>
 
               <div className={this.props.classes.backAndDeleteButton}>
                 <div className={this.props.classes.backButton}>

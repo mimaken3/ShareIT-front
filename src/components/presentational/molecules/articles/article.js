@@ -13,6 +13,7 @@ import { withRouter } from "react-router";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import TopicTags from "Atoms/topic_tags";
+import CreatedDate from "Atoms/created_date";
 
 class Article extends Component {
   constructor(props) {
@@ -49,7 +50,9 @@ class Article extends Component {
             <CardHeader
               titleTypographyProps={{ variant: "h6" }}
               title={this.props.article.article_title}
-              subheader={this.props.article.created_date}
+              subheader={
+                <CreatedDate createdDate={this.props.article.created_date} />
+              }
             />
             <CardContent className={this.props.classes.cardContent}>
               <div className={this.props.classes.content}>
