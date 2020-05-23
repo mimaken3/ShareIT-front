@@ -10,10 +10,9 @@ export default function Loading() {
 
   useEffect(() => {
     // １０秒間 読込中の場合、リロードを促す
-    const timer = setTimeout(() => {
+    setTimeout(() => {
       setTimeOut(true);
     }, 10000);
-    return () => clearTimeout(timer);
   }, []);
 
   if (timeOut) {
