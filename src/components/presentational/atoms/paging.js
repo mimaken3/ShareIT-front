@@ -58,22 +58,27 @@ const Paging = ({
                     user: searchUser,
                     topics: searchTopics,
                   };
+                  // 検索した記事一覧
                   searchArticles(values, "paging");
                   scroll({ x: 0, y: 0 });
                   callback();
                 } else if (refName === "articles") {
+                  // 記事一覧
                   showAllArticles(page);
                   scroll({ x: 0, y: 0 });
                   callback();
                 } else if (refName === "users") {
+                  // ユーザ一覧
                   showAllUsers(page);
                   scroll({ x: 0, y: 0 });
                   callback();
                 } else if (refName === "userArticles") {
+                  // ユーザが投稿した記事一覧
                   getAllArticlesByUserID(userID, page);
                   scroll({ x: 0, y: 0 });
                   callback();
                 } else if (refName === "userLikedArticles") {
+                  // ユーザがいいねした記事一覧
                   showLikedArticlesByUserID(userID, page);
                   scroll({ x: 0, y: 0 });
                   callback();
