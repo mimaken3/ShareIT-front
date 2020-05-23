@@ -78,6 +78,7 @@ class App extends Component {
                     <Route exact path="/login" component={Login} />
                     <Auth>
                       <Switch>
+                        <Route exact path="/" component={ArticlesIndex} />
                         <Route
                           exact
                           path="/api/users/:userId"
