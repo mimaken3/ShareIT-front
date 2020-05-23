@@ -5,14 +5,17 @@ import Container from "@material-ui/core/Container";
 import { Alert, AlertTitle } from "@material-ui/lab";
 
 // 読込中
-export default function Loading() {
+const Loading = () => {
   const [timeOut, setTimeOut] = useState(false);
 
   useEffect(() => {
     // １０秒間 読込中の場合、リロードを促す
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setTimeOut(true);
     }, 10000);
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
 
   if (timeOut) {
@@ -36,4 +39,6 @@ export default function Loading() {
       </Container>
     );
   }
-}
+};
+
+export default Loading;
