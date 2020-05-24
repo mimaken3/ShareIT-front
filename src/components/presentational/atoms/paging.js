@@ -28,6 +28,7 @@ const Paging = ({
   searchUser,
   searchTopics,
   showLikedArticlesByUserID,
+  isEmpty,
 }) => {
   const theme = createMuiTheme({
     // ページングボタンを中央に
@@ -51,6 +52,7 @@ const Paging = ({
               color="primary"
               page={refPg}
               className="paging"
+              disabled={isEmpty}
               onChange={(event, page) => {
                 if (isSearched) {
                   const values = {
@@ -98,15 +100,17 @@ const mapStateToProps = (state, ownProps) => {
     const isSearched = state.likeArticles.is_searched;
     const searchUser = state.likeArticles.search_user;
     const searchTopics = state.likeArticles.search_topics;
+    const isEmpty = state.likeArticles.is_empty;
 
-    return { isSearched: isSearched, searchUser: searchUser, searchTopics };
+    return { isSearched, searchUser, searchTopics, isEmpty };
   } else {
     // ユーザの記事一覧 or 記事一覧ページ
     const isSearched = state.articles.is_searched;
     const searchUser = state.articles.search_user;
     const searchTopics = state.articles.search_topics;
+    const isEmpty = state.articles.is_empty;
 
-    return { isSearched: isSearched, searchUser: searchUser, searchTopics };
+    return { isSearched, searchUser, searchTopics, isEmpty };
   }
 };
 const mapDispatchToProps = {
