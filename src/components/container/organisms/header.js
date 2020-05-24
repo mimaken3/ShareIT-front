@@ -147,7 +147,7 @@ const Header = withRouter((props) => {
     );
     Display = (
       <div className={classes.root}>
-        <AppBar position="static" className={classes.appBar}>
+        <AppBar position="fixed" className={classes.appBar}>
           <Toolbar className={classes.toolBar}>
             <Typography className={classes.title}>
               <Button
