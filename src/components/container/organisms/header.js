@@ -178,8 +178,6 @@ const Header = withRouter((props) => {
                 {({ scroll }) => (
                   <Button
                     onClick={() => {
-                      console.log(props.history.location);
-                      console.log("/api/users/" + loginUser.userID);
                       if (
                         props.history.location.pathname !==
                         "/api/users/" + loginUser.userID
