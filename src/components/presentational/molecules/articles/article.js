@@ -14,6 +14,7 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import TopicTags from "Atoms/topic_tags";
 import CreatedDate from "Atoms/created_date";
+import { ScrollTo } from "react-scroll-to";
 
 class Article extends Component {
   constructor(props) {
@@ -43,24 +44,33 @@ class Article extends Component {
     return (
       <ThemeProvider theme={theme}>
         <Card className={this.props.classes.root}>
-          <ButtonBase
-            className={this.props.classes.cardBox}
-            onClick={() => this.handleEvent()}
-          >
-            <CardHeader
-              titleTypographyProps={{ variant: "h6" }}
-              title={this.props.article.article_title}
-              subheader={
-                <CreatedDate createdDate={this.props.article.created_date} />
-              }
-            />
-            <CardContent className={this.props.classes.cardContent}>
-              <div className={this.props.classes.content}>
-                {this.props.article.article_content}
-              </div>
-              <TopicTags topics={this.props.article.article_topics} />
-            </CardContent>
-          </ButtonBase>
+          <ScrollTo>
+            {({ scroll }) => (
+              <ButtonBase
+                className={this.props.classes.cardBox}
+                onClick={() => {
+                  scroll({ x: 0, y: 0 });
+                  this.handleEvent();
+                }}
+              >
+                <CardHeader
+                  titleTypographyProps={{ variant: "h6" }}
+                  title={this.props.article.article_title}
+                  subheader={
+                    <CreatedDate
+                      createdDate={this.props.article.created_date}
+                    />
+                  }
+                />
+                <CardContent className={this.props.classes.cardContent}>
+                  <div className={this.props.classes.content}>
+                    {this.props.article.article_content}
+                  </div>
+                  <TopicTags topics={this.props.article.article_topics} />
+                </CardContent>
+              </ButtonBase>
+            )}
+          </ScrollTo>
           <CardActions disableSpacing>
             <Like
               articleID={this.props.article.article_id}

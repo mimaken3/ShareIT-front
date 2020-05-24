@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { withRouter } from "react-router";
 import MenuItem from "@material-ui/core/MenuItem";
+import { ScrollTo } from "react-scroll-to";
 
 // ユーザ一覧へのボタン
 const ToAllUsersButton = withRouter((props) => {
@@ -17,9 +18,19 @@ const ToAllUsersButton = withRouter((props) => {
 
   return (
     <React.Fragment>
-      <MenuItem onClick={toAllUsersPage} style={{ fontSize: 17 }}>
-        ユーザ一覧
-      </MenuItem>
+      <ScrollTo>
+        {({ scroll }) => (
+          <MenuItem
+            onClick={() => {
+              scroll({ x: 0, y: 0 });
+              toAllUsersPage();
+            }}
+            style={{ fontSize: 17 }}
+          >
+            ユーザ一覧
+          </MenuItem>
+        )}
+      </ScrollTo>
     </React.Fragment>
   );
 });

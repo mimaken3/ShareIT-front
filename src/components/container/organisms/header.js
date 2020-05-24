@@ -19,6 +19,8 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import CreateArticleButton from "Atoms/buttons/create_article_button";
 import ToAllUsersButton from "Atoms/buttons/to_all_users_button";
 import ToAllArticlesButton from "Atoms/buttons/to_all_articles_button";
+import { ScrollTo } from "react-scroll-to";
+import ShareIT from "Atoms/buttons/share_it";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -128,14 +130,30 @@ const Header = withRouter((props) => {
           open={isMobileMenuOpen}
           onClose={handleMobileMenuClose}
         >
-          <div className={classes.sectionMobile}>
-            <MenuItem onClick={() => toUserShowPage(loginUser.userID)}>
-              <div className={classes.memuUserIcon}>
-                <UserIcon iconData={loginUserIconURL} />
+          <ScrollTo>
+            {({ scroll }) => (
+              <div className={classes.sectionMobile}>
+                <MenuItem
+                  onClick={() => {
+                    if (
+                      props.history.location.pathname !==
+                      "/api/users/" + loginUser.userID
+                    ) {
+                      scroll({ x: 0, y: 0 });
+                    }
+                    toUserShowPage(loginUser.userID);
+                  }}
+                >
+                  <div className={classes.memuUserIcon}>
+                    <UserIcon iconData={loginUserIconURL} />
+                  </div>
+                  <div className={classes.memuUserName}>
+                    {loginUser.userName}
+                  </div>
+                </MenuItem>
               </div>
-              <div className={classes.memuUserName}>{loginUser.userName}</div>
-            </MenuItem>
-          </div>
+            )}
+          </ScrollTo>
 
           <ToAllArticlesButton callback={handleMobileMenuClose} />
 
@@ -150,24 +168,34 @@ const Header = withRouter((props) => {
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar className={classes.toolBar}>
             <Typography className={classes.title}>
-              <Button
-                color="inherit"
-                className={classes.shareIT}
-                onClick={toAllArticlesPage}
-              >
-                ShareIT
-              </Button>
+              <ShareIT />
             </Typography>
             <div className={classes.grow} />
 
             <CreateArticleButton />
             <div className={classes.sectionDesktop}>
-              <Button onClick={() => toUserShowPage(loginUser.userID)}>
-                <div className={classes.userIcon}>
-                  <UserIcon iconData={loginUserIconURL} />
-                </div>
-                <div className={classes.userName}>{loginUser.userName}</div>
-              </Button>
+              <ScrollTo>
+                {({ scroll }) => (
+                  <Button
+                    onClick={() => {
+                      console.log(props.history.location);
+                      console.log("/api/users/" + loginUser.userID);
+                      if (
+                        props.history.location.pathname !==
+                        "/api/users/" + loginUser.userID
+                      ) {
+                        scroll({ x: 0, y: 0 });
+                      }
+                      toUserShowPage(loginUser.userID);
+                    }}
+                  >
+                    <div className={classes.userIcon}>
+                      <UserIcon iconData={loginUserIconURL} />
+                    </div>
+                    <div className={classes.userName}>{loginUser.userName}</div>
+                  </Button>
+                )}
+              </ScrollTo>
             </div>
             <IconButton
               aria-label="show more"
@@ -210,13 +238,7 @@ const Header = withRouter((props) => {
         <AppBar position="static" className={classes.appBar}>
           <Toolbar className={classes.toolBar}>
             <Typography className={classes.title}>
-              <Button
-                color="inherit"
-                className={classes.shareIT}
-                onClick={toAllArticlesPage}
-              >
-                ShareIT
-              </Button>
+              <ShareIT />
             </Typography>
 
             <div className={classes.grow} />
@@ -247,17 +269,6 @@ const Header = withRouter((props) => {
         {renderMobileMenu}
       </div>
     );
-  }
-
-  // 記事一覧画面へ
-  function toAllArticlesPage() {
-    handleMobileMenuClose();
-    if (props.history.location.pathname === "/api/articles") {
-      window.location.reload(false);
-    } else {
-      props.emptyArticles();
-      props.history.push("/api/articles");
-    }
   }
 
   // ログインページへ
