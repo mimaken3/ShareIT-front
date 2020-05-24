@@ -18,24 +18,28 @@ import UserIcon from "Atoms/user_icon";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import DeleteButton from "Atoms/buttons/delete_button";
 import NotFoundPage from "Templates/not_found_page";
-import AllArticlesWithPaging from "Organisms/all_articles_with_paging";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import { compose } from "redux";
 import "react-tabs/style/react-tabs.css";
 
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import TabsIndex from "Organisms/tabs_index";
 
 class UserShow extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
+      value: 0,
     };
 
     this.props.emptyArticles();
     this.props.emptyLikedArticles();
   }
+
+  handleChange = (event, newValue) => {
+    this.setState({ value: newValue });
+  };
 
   // 初回読み込み用
   componentDidMount() {
@@ -96,6 +100,7 @@ class UserShow extends Component {
           </div>
         );
       }
+
       return (
         <Container component="main" maxWidth="sm">
           <CssBaseline />
@@ -122,28 +127,11 @@ class UserShow extends Component {
             <div className={this.props.classes.stopFloat}></div>
           </div>
 
-          <Tabs className={this.props.classes.tabs}>
-            <TabList>
-              <Tab>投稿一覧</Tab>
-              <Tab>いいねした記事</Tab>
-            </TabList>
-
-            <TabPanel>
-              <AllArticlesWithPaging
-                param="userDetailShow"
-                userID={this.props.user.user_id}
-                historyAction={this.props.history.action}
-              />
-            </TabPanel>
-
-            <TabPanel>
-              <AllArticlesWithPaging
-                param="userLikedArticles"
-                userID={this.props.user.user_id}
-                historyAction={this.props.history.action}
-              />
-            </TabPanel>
-          </Tabs>
+          <TabsIndex
+            refTab={this.state.value}
+            userID={this.props.user.user_id}
+            handleChange={this.handleChange}
+          />
         </Container>
       );
     } else if (this.props.isEmpty && !this.state.loading) {
@@ -186,7 +174,7 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const styles = (theme) => ({
+const styles = () => ({
   userDetailBox: {
     marginTop: "30px",
     width: "60%",
