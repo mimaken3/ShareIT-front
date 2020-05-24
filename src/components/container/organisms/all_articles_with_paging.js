@@ -27,6 +27,9 @@ class AllArticlesWithPaging extends Component {
     } else if (this.props.param === "userLikedArticles") {
       // ユーザがいいねした記事一覧
       this.props.emptyLikedArticles();
+    } else {
+      // 記事一覧
+      this.props.emptyArticles();
     }
     if (this.props.allPagingNum) {
       this.setState({ loading: false });
