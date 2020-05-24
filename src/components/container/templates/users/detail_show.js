@@ -63,23 +63,23 @@ class UserShow extends Component {
 
   // propsの値が変わったら呼ばれる
   // 主にヘッダーから用
-  componentDidUpdate(prevProps) {
-    const { user } = prevProps;
-    const { userId } = this.props.match.params;
-    this.props.getUserDetail(userId).then(() => {
-      if (user && user.user_name !== this.props.user.user_name) {
-        Promise.all(
-          // ユーザの記事一覧を取得
-          [this.props.getAllArticlesByUserID(userId, 1)],
+  // componentDidUpdate(prevProps) {
+  //   const { user } = prevProps;
+  //   const { userId } = this.props.match.params;
+  //   this.props.getUserDetail(userId).then(() => {
+  //     if (user && user.user_name !== this.props.user.user_name) {
+  //       Promise.all(
+  //         // ユーザの記事一覧を取得
+  //         [this.props.getAllArticlesByUserID(userId, 1)],
 
-          // ユーザのいいねした記事一覧を取得
-          [this.props.showLikedArticlesByUserID(userId, 1)]
-        ).then(() => {
-          this.setState({ loading: false });
-        });
-      }
-    });
-  }
+  //         // ユーザのいいねした記事一覧を取得
+  //         [this.props.showLikedArticlesByUserID(userId, 1)]
+  //       ).then(() => {
+  //         this.setState({ loading: false });
+  //       });
+  //     }
+  //   });
+  // }
 
   render() {
     if (this.props.user && !this.state.loading) {
@@ -90,12 +90,14 @@ class UserShow extends Component {
       if (loginUserID === this.props.user.user_id || isAdmin) {
         const sendObj = { user: this.props.user };
         AuthorizedButton = (
-          <div style={{ float: "left" }}>
-            <div className={this.props.classes.editButton}>
-              <EditButton path="users" id={this.props.user.user_id} />
-            </div>
-            <div className={this.props.classes.deleteButton}>
-              <DeleteButton param="user" sendObj={sendObj} />
+          <div>
+            <div style={{ float: "left" }}>
+              <div className={this.props.classes.editButton}>
+                <EditButton path="users" id={this.props.user.user_id} />
+              </div>
+              <div className={this.props.classes.deleteButton}>
+                <DeleteButton param="user" sendObj={sendObj} />
+              </div>
             </div>
           </div>
         );
@@ -118,8 +120,10 @@ class UserShow extends Component {
               <TopicTags topics={this.props.user.interested_topics} />
             </div>
 
-            <div>
-              <Profile profile={this.props.user.profile} />
+            <div className={this.props.classes.profileBox}>
+              <span className={this.props.classes.profile}>
+                <Profile profile={this.props.user.profile} />
+              </span>
             </div>
 
             {AuthorizedButton}
@@ -205,6 +209,14 @@ const styles = () => ({
   },
   tabs: {
     marginTop: "30px",
+  },
+  profile: {
+    display: "inline-block",
+    textAlign: "left",
+  },
+  profileBox: {
+    textAlign: "center",
+    marginTop: "20px",
   },
 });
 
