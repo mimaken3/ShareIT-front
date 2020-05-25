@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import Like from "Molecules/likes/like";
 import Card from "@material-ui/core/Card";
@@ -37,6 +36,14 @@ class Article extends Component {
             WebkitLineClamp: 1,
             overflow: "hidden",
             fontWeight: "bold",
+          },
+        },
+        MuiCardContent: {
+          root: {
+            // TODO: 要改修
+            // ↓のように記述しないと高さが一瞬ずれて表示される
+            // 記事の中身が「display: block」が勝手についたり外れたりする
+            padding: "24px",
           },
         },
       },
@@ -85,10 +92,6 @@ class Article extends Component {
   }
 }
 
-const mapDispatchToProps = "";
-
-const mapStateToProps = "";
-
 const styles = (theme) => ({
   root: {
     maxWidth: 700,
@@ -113,9 +116,5 @@ const styles = (theme) => ({
 });
 
 export default withRouter(
-  compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    reduxForm({ form: "articleForm" }),
-    withStyles(styles)
-  )(Article)
+  compose(reduxForm({ form: "articleForm" }), withStyles(styles))(Article)
 );
