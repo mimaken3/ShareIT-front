@@ -56,6 +56,7 @@ class AllArticlesWithPaging extends Component {
         );
       } else if (this.props.param === "userLikedArticles") {
         // ユーザがいいねした記事一覧
+        console.log("will いいね記事　render");
         return (
           <React.Fragment>
             <AllArticles

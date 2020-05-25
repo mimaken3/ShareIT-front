@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import UserIcon from "Atoms/user_icon";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
-import { emptyArticles } from "Actions/article";
+import { emptyArticles, emptyLikedArticles } from "Actions/article";
 import { emptyUsers, getUserDetail } from "Actions/user";
 import Logout from "Atoms/buttons/logout";
 import { makeStyles } from "@material-ui/core/styles";
@@ -282,6 +282,7 @@ const Header = withRouter((props) => {
       window.location.reload(false);
     } else {
       props.emptyArticles();
+      props.emptyLikedArticles();
       props.emptyUsers();
       props.getUserDetail(loginUserID);
 
@@ -294,6 +295,7 @@ const Header = withRouter((props) => {
 
 const mapDispatchToProps = {
   emptyArticles,
+  emptyLikedArticles,
   emptyUsers,
   getUserDetail,
 };

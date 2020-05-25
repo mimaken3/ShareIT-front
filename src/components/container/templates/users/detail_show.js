@@ -22,7 +22,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import { compose } from "redux";
 import "react-tabs/style/react-tabs.css";
-
 import TabsIndex from "Organisms/tabs_index";
 
 class UserShow extends Component {
@@ -30,16 +29,11 @@ class UserShow extends Component {
     super(props);
     this.state = {
       loading: true,
-      value: 0,
     };
 
     this.props.emptyArticles();
     this.props.emptyLikedArticles();
   }
-
-  handleChange = (event, newValue) => {
-    this.setState({ value: newValue });
-  };
 
   // 初回読み込み用
   componentDidMount() {
@@ -63,26 +57,38 @@ class UserShow extends Component {
 
   // propsの値が変わったら呼ばれる
   // 主にヘッダーから用
-  componentDidUpdate(prevProps) {
-    const { user } = prevProps;
-    const { userId } = this.props.match.params;
-    this.props.getUserDetail(userId).then(() => {
-      if (user && user.user_name !== this.props.user.user_name) {
-        Promise.all(
-          // ユーザの記事一覧を取得
-          [this.props.getAllArticlesByUserID(userId, 1)],
+  shouldComponentUpdate(nextProps) {
+    return (
+      !(this.props.allPagingNum && this.props.allLikePagingNum) ||
+      this.props.location.pathname !== nextProps.location.pathname
+    );
+  }
 
-          // ユーザのいいねした記事一覧を取得
-          [this.props.showLikedArticlesByUserID(userId, 1)]
-        ).then(() => {
-          this.setState({ loading: false });
-        });
-      }
+  // propsの値が変わったら呼ばれる
+  // 主にヘッダーから用
+  componentDidUpdate() {
+    const { userId } = this.props.match.params;
+    Promise.all(
+      // ユーザ詳細
+      [this.props.getUserDetail(userId)],
+
+      // ユーザの記事一覧を取得
+      [this.props.getAllArticlesByUserID(userId, 1)],
+
+      // ユーザのいいねした記事一覧を取得
+      [this.props.showLikedArticlesByUserID(userId, 1)]
+    ).then(() => {
+      this.setState({ loading: false });
     });
   }
 
   render() {
-    if (this.props.user && !this.state.loading) {
+    if (
+      this.props.user &&
+      !this.state.loading &&
+      this.props.allPagingNum &&
+      this.props.allLikePagingNum
+    ) {
       const loginUser = getLoginUserInfo();
       const loginUserID = loginUser.userID;
       const isAdmin = loginUser.admin;
@@ -129,11 +135,7 @@ class UserShow extends Component {
             <div className={this.props.classes.stopFloat}></div>
           </div>
 
-          <TabsIndex
-            refTab={this.state.value}
-            userID={this.props.user.user_id}
-            handleChange={this.handleChange}
-          />
+          <TabsIndex userID={this.props.user.user_id} />
         </Container>
       );
     } else if (this.props.isEmpty && !this.state.loading) {
@@ -167,12 +169,15 @@ const mapStateToProps = (state, ownProps) => {
   // ユーザの存在
   const isEmpty = state.users.is_empty;
 
+  const allLikePagingNum = state.likeArticles.all_paging_num;
+
   // 初期状態でどんな値を表示するかをinitialValuesで設定
   return {
     initialValues: user,
     user: user,
     isEmpty: isEmpty,
     allPagingNum: state.articles.all_paging_num,
+    allLikePagingNum,
   };
 };
 

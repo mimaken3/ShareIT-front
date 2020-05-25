@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router";
 import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -28,6 +28,11 @@ function a11yProps(index) {
 
 const TabsIndex = withRouter((props) => {
   const classes = useStyles();
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   // タブ名の幅を半分に
   const theme = createMuiTheme({
@@ -45,8 +50,8 @@ const TabsIndex = withRouter((props) => {
     <ThemeProvider theme={theme}>
       <div className={classes.tab}>
         <Tabs
-          value={props.refTab}
-          onChange={props.handleChange}
+          value={value}
+          onChange={handleChange}
           indicatorColor="primary"
           textColor="primary"
           variant="scrollable"
@@ -58,14 +63,14 @@ const TabsIndex = withRouter((props) => {
           {/* <TabLabel label="記事" />
           <TabLabel label="いいね" /> */}
         </Tabs>
-        <TabPanel value={props.refTab} index={0}>
+        <TabPanel value={value} index={0}>
           <AllArticlesWithPaging
             param="userDetailShow"
             userID={props.userID}
             historyAction={props.history.action}
           />
         </TabPanel>
-        <TabPanel value={props.refTab} index={1}>
+        <TabPanel value={value} index={1}>
           <AllArticlesWithPaging
             param="userLikedArticles"
             userID={props.userID}
