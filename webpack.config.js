@@ -1,11 +1,17 @@
 const path = require("path");
-const environment = process.env.NODE_ENV || "dev";
+const webpack = require("webpack");
+const environment = process.env.NODE_ENV;
 
 module.exports = {
   entry: [
     "@babel/polyfill", // polyfill はIE11などで必要
     "./src/index.js",
   ],
+  // --modeで指定したものがNODE_ENVになるのを防ぐ
+  optimization: {
+    nodeEnv: false,
+  },
+
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "bundle.js",
@@ -82,4 +88,11 @@ module.exports = {
     open: true, //ブラウザを自動で開く
     watchContentBase: true, //コンテンツの変更監視をする
   },
+
+  // ロジック内でprocess.env.NODE_ENVを利用するため
+  plugins: [
+    new webpack.DefinePlugin({
+      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+    }),
+  ],
 };
