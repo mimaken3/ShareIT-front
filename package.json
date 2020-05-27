@@ -54,18 +54,15 @@
     "webpack": "^4.43.0"
   },
   "scripts": {
-    "bundle": "NODE_ENV=dev webpack --progress --colors --config webpack.config.js --mode development",
+    "create-env": "mkdir .env && printenv > .env/prod.js",
     "prestart": "npm run bundle",
+    "bundle": "NODE_ENV=prod webpack --progress --colors --config webpack.config.js --mode production",
+    "start": "NODE_ENV=prod node server.js",
     "build:dev": "NODE_ENV=dev webpack --progress --colors --mode development",
     "watch:dev": "NODE_ENV=dev webpack --progress --colors --watch --mode development",
     "start:dev": "NODE_ENV=dev webpack-dev-server --progress --colors",
-    "build:prod": "NODE_ENV=prod webpack --progress --colors --mode production",
-    "watch:prod": "NODE_ENV=prod webpack --progress --colors --watch --mode production",
-    "start:prod": "NODE_ENV=prod webpack-dev-server --progress --colors",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "start": "NODE_ENV=dev node server.js",
-    "create-env": "mkdir .env && printenv > .env/dev.js"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
