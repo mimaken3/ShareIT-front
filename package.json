@@ -65,7 +65,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start": "NODE_ENV=dev node server.js",
-    "create-env": "printenv > .env/dev.js"
+    "create-env-file": "mkdir .env && printenv > .env/dev.js"
   },
   "eslintConfig": {
     "extends": "react-app"
