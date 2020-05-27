@@ -16,6 +16,7 @@
     "aws-sdk": "^2.683.0",
     "axios": "^0.19.2",
     "cropperjs": "^1.5.6",
+    "express": "^4.17.1",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.15",
@@ -49,9 +50,12 @@
     "redux-thunk": "^2.3.0",
     "s3-download": "^1.0.0",
     "semantic-ui-react": "^0.88.2",
-    "styled-components": "^5.1.0"
+    "styled-components": "^5.1.0",
+    "webpack": "^4.43.0"
   },
   "scripts": {
+    "bundle": "NODE_ENV=dev webpack --progress --colors --config webpack.config.js --mode development",
+    "prestart": "npm run bundle",
     "build:dev": "NODE_ENV=dev webpack --progress --colors --mode development",
     "watch:dev": "NODE_ENV=dev webpack --progress --colors --watch --mode development",
     "start:dev": "NODE_ENV=dev webpack-dev-server --progress --colors",
@@ -59,7 +63,8 @@
     "watch:prd": "NODE_ENV=prd webpack --progress --colors --watch --mode production",
     "start:prd": "NODE_ENV=prd webpack-dev-server --progress --colors",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start": "NODE_ENV=dev node server.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -98,7 +103,6 @@
     "sass-loader": "^8.0.2",
     "style-loader": "^1.2.1",
     "url-loader": "^4.1.0",
-    "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
   }
 }
