@@ -20,7 +20,11 @@ class AllArticles extends Component {
     if (this.props.isEmpty) {
       return (
         <React.Fragment>
-          <div>記事はありません</div>
+          <div
+            style={{ textAlign: "center", height: "200px", marginTop: "50px" }}
+          >
+            <h3>記事はありません</h3>
+          </div>
         </React.Fragment>
       );
     } else {

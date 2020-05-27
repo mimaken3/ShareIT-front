@@ -5,7 +5,7 @@ import { reduxForm } from "redux-form";
 import { getArticleDetail, putEvent } from "Actions/article";
 import { getAllTopics } from "Actions/topic";
 import TopicSelectBox from "Atoms/topic_select_box";
-import CreatedDate from "Atoms/created_date.js";
+import CreatedDate from "Atoms/created_date";
 import { Button } from "@material-ui/core";
 import Loading from "Templates/loading";
 import UnauthorizedPage from "Atoms/unauthorized_page";
@@ -103,19 +103,20 @@ class ArticleUpdate extends Component {
   async onSubmit() {
     this.setState({ submitting: true });
 
-    let article = this.props.article;
-    article.article_title = this.state.title;
-    article.article_content = this.state.content;
-
-    // 送信するトピックをセット
-    article.article_topics = this.refs.TopicSelectBox.getSendTopics(
-      this.props.article.article_topics
-    );
-
-    article.created_date = convertJSTToDate(this.props.article.created_date);
-
-    // プライバシーを設定
-    article.is_private = this.refs.Privacy.privacy;
+    const article = {
+      article_id: this.props.article.article_id,
+      article_title: this.state.title,
+      article_content: this.state.content,
+      article_topics: this.refs.TopicSelectBox.getSendTopics(
+        this.props.article.article_topics
+      ),
+      is_liked: this.props.article.is_liked,
+      like_num: this.props.article.like_num,
+      created_date: convertJSTToDate(this.props.article.created_date),
+      updated_date: this.props.article.updated_date,
+      deleted_date: this.props.article.deleted_date,
+      is_private: this.refs.Privacy.privacy,
+    };
 
     await this.props.putEvent(article);
     // 更新ボタンを押したとに表示するPATH
@@ -175,15 +176,12 @@ class ArticleUpdate extends Component {
 
           const backURL = "/api/articles/" + this.props.article.article_id;
 
+          console.log("will render: " + this.props.article.created_date);
+
           return (
             <ThemeProvider theme={theme}>
               <Container component="main" maxWidth="md">
                 <CssBaseline />
-
-                <div style={{ marginTop: "20px" }}>
-                  <span>作成日 </span>
-                  <CreatedDate createdDate={this.props.article.created_date} />
-                </div>
 
                 <div style={{ marginBottom: "30px", marginTop: "20px" }}>
                   <TextField
@@ -233,6 +231,11 @@ class ArticleUpdate extends Component {
                     initPrivacy={this.props.article.is_private}
                     ref="Privacy"
                   />
+                </div>
+
+                <div style={{ marginTop: "20px", marginLeft: "8px" }}>
+                  <span>作成日 </span>
+                  <CreatedDate createdDate={this.props.article.created_date} />
                 </div>
 
                 <div
@@ -309,7 +312,6 @@ const mapStateToProps = (state, ownProps) => {
 
   // 初期状態でどんな値を表示するかをinitialValuesで設定
   return {
-    initialValues: article,
     article: article,
     allTopics: allTopics,
   };
@@ -321,19 +323,10 @@ const mapDispatchToProps = {
   getAllTopics,
 };
 
-// connect 第一引数はcomponentに渡すpropsを制御する
-// 第二引数はreducerを呼び出して、reduxで管理しているstateを更新する
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(
-  // enableReinitialize: When set to true, the form will reinitialize
-  // every time the initialValues prop change. Defaults to false.
-  // titleとbody属性を表示するときに使う
-  // 直接詳細画面へアクセスしたとき(本来なら最初に記事一覧を取得して、それらの情報がブラウザのメモリに残った状態で、
-  // 詳細へ行くとメモリから詳細を取得する)適宜、該当のイベントをAPIサーバから取得する
-  // formにはユニークな名前を渡す
-  // reduxForm()の引数には設定に関するオブジェクトを渡す validataionのルールやformの名前などを渡す
   reduxForm({ form: "articleUpdateForm", enableReinitialize: true })(
     ArticleUpdate
   )

@@ -4,6 +4,7 @@ import { emptyArticles } from "Actions/article";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import MenuItem from "@material-ui/core/MenuItem";
+import { ScrollTo } from "react-scroll-to";
 
 // 記事一覧へのボタン
 const ToAllArticlesButton = withRouter((props) => {
@@ -21,9 +22,19 @@ const ToAllArticlesButton = withRouter((props) => {
 
   return (
     <React.Fragment>
-      <MenuItem onClick={() => toAllArticlesPage()} style={{ fontSize: 17 }}>
-        記事一覧
-      </MenuItem>
+      <ScrollTo>
+        {({ scroll }) => (
+          <MenuItem
+            onClick={() => {
+              scroll({ x: 0, y: 0 });
+              toAllArticlesPage();
+            }}
+            style={{ fontSize: 17 }}
+          >
+            記事一覧
+          </MenuItem>
+        )}
+      </ScrollTo>
     </React.Fragment>
   );
 });

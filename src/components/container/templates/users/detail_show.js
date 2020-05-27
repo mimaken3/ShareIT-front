@@ -18,13 +18,11 @@ import UserIcon from "Atoms/user_icon";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import DeleteButton from "Atoms/buttons/delete_button";
 import NotFoundPage from "Templates/not_found_page";
-import AllArticlesWithPaging from "Organisms/all_articles_with_paging";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import { compose } from "redux";
 import "react-tabs/style/react-tabs.css";
-
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import TabsIndex from "Organisms/tabs_index";
 
 class UserShow extends Component {
   constructor(props) {
@@ -59,26 +57,38 @@ class UserShow extends Component {
 
   // propsの値が変わったら呼ばれる
   // 主にヘッダーから用
-  componentDidUpdate(prevProps) {
-    const { user } = prevProps;
-    const { userId } = this.props.match.params;
-    this.props.getUserDetail(userId).then(() => {
-      if (user && user.user_name !== this.props.user.user_name) {
-        Promise.all(
-          // ユーザの記事一覧を取得
-          [this.props.getAllArticlesByUserID(userId, 1)],
+  shouldComponentUpdate(nextProps) {
+    return (
+      !(this.props.allPagingNum && this.props.allLikePagingNum) ||
+      this.props.location.pathname !== nextProps.location.pathname
+    );
+  }
 
-          // ユーザのいいねした記事一覧を取得
-          [this.props.showLikedArticlesByUserID(userId, 1)]
-        ).then(() => {
-          this.setState({ loading: false });
-        });
-      }
+  // propsの値が変わったら呼ばれる
+  // 主にヘッダーから用
+  componentDidUpdate() {
+    const { userId } = this.props.match.params;
+    Promise.all(
+      // ユーザ詳細
+      [this.props.getUserDetail(userId)],
+
+      // ユーザの記事一覧を取得
+      [this.props.getAllArticlesByUserID(userId, 1)],
+
+      // ユーザのいいねした記事一覧を取得
+      [this.props.showLikedArticlesByUserID(userId, 1)]
+    ).then(() => {
+      this.setState({ loading: false });
     });
   }
 
   render() {
-    if (this.props.user && !this.state.loading) {
+    if (
+      this.props.user &&
+      !this.state.loading &&
+      this.props.allPagingNum &&
+      this.props.allLikePagingNum
+    ) {
       const loginUser = getLoginUserInfo();
       const loginUserID = loginUser.userID;
       const isAdmin = loginUser.admin;
@@ -86,7 +96,7 @@ class UserShow extends Component {
       if (loginUserID === this.props.user.user_id || isAdmin) {
         const sendObj = { user: this.props.user };
         AuthorizedButton = (
-          <div style={{ float: "left" }}>
+          <div className={this.props.classes.auth}>
             <div className={this.props.classes.editButton}>
               <EditButton path="users" id={this.props.user.user_id} />
             </div>
@@ -96,6 +106,7 @@ class UserShow extends Component {
           </div>
         );
       }
+
       return (
         <Container component="main" maxWidth="sm">
           <CssBaseline />
@@ -113,8 +124,10 @@ class UserShow extends Component {
               <TopicTags topics={this.props.user.interested_topics} />
             </div>
 
-            <div>
-              <Profile profile={this.props.user.profile} />
+            <div className={this.props.classes.profileBox}>
+              <span className={this.props.classes.profile}>
+                <Profile profile={this.props.user.profile} />
+              </span>
             </div>
 
             {AuthorizedButton}
@@ -122,28 +135,7 @@ class UserShow extends Component {
             <div className={this.props.classes.stopFloat}></div>
           </div>
 
-          <Tabs className={this.props.classes.tabs}>
-            <TabList>
-              <Tab>投稿一覧</Tab>
-              <Tab>いいねした記事</Tab>
-            </TabList>
-
-            <TabPanel>
-              <AllArticlesWithPaging
-                param="userDetailShow"
-                userID={this.props.user.user_id}
-                historyAction={this.props.history.action}
-              />
-            </TabPanel>
-
-            <TabPanel>
-              <AllArticlesWithPaging
-                param="userLikedArticles"
-                userID={this.props.user.user_id}
-                historyAction={this.props.history.action}
-              />
-            </TabPanel>
-          </Tabs>
+          <TabsIndex userID={this.props.user.user_id} />
         </Container>
       );
     } else if (this.props.isEmpty && !this.state.loading) {
@@ -177,16 +169,19 @@ const mapStateToProps = (state, ownProps) => {
   // ユーザの存在
   const isEmpty = state.users.is_empty;
 
+  const allLikePagingNum = state.likeArticles.all_paging_num;
+
   // 初期状態でどんな値を表示するかをinitialValuesで設定
   return {
     initialValues: user,
     user: user,
     isEmpty: isEmpty,
     allPagingNum: state.articles.all_paging_num,
+    allLikePagingNum,
   };
 };
 
-const styles = (theme) => ({
+const styles = () => ({
   userDetailBox: {
     marginTop: "30px",
     width: "60%",
@@ -217,6 +212,20 @@ const styles = (theme) => ({
   },
   tabs: {
     marginTop: "30px",
+  },
+  profile: {
+    display: "inline-block",
+    textAlign: "left",
+  },
+  profileBox: {
+    textAlign: "center",
+    marginTop: "20px",
+  },
+  auth: {
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "176px",
+    marginTop: "60px",
   },
 });
 

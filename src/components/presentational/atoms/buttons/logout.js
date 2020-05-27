@@ -27,14 +27,14 @@ class Logout extends Component {
   }
 
   // ダイアログを表示
-  handleClickOpen() {
+  handleClickOpen = () => {
     this.setState({ open: true });
-  }
+  };
 
   // ダイアログを非表示
-  handleClose() {
+  handleClose = () => {
     this.setState({ open: false });
-  }
+  };
 
   render() {
     return (

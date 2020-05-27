@@ -1,3 +1,5 @@
+import digitsCheck from "./digits_check";
+
 /**
  * @param {Object}
  */
@@ -14,9 +16,9 @@ export default function getJSTCreatedDateArr(obj) {
         const year = jstDate.getFullYear();
         const month = jstDate.getMonth() + 1;
         const day = jstDate.getDate();
-        const hour = jstDate.getHours();
-        const minutes = jstDate.getMinutes();
-        const second = jstDate.getSeconds();
+        const hour = digitsCheck(jstDate.getHours().toString());
+        const minutes = digitsCheck(jstDate.getMinutes().toString());
+        const second = digitsCheck(jstDate.getSeconds().toString());
         obj[i].created_date =
           year +
           "年" +
@@ -25,11 +27,10 @@ export default function getJSTCreatedDateArr(obj) {
           day +
           "日 " +
           hour +
-          "時" +
+          ":" +
           minutes +
-          "分" +
-          second +
-          "秒";
+          ":" +
+          second;
       }
     } else {
       // オブジェクトの場合
@@ -38,9 +39,9 @@ export default function getJSTCreatedDateArr(obj) {
       const year = jstDate.getFullYear();
       const month = jstDate.getMonth() + 1;
       const day = jstDate.getDate();
-      const hour = jstDate.getHours();
-      const minutes = jstDate.getMinutes();
-      const second = jstDate.getSeconds();
+      const hour = digitsCheck(jstDate.getHours().toString());
+      const minutes = digitsCheck(jstDate.getMinutes().toString());
+      const second = digitsCheck(jstDate.getSeconds().toString());
       obj.created_date =
         year +
         "年" +
@@ -49,11 +50,10 @@ export default function getJSTCreatedDateArr(obj) {
         day +
         "日 " +
         hour +
-        "時" +
+        ":" +
         minutes +
-        "分" +
-        second +
-        "秒";
+        ":" +
+        second;
     }
   }
   return obj;

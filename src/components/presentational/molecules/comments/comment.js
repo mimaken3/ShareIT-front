@@ -10,6 +10,7 @@ import CreatedDate from "Atoms/created_date";
 import { withStyles } from "@material-ui/core/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
 
 class Comment extends Component {
   constructor(props) {
@@ -97,6 +98,8 @@ class Comment extends Component {
       );
     }
 
+    const breakpoints = createBreakpoints({});
+
     const theme = createMuiTheme({
       overrides: {
         MuiButton: {
@@ -105,6 +108,15 @@ class Comment extends Component {
           },
           text: {
             padding: "6px 0px",
+          },
+          // 文字数が4ケタ以上になるとレイアウトが崩れるため
+          outlined: {
+            [breakpoints.up("400")]: {
+              padding: "5px 16px",
+            },
+            [breakpoints.down("400")]: {
+              padding: "4px 4px",
+            },
           },
         },
       },
@@ -189,6 +201,7 @@ const styles = (theme) => ({
     width: "100%",
     whiteSpace: "pre-wrap",
     marginTop: "4px",
+    wordWrap: "break-word",
   },
   stopFloat: {
     clear: "both",

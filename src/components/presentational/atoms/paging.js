@@ -28,6 +28,7 @@ const Paging = ({
   searchUser,
   searchTopics,
   showLikedArticlesByUserID,
+  isEmpty,
 }) => {
   const theme = createMuiTheme({
     // ページングボタンを中央に
@@ -51,6 +52,7 @@ const Paging = ({
               color="primary"
               page={refPg}
               className="paging"
+              disabled={isEmpty}
               onChange={(event, page) => {
                 if (isSearched) {
                   const values = {
@@ -58,22 +60,27 @@ const Paging = ({
                     user: searchUser,
                     topics: searchTopics,
                   };
+                  // 検索した記事一覧
                   searchArticles(values, "paging");
                   scroll({ x: 0, y: 0 });
                   callback();
                 } else if (refName === "articles") {
+                  // 記事一覧
                   showAllArticles(page);
                   scroll({ x: 0, y: 0 });
                   callback();
                 } else if (refName === "users") {
+                  // ユーザ一覧
                   showAllUsers(page);
                   scroll({ x: 0, y: 0 });
                   callback();
                 } else if (refName === "userArticles") {
+                  // ユーザが投稿した記事一覧
                   getAllArticlesByUserID(userID, page);
                   scroll({ x: 0, y: 0 });
                   callback();
                 } else if (refName === "userLikedArticles") {
+                  // ユーザがいいねした記事一覧
                   showLikedArticlesByUserID(userID, page);
                   scroll({ x: 0, y: 0 });
                   callback();
@@ -93,15 +100,17 @@ const mapStateToProps = (state, ownProps) => {
     const isSearched = state.likeArticles.is_searched;
     const searchUser = state.likeArticles.search_user;
     const searchTopics = state.likeArticles.search_topics;
+    const isEmpty = state.likeArticles.is_empty;
 
-    return { isSearched: isSearched, searchUser: searchUser, searchTopics };
+    return { isSearched, searchUser, searchTopics, isEmpty };
   } else {
     // ユーザの記事一覧 or 記事一覧ページ
     const isSearched = state.articles.is_searched;
     const searchUser = state.articles.search_user;
     const searchTopics = state.articles.search_topics;
+    const isEmpty = state.articles.is_empty;
 
-    return { isSearched: isSearched, searchUser: searchUser, searchTopics };
+    return { isSearched, searchUser, searchTopics, isEmpty };
   }
 };
 const mapDispatchToProps = {

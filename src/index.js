@@ -21,8 +21,9 @@ import Auth from "./auth";
 // import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import Header from "Organisms/header";
-// import Footer from "Organisms/footer";
+import Footer from "Organisms/footer";
 import NotFoundPage from "Templates/not_found_page";
+import "./index.css";
 
 import * as serviceWorker from "./serviceWorker";
 
@@ -48,11 +49,15 @@ class App extends Component {
     const body = {
       display: "block",
       width: "100%",
-      height: "100%",
+      minHeight: "100vh",
       margin: "0px",
+      position: "relative",
+      bottom: "0px",
+      paddingBottom: "300px",
     };
 
-    const content = {
+    const main = {
+      paddingTop: "100px",
       width: "100%",
       maxWidth: "850px",
       marginRight: "auto",
@@ -71,50 +76,50 @@ class App extends Component {
           <div style={body}>
             <BrowserRouter>
               <Header className={header} />
-              <div style={content}>
-                <main>
-                  <Switch>
-                    <Route exact path="/signUp" component={SignUp} />
-                    <Route exact path="/login" component={Login} />
-                    <Auth>
-                      <Switch>
-                        <Route
-                          exact
-                          path="/api/users/:userId"
-                          component={UserShow}
-                        />
-                        <Route exact path="/api/users" component={UsersIndex} />
-                        <Route
-                          exact
-                          path="/api/users/:userId/article"
-                          component={ArticleNew}
-                        />
-                        <Route
-                          exact
-                          path="/api/articles"
-                          component={ArticlesIndex}
-                        />
-                        <Route
-                          exact
-                          path="/api/articles/:articleId"
-                          component={ArticleShow}
-                        />
-                        <Route
-                          exact
-                          path="/api/articles/:articleId/edit"
-                          component={ArticleUpdate}
-                        />
-                        <Route
-                          exact
-                          path="/api/users/:userId/edit"
-                          component={UserUpdateShow}
-                        />
-                        <Route path="*" component={NotFoundPage} />
-                      </Switch>
-                    </Auth>
-                  </Switch>
-                </main>
-              </div>
+              <main style={main}>
+                <Switch>
+                  <Route exact path="/signUp" component={SignUp} />
+                  <Route exact path="/login" component={Login} />
+                  <Auth>
+                    <Switch>
+                      <Route exact path="/" component={ArticlesIndex} />
+                      <Route
+                        exact
+                        path="/api/users/:userId"
+                        component={UserShow}
+                      />
+                      <Route exact path="/api/users" component={UsersIndex} />
+                      <Route
+                        exact
+                        path="/api/users/:userId/article"
+                        component={ArticleNew}
+                      />
+                      <Route
+                        exact
+                        path="/api/articles"
+                        component={ArticlesIndex}
+                      />
+                      <Route
+                        exact
+                        path="/api/articles/:articleId"
+                        component={ArticleShow}
+                      />
+                      <Route
+                        exact
+                        path="/api/articles/:articleId/edit"
+                        component={ArticleUpdate}
+                      />
+                      <Route
+                        exact
+                        path="/api/users/:userId/edit"
+                        component={UserUpdateShow}
+                      />
+                      <Route path="*" component={NotFoundPage} />
+                    </Switch>
+                  </Auth>
+                </Switch>
+              </main>
+              <Footer />
             </BrowserRouter>
           </div>
         </Provider>

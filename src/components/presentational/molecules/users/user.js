@@ -9,6 +9,7 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import TopicTags from "Atoms/topic_tags";
 import UserIcon from "Atoms/user_icon";
 import { createMuiTheme } from "@material-ui/core/styles";
+import { ScrollTo } from "react-scroll-to";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -53,21 +54,31 @@ const User = withRouter((props) => {
   return (
     <ThemeProvider theme={theme}>
       <Card className={classes.root}>
-        <ButtonBase className={classes.cardBox} onClick={() => handleEvent()}>
-          <CardHeader
-            avatar={
-              <div className={classes.memuUserIcon}>
-                <UserIcon iconData={props.user.icon_name} />
-              </div>
-            }
-            titleTypographyProps={{ variant: "h6" }}
-            title={props.user.user_name}
-          />
-          <CardContent className={classes.cardContent}>
-            <div className={classes.content}>{props.user.profile}</div>
-            <TopicTags topics={props.user.interested_topics} />
-          </CardContent>
-        </ButtonBase>
+        <ScrollTo>
+          {({ scroll }) => (
+            <ButtonBase
+              className={classes.cardBox}
+              onClick={() => {
+                scroll({ x: 0, y: 0 });
+                handleEvent();
+              }}
+            >
+              <CardHeader
+                avatar={
+                  <div className={classes.memuUserIcon}>
+                    <UserIcon iconData={props.user.icon_name} />
+                  </div>
+                }
+                titleTypographyProps={{ variant: "h6" }}
+                title={props.user.user_name}
+              />
+              <CardContent className={classes.cardContent}>
+                <div className={classes.content}>{props.user.profile}</div>
+                <TopicTags topics={props.user.interested_topics} />
+              </CardContent>
+            </ButtonBase>
+          )}
+        </ScrollTo>
       </Card>
     </ThemeProvider>
   );
