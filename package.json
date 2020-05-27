@@ -59,9 +59,9 @@
     "build:dev": "NODE_ENV=dev webpack --progress --colors --mode development",
     "watch:dev": "NODE_ENV=dev webpack --progress --colors --watch --mode development",
     "start:dev": "NODE_ENV=dev webpack-dev-server --progress --colors",
-    "build:prd": "NODE_ENV=prd webpack --progress --colors --mode production",
-    "watch:prd": "NODE_ENV=prd webpack --progress --colors --watch --mode production",
-    "start:prd": "NODE_ENV=prd webpack-dev-server --progress --colors",
+    "build:prod": "NODE_ENV=prod webpack --progress --colors --mode production",
+    "watch:prod": "NODE_ENV=prod webpack --progress --colors --watch --mode production",
+    "start:prod": "NODE_ENV=prod webpack-dev-server --progress --colors",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start": "NODE_ENV=dev node server.js"
