@@ -176,8 +176,6 @@ class ArticleUpdate extends Component {
 
           const backURL = "/api/articles/" + this.props.article.article_id;
 
-          console.log("will render: " + this.props.article.created_date);
-
           return (
             <ThemeProvider theme={theme}>
               <Container component="main" maxWidth="md">
