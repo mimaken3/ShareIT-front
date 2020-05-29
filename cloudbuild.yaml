@@ -12,7 +12,6 @@ steps:
       - "AWS_S3_BUCKET_NAME=${_AWS_S3_BUCKET_NAME}"
   - name: node:10.15.1
     entrypoint: npm
-    args: ["bundle"]
+    args: ["run", "bundle"]
   - name: "gcr.io/cloud-builders/gcloud"
-    # args: ["app", "deploy",'app.yaml', '--project', 'shareit-part2-pro']
     args: ["app", "deploy", "--project", "share-it-front-prod"]
