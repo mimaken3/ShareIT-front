@@ -54,9 +54,9 @@
     "webpack": "^4.43.0"
   },
   "scripts": {
-    "create-env": "mkdir .env && printenv > .env/prod.js && cat .env/prod.js",
+    "create-env": "mkdir .env && printenv > .env/prod.js && cat .env/prod.js && pwd && cat /builder/home/.npm/_logs/2020-05-29T12_09_14_079Z-debug.log",
     "prestart": "npm run bundle",
-    "bundle": "NODE_ENV=prod webpack --progress --colors --config webpack.config.js --mode production",
+    "bundle": "NODE_ENV=prod webpack --config webpack.config.js --mode production",
     "start": "NODE_ENV=prod node server.js",
     "build:dev": "NODE_ENV=dev webpack --progress --colors --mode development",
     "watch:dev": "NODE_ENV=dev webpack --progress --colors --watch --mode development",
