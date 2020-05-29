@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/polyfill": "^7.8.7",
     "@material-ui/core": "^4.9.14",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.53",
@@ -63,7 +64,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "debug1": "pwd",
-    "debug2": "ls -ltra",
+    "debug2": "ls -ltra && ls -la .env",
     "debug3": "ps"
   },
   "eslintConfig": {
@@ -85,7 +86,6 @@
     "@babel/core": "^7.9.6",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.9.6",
-    "@babel/polyfill": "^7.8.7",
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
     "@types/lodash": "^4.14.152",
