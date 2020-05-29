@@ -18,6 +18,9 @@ steps:
     args: ["run", "debug2"]
   - name: node:10.15.1
     entrypoint: npm
+    args: ["run", "debug3"]
+  - name: node:10.15.1
+    entrypoint: npm
     args: ["run", "bundle"]
   - name: "gcr.io/cloud-builders/gcloud"
     args: ["app", "deploy", "--project", "share-it-front-prod"]

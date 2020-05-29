@@ -64,7 +64,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "debug1": "pwd",
-    "debug2": "ls -ltr"
+    "debug2": "ls -ltra",
+    "debug3": "ps"
   },
   "eslintConfig": {
     "extends": "react-app"
