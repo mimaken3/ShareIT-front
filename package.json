@@ -54,7 +54,7 @@
     "webpack": "^4.43.0"
   },
   "scripts": {
-    "create-env": "mkdir .env && printenv > .env/prod.js",
+    "create-env": "mkdir .env && printenv > .env/prod.js && cat .env/prod.js",
     "prestart": "npm run bundle",
     "bundle": "NODE_ENV=prod webpack --progress --colors --config webpack.config.js --mode production",
     "start": "NODE_ENV=prod node server.js",

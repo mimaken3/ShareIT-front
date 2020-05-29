@@ -10,7 +10,7 @@ export default async function getIconURL(iconName) {
   });
 
   var params = {
-    Bucket: "share-it-test",
+    Bucket: env.AWS_S3_BUCKET_NAME,
     Key: "user-icons/" + iconName,
   };
 
