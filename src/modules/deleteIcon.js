@@ -13,7 +13,7 @@ export default async function deleteIcon(deleteFileName) {
 
   // Create params for S3.deleteObject
   var params = {
-    Bucket: "share-it-test",
+    Bucket: env.AWS_S3_BUCKET_NAME,
     Key: "user-icons/" + deleteFileName,
   };
 
