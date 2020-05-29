@@ -54,7 +54,7 @@
     "webpack": "^4.43.0"
   },
   "scripts": {
-    "create-env": "mkdir .env && printenv > .env/prod.js && cat .env/prod.js && pwd && cat /builder/home/.npm/_logs/2020-05-29T12_09_14_079Z-debug.log",
+    "create-env": "mkdir .env && printenv > .env/prod.js && cat .env/prod.js",
     "prestart": "npm run bundle",
     "bundle": "NODE_ENV=prod webpack --config webpack.config.js --mode production",
     "start": "NODE_ENV=prod node server.js",
@@ -62,7 +62,9 @@
     "watch:dev": "NODE_ENV=dev webpack --progress --colors --watch --mode development",
     "start:dev": "NODE_ENV=dev webpack-dev-server --progress --colors",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "debug1": "pwd",
+    "debug2": "ls -ltr"
   },
   "eslintConfig": {
     "extends": "react-app"
