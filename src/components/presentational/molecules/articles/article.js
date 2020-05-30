@@ -38,12 +38,22 @@ class Article extends Component {
             fontWeight: "bold",
           },
         },
+        MuiCardHeader: {
+          root: {
+            padding: "16px 16px 5px",
+          },
+        },
+        MuiCardActions: {
+          root: {
+            padding: "0px 8px 8px",
+          },
+        },
         MuiCardContent: {
           root: {
             // TODO: 要改修
             // ↓のように記述しないと高さが一瞬ずれて表示される
-            // 記事の中身が「display: block」が勝手についたり外れたりする
-            padding: "24px",
+            // 記事の中身が「display: block」が勝手についたり外れたりする 24pxが同じ高さ
+            padding: "5px 16px 24px",
           },
         },
       },
