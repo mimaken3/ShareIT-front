@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Select from "react-select";
 import isNumber from "Modules/is_number";
 import selectBoxStyles from "Atoms/select_box_styles";
+import getNonDuplicationArr from "Modules/get_non_duplication_arr";
 
 // トピックのセレクトボックス
 class TopicSelectBox extends Component {
@@ -96,13 +97,18 @@ class TopicSelectBox extends Component {
   // 初期表示トピックをセット
   setInitTopics = (allTopicsArr, initTopics) => {
     let initTopicsArr = [];
+    let nonDuplicationTopicsArr = [];
 
     if (isNumber(initTopics)) {
       // 0/3/4/ の場合
       let topicsSearchArr = initTopics.split("/");
-      for (let i = 0; i < topicsSearchArr.length; i++) {
+
+      // 重複を削除
+      nonDuplicationTopicsArr = getNonDuplicationArr(topicsSearchArr);
+
+      for (let i = 0; i < nonDuplicationTopicsArr.length; i++) {
         for (let j = 0; j < allTopicsArr.length; j++) {
-          if (parseInt(topicsSearchArr[i]) === allTopicsArr[j].value) {
+          if (parseInt(nonDuplicationTopicsArr[i]) === allTopicsArr[j].value) {
             initTopicsArr.push(allTopicsArr[j]);
           }
         }
@@ -111,9 +117,12 @@ class TopicSelectBox extends Component {
       // その他/Ruby/C/ の場合
       let topicsUserArr = initTopics.split("/");
 
-      for (let i = 0; i < topicsUserArr.length; i++) {
+      // 重複を削除
+      nonDuplicationTopicsArr = getNonDuplicationArr(topicsUserArr);
+
+      for (let i = 0; i < nonDuplicationTopicsArr.length; i++) {
         for (let j = 0; j < allTopicsArr.length; j++) {
-          if (topicsUserArr[i] === allTopicsArr[j].label) {
+          if (nonDuplicationTopicsArr[i] === allTopicsArr[j].label) {
             initTopicsArr.push(allTopicsArr[j]);
           }
         }
