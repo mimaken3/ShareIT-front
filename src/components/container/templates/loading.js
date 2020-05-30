@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { CylinderSpinLoader } from "react-css-loaders";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
+import { Roller } from "react-awesome-spinners";
 
 const useStyles = makeStyles((theme) => ({
   loadingFailed: {
@@ -11,7 +11,9 @@ const useStyles = makeStyles((theme) => ({
     height: "500px",
   },
   loading: {
-    height: "500px",
+    height: "327px",
+    textAlign: "center",
+    marginTop: "40px",
   },
 }));
 
@@ -44,13 +46,14 @@ const Loading = () => {
     );
   } else {
     return (
-      <Container component="main" maxWidth="sm">
-        <CssBaseline />
-        <div className={classes.loading}>
-          {/* 青にしたい場合は color="#00CCFF" */}
-          <CylinderSpinLoader size={18} />
-        </div>
-      </Container>
+      <React.Fragment>
+        <Container component="main" maxWidth="sm">
+          <CssBaseline />
+          <div className={classes.loading}>
+            <Roller />
+          </div>
+        </Container>
+      </React.Fragment>
     );
   }
 };
