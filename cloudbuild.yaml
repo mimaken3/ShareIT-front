@@ -11,4 +11,4 @@ steps:
       - "AWS_S3_SECRET_ACCESS_KEY=${_AWS_S3_SECRET_ACCESS_KEY}"
       - "AWS_S3_BUCKET_NAME=${_AWS_S3_BUCKET_NAME}"
   - name: "gcr.io/cloud-builders/gcloud"
-    args: ["app", "deploy", "--project", "share-it-front-dev"]
+    args: ["app", "deploy", "--project", "share-it-front-prod"]
