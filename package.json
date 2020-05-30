@@ -62,6 +62,7 @@
     "build:dev": "NODE_ENV=dev webpack --progress --colors --mode development",
     "watch:dev": "NODE_ENV=dev webpack --progress --colors --watch --mode development",
     "start:dev": "NODE_ENV=dev webpack-dev-server --progress --colors",
+    "start:prod": "NODE_ENV=prod webpack-dev-server --progress --colors",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
