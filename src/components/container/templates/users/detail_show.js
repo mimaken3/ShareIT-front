@@ -23,6 +23,7 @@ import Container from "@material-ui/core/Container";
 import { compose } from "redux";
 import "react-tabs/style/react-tabs.css";
 import TabsIndex from "Organisms/tabs_index";
+import ScrollToTopOnMount from "Atoms/scroll_to_top_on_mount";
 
 class UserShow extends Component {
   constructor(props) {
@@ -109,6 +110,7 @@ class UserShow extends Component {
 
       return (
         <Container component="main" maxWidth="sm">
+          <ScrollToTopOnMount />
           <CssBaseline />
 
           <div className={this.props.classes.userDetailBox}>
@@ -141,12 +143,14 @@ class UserShow extends Component {
     } else if (this.props.isEmpty && !this.state.loading) {
       return (
         <React.Fragment>
+          <ScrollToTopOnMount />
           <NotFoundPage />
         </React.Fragment>
       );
     } else {
       return (
         <React.Fragment>
+          <ScrollToTopOnMount />
           <Loading />
         </React.Fragment>
       );

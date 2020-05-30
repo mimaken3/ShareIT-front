@@ -6,6 +6,7 @@ import AllUsers from "Organisms/all_users";
 import Paging from "Atoms/paging";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
+import ScrollToTopOnMount from "Atoms/scroll_to_top_on_mount";
 
 class UsersIndex extends Component {
   constructor(props) {
@@ -35,6 +36,7 @@ class UsersIndex extends Component {
       return (
         <Container component="main" maxWidth="sm">
           <CssBaseline />
+          <ScrollToTopOnMount />
 
           <AllUsers />
 
@@ -53,6 +55,7 @@ class UsersIndex extends Component {
       return (
         <Container component="main" maxWidth="sm">
           <CssBaseline />
+          <ScrollToTopOnMount />
           <Loading />
         </Container>
       );

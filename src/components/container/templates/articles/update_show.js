@@ -21,6 +21,7 @@ import TextField from "@material-ui/core/TextField";
 import BackButton from "Atoms/buttons/back";
 import SendIcon from "@material-ui/icons/Send";
 import Count from "Atoms/count";
+import ScrollToTopOnMount from "Atoms/scroll_to_top_on_mount";
 
 class ArticleUpdate extends Component {
   constructor(props) {
@@ -150,6 +151,7 @@ class ArticleUpdate extends Component {
       return (
         <Container component="main" maxWidth="md">
           <CssBaseline />
+          <ScrollToTopOnMount />
           <Loading />
         </Container>
       );
@@ -180,6 +182,7 @@ class ArticleUpdate extends Component {
             <ThemeProvider theme={theme}>
               <Container component="main" maxWidth="md">
                 <CssBaseline />
+                <ScrollToTopOnMount />
 
                 <div style={{ marginBottom: "30px", marginTop: "20px" }}>
                   <TextField
@@ -277,6 +280,7 @@ class ArticleUpdate extends Component {
         return (
           <Container component="main" maxWidth="md">
             <CssBaseline />
+            <ScrollToTopOnMount />
             <Loading />
           </Container>
         );

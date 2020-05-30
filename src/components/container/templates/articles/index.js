@@ -12,6 +12,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import { withRouter } from "react-router";
 import { showAllArticles } from "Actions/article";
+import ScrollToTopOnMount from "Atoms/scroll_to_top_on_mount";
 
 let isBrowzerBack = React.createRef();
 isBrowzerBack.current = false;
@@ -41,6 +42,7 @@ class ArticlesIndex extends Component {
       return (
         <Container component="main" maxWidth="sm">
           <CssBaseline />
+          <ScrollToTopOnMount />
 
           <div style={{ display: "-webkit-flex", marginTop: "20px" }}>
             <SearchArticles />
@@ -55,6 +57,7 @@ class ArticlesIndex extends Component {
       return (
         <Container component="main" maxWidth="sm">
           <CssBaseline />
+          <ScrollToTopOnMount />
           <Loading />
         </Container>
       );

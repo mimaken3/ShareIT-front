@@ -17,6 +17,7 @@ import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import { ThemeProvider } from "@material-ui/styles";
+import ScrollToTopOnMount from "Atoms/scroll_to_top_on_mount";
 
 class Login extends Component {
   constructor(props) {
@@ -112,6 +113,8 @@ class Login extends Component {
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
+          <ScrollToTopOnMount />
+
           <div className={this.props.classes.paper}>
             <Avatar className={this.props.classes.avatar}>
               <LockOutlinedIcon />
