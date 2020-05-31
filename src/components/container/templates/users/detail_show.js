@@ -190,9 +190,11 @@ const styles = () => ({
   },
   userName: {
     textAlign: "center",
+    marginTop: "20px",
   },
   topicTags: {
     textAlign: "center",
+    marginTop: "10px",
   },
   editButton: {
     float: "left",
@@ -219,7 +221,7 @@ const styles = () => ({
     marginLeft: "auto",
     marginRight: "auto",
     width: "176px",
-    marginTop: "60px",
+    marginTop: "30px",
   },
 });
 
