@@ -2,13 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import TopicSelectBox from "Atoms/topic_select_box";
 import UserSelectBox from "Atoms/user_select_box";
-import Button from "@material-ui/core/Button";
 import { getAllTopics } from "Actions/topic";
 import { emptyArticles, searchArticles } from "Actions/article";
 import { getAllUsersForSelectBox } from "Actions/user";
 import { reduxForm } from "redux-form";
 import { withRouter } from "react-router";
-import SearchIcon from "@material-ui/icons/Search";
+import SearchButton from "Atoms/buttons/search";
 
 class SearchArticles extends Component {
   constructor(props) {
@@ -16,7 +15,7 @@ class SearchArticles extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  // 記事を送信
+  // 検索
   handleSubmit() {
     const values = {
       refPg: 1,
@@ -56,13 +55,7 @@ class SearchArticles extends Component {
           />
         </div>
 
-        <Button
-          variant="outlined"
-          onClick={() => this.handleSubmit()}
-          startIcon={<SearchIcon />}
-        >
-          検索
-        </Button>
+        <SearchButton handleSubmit={() => this.handleSubmit()} />
       </React.Fragment>
     );
   }
