@@ -8,6 +8,7 @@ import { emptyArticles, searchArticles } from "Actions/article";
 import { getAllUsersForSelectBox } from "Actions/user";
 import { reduxForm } from "redux-form";
 import { withRouter } from "react-router";
+import SearchIcon from "@material-ui/icons/Search";
 
 class SearchArticles extends Component {
   constructor(props) {
@@ -57,8 +58,8 @@ class SearchArticles extends Component {
 
         <Button
           variant="outlined"
-          // style={{ float: "left" }}
           onClick={() => this.handleSubmit()}
+          startIcon={<SearchIcon />}
         >
           検索
         </Button>
