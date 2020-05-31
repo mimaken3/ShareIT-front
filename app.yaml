@@ -1,5 +1,6 @@
 runtime: nodejs10
 env: standard
+secure: always
 
 automatic_scaling:
   min_idle_instances: automatic

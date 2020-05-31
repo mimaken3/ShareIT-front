@@ -108,15 +108,20 @@ export const putUserEvent = (user, iconImage) => async (dispatch) => {
     // アイコンURLを拡張子に変更
     const fileExtension = iconImage.name.split(".")[1];
     user.icon_name = fileExtension;
-
-    if (deleteFileName !== "default.png") {
+    if (deleteFileName === "default.png") {
+      // 新しいアイコンをアップロード
+      uploadIcon(iconImage, user.user_id);
+    } else {
       // デフォ画像でないなら削除
       deleteIcon(deleteFileName).then(() => {
         // 新しいアイコンをアップロード
         uploadIcon(iconImage, user.user_id);
       });
     }
+  } else {
+    user.icon_name = "";
   }
+
   user.created_date = convertJSTToDate(user.created_date);
 
   const response = await axios.put(

@@ -43,7 +43,10 @@ const theme = createMuiTheme({
   overrides: {
     MuiCardContent: {
       root: {
-        padding: "0px 20px 20px",
+        // TODO: 要改修
+        // ↓のように記述しないと高さが一瞬ずれて表示される
+        // 記事の中身が「display: block」が勝手についたり外れたりする
+        padding: "0px 20px 24px",
       },
     },
   },

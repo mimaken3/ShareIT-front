@@ -23,6 +23,7 @@ import Container from "@material-ui/core/Container";
 import { compose } from "redux";
 import "react-tabs/style/react-tabs.css";
 import TabsIndex from "Organisms/tabs_index";
+import ScrollToTopOnMount from "Atoms/scroll_to_top_on_mount";
 
 class UserShow extends Component {
   constructor(props) {
@@ -59,8 +60,9 @@ class UserShow extends Component {
   // 主にヘッダーから用
   shouldComponentUpdate(nextProps) {
     return (
-      !(this.props.allPagingNum && this.props.allLikePagingNum) ||
-      this.props.location.pathname !== nextProps.location.pathname
+      this.state.loading || // 初回
+      (!this.state.loading && typeof this.props.user === "undefined") || // ユーザA -> ヘッダーのユーザB
+      this.props.location.pathname !== nextProps.location.pathname // ユーザA -> ヘッダーのユーザB
     );
   }
 
@@ -83,12 +85,7 @@ class UserShow extends Component {
   }
 
   render() {
-    if (
-      this.props.user &&
-      !this.state.loading &&
-      this.props.allPagingNum &&
-      this.props.allLikePagingNum
-    ) {
+    if (this.props.user && !this.state.loading) {
       const loginUser = getLoginUserInfo();
       const loginUserID = loginUser.userID;
       const isAdmin = loginUser.admin;
@@ -109,6 +106,7 @@ class UserShow extends Component {
 
       return (
         <Container component="main" maxWidth="sm">
+          <ScrollToTopOnMount />
           <CssBaseline />
 
           <div className={this.props.classes.userDetailBox}>
@@ -141,12 +139,14 @@ class UserShow extends Component {
     } else if (this.props.isEmpty && !this.state.loading) {
       return (
         <React.Fragment>
+          <ScrollToTopOnMount />
           <NotFoundPage />
         </React.Fragment>
       );
     } else {
       return (
         <React.Fragment>
+          <ScrollToTopOnMount />
           <Loading />
         </React.Fragment>
       );
@@ -169,15 +169,9 @@ const mapStateToProps = (state, ownProps) => {
   // ユーザの存在
   const isEmpty = state.users.is_empty;
 
-  const allLikePagingNum = state.likeArticles.all_paging_num;
-
-  // 初期状態でどんな値を表示するかをinitialValuesで設定
   return {
-    initialValues: user,
     user: user,
     isEmpty: isEmpty,
-    allPagingNum: state.articles.all_paging_num,
-    allLikePagingNum,
   };
 };
 
@@ -196,9 +190,11 @@ const styles = () => ({
   },
   userName: {
     textAlign: "center",
+    marginTop: "20px",
   },
   topicTags: {
     textAlign: "center",
+    marginTop: "10px",
   },
   editButton: {
     float: "left",
@@ -225,7 +221,7 @@ const styles = () => ({
     marginLeft: "auto",
     marginRight: "auto",
     width: "176px",
-    marginTop: "60px",
+    marginTop: "30px",
   },
 });
 

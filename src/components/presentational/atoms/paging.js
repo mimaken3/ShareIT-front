@@ -103,6 +103,11 @@ const mapStateToProps = (state, ownProps) => {
     const isEmpty = state.likeArticles.is_empty;
 
     return { isSearched, searchUser, searchTopics, isEmpty };
+  } else if (ownProps.refName === "users") {
+    // ユーザ一覧
+    const isEmpty = state.users.is_empty;
+
+    return { isEmpty };
   } else {
     // ユーザの記事一覧 or 記事一覧ページ
     const isSearched = state.articles.is_searched;

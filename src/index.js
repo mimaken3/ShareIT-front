@@ -27,10 +27,7 @@ import "./index.css";
 
 import * as serviceWorker from "./serviceWorker";
 
-const enhancer =
-  process.env.NODE_ENV === "development"
-    ? composeWithDevTools(applyMiddleware(thunk))
-    : applyMiddleware(thunk);
+const enhancer = composeWithDevTools(applyMiddleware(thunk));
 
 const theme = createMuiTheme({
   typography: {

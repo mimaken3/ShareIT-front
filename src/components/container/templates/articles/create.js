@@ -90,7 +90,7 @@ class articleNew extends Component {
     // 送信するトピックをセット
     article.article_topics = this.refs.TopicSelectBox.getSendTopics("その他");
 
-    // // プライバシーを設定
+    // プライバシーを設定
     article.is_private = this.refs.Privacy.privacy;
 
     Promise.all([

@@ -21,6 +21,7 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import SendIcon from "@material-ui/icons/Send";
 import Count from "Atoms/count";
+import ScrollToTopOnMount from "Atoms/scroll_to_top_on_mount";
 
 class UserUpdateShow extends Component {
   constructor(props) {
@@ -140,6 +141,8 @@ class UserUpdateShow extends Component {
           <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
               <CssBaseline />
+              <ScrollToTopOnMount />
+
               <div className={this.props.classes.editUserIcon}>
                 <EditUserIcon
                   defaultIconURL=""
@@ -212,6 +215,9 @@ class UserUpdateShow extends Component {
     } else {
       return (
         <React.Fragment>
+          <CssBaseline />
+          <ScrollToTopOnMount />
+
           <Loading />
         </React.Fragment>
       );

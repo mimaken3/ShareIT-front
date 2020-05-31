@@ -15,6 +15,7 @@ import NotFoundPage from "Templates/not_found_page";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import TopicTags from "Atoms/topic_tags";
+import ScrollToTopOnMount from "Atoms/scroll_to_top_on_mount";
 
 class ArticleShow extends Component {
   constructor(props) {
@@ -66,6 +67,7 @@ class ArticleShow extends Component {
 
       return (
         <Container component="main" maxWidth="md">
+          <ScrollToTopOnMount />
           <CssBaseline />
 
           <div style={{ marginTop: "20px" }}>
@@ -112,6 +114,7 @@ class ArticleShow extends Component {
       return (
         <Container component="main" maxWidth="md">
           <CssBaseline />
+          <ScrollToTopOnMount />
           <NotFoundPage />
         </Container>
       );
@@ -119,6 +122,7 @@ class ArticleShow extends Component {
       return (
         <Container component="main" maxWidth="md">
           <CssBaseline />
+          <ScrollToTopOnMount />
           <Loading />
         </Container>
       );

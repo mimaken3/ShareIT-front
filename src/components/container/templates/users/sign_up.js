@@ -28,6 +28,7 @@ import ResultUserNameDuplicationCheck from "Atoms/users/name_check";
 // import ResultEmailDuplicationCheck from "Atoms/users/email_check";
 import Button from "@material-ui/core/Button";
 import Count from "Atoms/count";
+import ScrollToTopOnMount from "Atoms/scroll_to_top_on_mount";
 
 const ROOT_URL = env.ROOT_URL;
 
@@ -405,6 +406,8 @@ class SignUp extends Component {
         <ThemeProvider theme={theme}>
           <Container component="main" maxWidth="xs">
             <CssBaseline />
+            <ScrollToTopOnMount />
+
             <div className={this.props.classes.paper}>
               <Avatar className={this.props.classes.avatar}>
                 <AccessibilityNewIcon />
@@ -567,6 +570,8 @@ class SignUp extends Component {
       return (
         <Container component="main" maxWidth="xs">
           <CssBaseline />
+          <ScrollToTopOnMount />
+
           <Loading />
         </Container>
       );
