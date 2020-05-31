@@ -1,6 +1,7 @@
 import {
   SHOW_LIKED_ARTICLES_BY_USER_ID,
   EMPTY_LIKED_ARTICLES,
+  DELETE_UNLIKE_ARTICLE_EVENT,
 } from "Actions/article";
 import getJSTCreatedDateArr from "Modules/getJST_created_date_arr";
 import _ from "lodash";
@@ -9,6 +10,8 @@ import _ from "lodash";
 // 第一引数の初期値はないので{}
 // 受け取ったactionのtypeに応じて状態を変更して、その結果を返す
 let initialState = {
+  is_reload: false,
+  reload_ref_pg: 0,
   is_searched: false,
   search_user: 0,
   search_topics: "0",
@@ -29,6 +32,8 @@ export default (like_articles = initialState, action) => {
       const articles2 = getJSTCreatedDateArr(_articles);
 
       return Object.assign({}, like_articles, {
+        is_reload: false,
+        reload_ref_pg: 0,
         is_searched: action.response.data.is_searched,
         search_user: action.response.data.search_user,
         search_topics: action.response.data.search_topics,
@@ -40,11 +45,44 @@ export default (like_articles = initialState, action) => {
 
     case EMPTY_LIKED_ARTICLES:
       return Object.assign({}, like_articles, {
+        is_reload: false,
+        reload_ref_pg: 0,
         is_empty: true,
         ref_pg: 0,
         all_paging_num: 0,
         articles: {},
       });
+
+    case DELETE_UNLIKE_ARTICLE_EVENT:
+      delete like_articles.articles[action.articleID];
+
+      if (Object.values(like_articles.articles).length === 0) {
+        // 空の場合
+        if (like_articles.all_paging_num === 1) {
+          return Object.assign({}, like_articles, {
+            is_reload: false,
+            reload_ref_pg: 0,
+            is_empty: true,
+            ref_pg: 1,
+            all_paging_num: 1,
+            articles: {},
+          });
+        } else {
+          // ページが2以上の場所にいたとき
+          const nextRefPg = like_articles.ref_pg - 1;
+          return Object.assign({}, like_articles, {
+            is_reload: true,
+            reload_ref_pg: nextRefPg,
+            is_empty: true,
+            ref_pg: 0,
+            all_paging_num: 0,
+            articles: {},
+          });
+        }
+      } else {
+        return like_articles;
+      }
+
     default:
       return like_articles;
   }

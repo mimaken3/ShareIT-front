@@ -14,6 +14,9 @@ import { ThemeProvider } from "@material-ui/styles";
 import TopicTags from "Atoms/topic_tags";
 import CreatedDate from "Atoms/created_date";
 import { ScrollTo } from "react-scroll-to";
+import getLoginUserInfo from "Modules/getLoginUserInfo";
+import { deleteUnlikeArticleEvent } from "Actions/article";
+import { connect } from "react-redux";
 
 class Article extends Component {
   constructor(props) {
@@ -23,6 +26,11 @@ class Article extends Component {
 
   handleEvent() {
     this.props.history.push("/api/articles/" + this.props.article.article_id);
+  }
+
+  unLikeEvent() {
+    // 自身のいいね一覧でアンライクしたとき
+    this.props.deleteUnlikeArticleEvent(this.props.article.article_id);
   }
 
   render() {
@@ -50,7 +58,7 @@ class Article extends Component {
         },
         MuiCardContent: {
           root: {
-            // TODO: 要改修
+            // TODO: 要改修a
             // ↓のように記述しないと高さが一瞬ずれて表示される
             // 記事の中身が「display: block」が勝手についたり外れたりする 24pxが同じ高さ
             padding: "5px 16px 24px",
@@ -58,6 +66,32 @@ class Article extends Component {
         },
       },
     });
+
+    const loginUser = getLoginUserInfo();
+    const loginUserID = loginUser.userID;
+
+    let LikeCom;
+    if (this.props.history.location.pathname === "/api/users/" + loginUserID) {
+      LikeCom = (
+        <Like
+          articleID={this.props.article.article_id}
+          isLiked={this.props.article.is_liked}
+          likeNum={this.props.article.like_num}
+          loginUserID={this.props.loginUserID}
+          unLikeEvent={() => this.unLikeEvent()}
+        />
+      );
+    } else {
+      LikeCom = (
+        <Like
+          articleID={this.props.article.article_id}
+          isLiked={this.props.article.is_liked}
+          likeNum={this.props.article.like_num}
+          loginUserID={this.props.loginUserID}
+        />
+      );
+    }
+
     return (
       <ThemeProvider theme={theme}>
         <Card className={this.props.classes.root}>
@@ -88,14 +122,7 @@ class Article extends Component {
               </ButtonBase>
             )}
           </ScrollTo>
-          <CardActions disableSpacing>
-            <Like
-              articleID={this.props.article.article_id}
-              isLiked={this.props.article.is_liked}
-              likeNum={this.props.article.like_num}
-              loginUserID={this.props.loginUserID}
-            />
-          </CardActions>
+          <CardActions disableSpacing>{LikeCom}</CardActions>
         </Card>
       </ThemeProvider>
     );
@@ -125,6 +152,16 @@ const styles = (theme) => ({
   },
 });
 
+const mapDispatchToProps = {
+  deleteUnlikeArticleEvent,
+};
+
+const mapStateToProps = "";
+
 export default withRouter(
-  compose(reduxForm({ form: "articleForm" }), withStyles(styles))(Article)
+  compose(
+    reduxForm({ form: "articleForm" }),
+    connect(mapStateToProps, mapDispatchToProps),
+    withStyles(styles)
+  )(Article)
 );

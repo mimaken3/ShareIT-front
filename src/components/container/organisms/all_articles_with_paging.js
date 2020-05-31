@@ -8,6 +8,7 @@ import {
   emptyArticles,
   getAllArticlesByUserID,
   emptyLikedArticles,
+  showLikedArticlesByUserID,
 } from "Actions/article";
 import Loading from "Templates/loading";
 
@@ -18,6 +19,17 @@ class AllArticlesWithPaging extends Component {
     this.state = {
       loading: true,
     };
+  }
+
+  componentDidUpdate() {
+    // 自身のいいね一覧の記事をアンライクしたとき発火(ページジング2以上にいたとき)
+    if (this.props.isReload) {
+      // ユーザのいいねした記事一覧を取得
+      this.props.showLikedArticlesByUserID(
+        this.props.userID,
+        this.props.rreloadRefPg
+      );
+    }
   }
 
   PagingClick() {
@@ -37,7 +49,7 @@ class AllArticlesWithPaging extends Component {
   }
 
   render() {
-    if (this.props.articles && this.props.allPagingNum) {
+    if (this.props.allPagingNum) {
       if (this.props.param === "userDetailShow") {
         // ユーザ詳細の記事一覧
         return (
@@ -103,12 +115,15 @@ const mapDispatchToProps = {
   emptyArticles,
   getAllArticlesByUserID,
   emptyLikedArticles,
+  showLikedArticlesByUserID,
 };
 
 const mapStateToProps = (state, ownProps) => {
   if (ownProps.param === "userLikedArticles") {
     // ユーザがいいねした記事一覧
     return {
+      isReload: state.likeArticles.is_reload,
+      reloadRefPg: state.likeArticles.reload_ref_pg,
       allPagingNum: state.likeArticles.all_paging_num,
       articles: state.likeArticles.articles,
       refPg: state.likeArticles.ref_pg,

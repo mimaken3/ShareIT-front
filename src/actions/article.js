@@ -15,6 +15,7 @@ export const ARTICLE_NOT_EXIST = "ARTICLE_NOT_EXIST";
 export const EMPTY_ARTICELS = "EMPTY_ARTICELS";
 export const EMPTY_LIKED_ARTICLES = "EMPTY_LIKED_ARTICLES";
 export const SHOW_LIKED_ARTICLES_BY_USER_ID = "SHOW_LIKED_ARTICLES_BY_USER_ID";
+export const DELETE_UNLIKE_ARTICLE_EVENT = "DELETE_UNLIKE_ARTICLE_EVENT";
 
 const ROOT_URL = env.ROOT_URL;
 
@@ -169,4 +170,9 @@ export const emptyArticles = () => (dispatch) => {
 // storeのいいねした記事一覧を空に
 export const emptyLikedArticles = () => (dispatch) => {
   dispatch({ type: EMPTY_LIKED_ARTICLES });
+};
+
+// 自身のいいね一覧でアンライクしたとき
+export const deleteUnlikeArticleEvent = (articleID) => (dispatch) => {
+  dispatch({ type: DELETE_UNLIKE_ARTICLE_EVENT, articleID });
 };

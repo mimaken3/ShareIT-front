@@ -33,6 +33,10 @@ class Like extends Component {
 
   // 未いいねに
   offLike() {
+    if (this.props.unLikeEvent) {
+      this.props.unLikeEvent();
+    }
+
     const likeArticle = {
       userID: this.props.loginUserID,
       articleID: this.props.articleID,
@@ -51,7 +55,9 @@ class Like extends Component {
       isLiked = (
         <React.Fragment>
           <Button
-            onClick={() => this.offLike()}
+            onClick={() => {
+              this.offLike();
+            }}
             className={this.props.classes.button}
           >
             <LikeObj obj={true} />
@@ -70,6 +76,7 @@ class Like extends Component {
         </React.Fragment>
       );
     }
+
     return (
       <React.Fragment>
         <div style={{ float: "left" }}>{isLiked}</div>
