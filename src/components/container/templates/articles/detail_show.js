@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { getArticleDetail, deleteEvent } from "Actions/article";
+import { getUserDetail } from "Actions/user";
 import { getAllComments } from "Actions/comment";
 import CreatedDate from "Atoms/created_date.js";
 import Loading from "Templates/loading";
@@ -16,6 +17,12 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import TopicTags from "Atoms/topic_tags";
 import ScrollToTopOnMount from "Atoms/scroll_to_top_on_mount";
+import UserIcon from "Atoms/user_icon";
+import { compose } from "redux";
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
 
 class ArticleShow extends Component {
   constructor(props) {
@@ -31,7 +38,11 @@ class ArticleShow extends Component {
         this.props.getAllComments(articleId),
         this.props.getArticleDetail(articleId),
       ]).then(() => {
-        this.setState({ loading: false });
+        this.props
+          .getUserDetail(this.props.article.created_user_id)
+          .then(() => {
+            this.setState({ loading: false });
+          });
       });
     }
   }
@@ -43,72 +54,96 @@ class ArticleShow extends Component {
     this.props.history.push("/api/articles");
   }
 
+  toUserShowPage(userID) {
+    this.props.history.push("/api/users/" + userID);
+  }
+
   render() {
     const loginUser = getLoginUserInfo();
     const loginUserID = loginUser.userID;
     const isAdmin = loginUser.admin;
-    if (this.props.article && !this.state.loading) {
+    if (this.props.article && !this.state.loading && this.props.postedUser) {
       var AuthorizedEditButton;
       if (loginUserID === this.props.article.created_user_id || isAdmin) {
         const sendObj = { articleID: this.props.article.article_id };
         AuthorizedEditButton = (
-          <div
-            style={{ float: "left", marginTop: "30px", marginBottom: "100px" }}
-          >
-            <div style={{ float: "left", marginRight: "5px" }}>
+          <div className={this.props.classes.authButtons}>
+            <div className={this.props.classes.editButton}>
               <EditButton path="articles" id={this.props.article.article_id} />
             </div>
-            <div style={{ float: "left" }}>
+            <div className={this.props.classes.deleteButton}>
               <DeleteButton param="article" sendObj={sendObj} />
             </div>
           </div>
         );
       }
 
+      const theme = createMuiTheme({
+        overrides: {
+          MuiButton: {
+            // 作成日の直下に投稿ユーザ情報を配置するため
+            text: {
+              display: "block",
+            },
+          },
+        },
+      });
+
       return (
-        <Container component="main" maxWidth="md">
-          <ScrollToTopOnMount />
-          <CssBaseline />
+        <ThemeProvider theme={theme}>
+          <Container component="main" maxWidth="md">
+            <ScrollToTopOnMount />
+            <CssBaseline />
 
-          <div style={{ marginTop: "20px" }}>
-            <CreatedDate createdDate={this.props.article.created_date} />
-          </div>
+            <div>
+              <h2>{this.props.article.article_title}</h2>
+            </div>
+            <TopicTags topics={this.props.article.article_topics} />
+            <div>
+              <p className={this.props.classes.articleContent}>
+                {this.props.article.article_content}
+              </p>
+            </div>
 
-          <div>
-            <h2>{this.props.article.article_title}</h2>
-          </div>
+            <div className={this.props.classes.likeBox}>
+              <Like
+                articleID={this.props.article.article_id}
+                isLiked={this.props.article.is_liked}
+                likeNum={this.props.article.like_num}
+                loginUserID={loginUserID}
+              />
+            </div>
 
-          <TopicTags topics={this.props.article.article_topics} />
+            <div className={this.props.classes.postedUserInfo}>
+              <span>
+                作成日{" "}
+                <CreatedDate createdDate={this.props.article.created_date} />
+              </span>
+              <Button
+                onClick={() =>
+                  this.toUserShowPage(this.props.postedUser.user_id)
+                }
+              >
+                <div className={this.props.classes.userIcon}>
+                  <UserIcon iconData={this.props.postedUser.icon_name} />
+                </div>
+                <div className={this.props.classes.userName}>
+                  {this.props.postedUser.user_name}
+                </div>
+              </Button>
+            </div>
 
-          <div>
-            <p
-              style={{
-                fontSize: "18px",
-                minHeight: "30px",
-                whiteSpace: "pre-wrap",
-              }}
-            >
-              {this.props.article.article_content}
-            </p>
-          </div>
-
-          <Like
-            articleID={this.props.article.article_id}
-            isLiked={this.props.article.is_liked}
-            likeNum={this.props.article.like_num}
-            loginUserID={loginUserID}
-          />
-
-          <div style={{ clear: "both" }}>{AuthorizedEditButton}</div>
-
-          <div style={{ clear: "both", marginTop: "40px" }}>
-            <AllComments articleID={this.props.article.article_id} />
-          </div>
-
-          <div>
-            <CommentNew articleID={this.props.article.article_id} />
-          </div>
-        </Container>
+            <div className={this.props.classes.auth}>
+              {AuthorizedEditButton}
+            </div>
+            <div className={this.props.classes.allComments}>
+              <AllComments articleID={this.props.article.article_id} />
+            </div>
+            <div>
+              <CommentNew articleID={this.props.article.article_id} />
+            </div>
+          </Container>
+        </ThemeProvider>
       );
     } else if (this.props.isEmpty && !this.state.loading) {
       return (
@@ -130,33 +165,83 @@ class ArticleShow extends Component {
   }
 }
 
-// stateとactionをcomponentに関連付ける実装
-// このstatusは状態のトップレベルを表す
-// ReduxのStoreを第一引数にとる関数で、Componentにpropsとして渡すものをフィルタリングするときに使う。
 const mapStateToProps = (state, ownProps) => {
   // 詳細画面で必要な各種情報を取得
   const article = state.articles.articles[ownProps.match.params.articleId];
+
+  let postedUser;
+  if (article) {
+    postedUser = state.users.users[article.created_user_id];
+  }
 
   // 記事の存在
   const isEmpty = state.articles.is_empty;
 
   // 初期状態でどんな値を表示するかをinitialValuesで設定
-  return { initialValues: article, article: article, isEmpty: isEmpty };
+  return {
+    initialValues: article,
+    article: article,
+    isEmpty: isEmpty,
+    postedUser,
+  };
 };
 
-const mapDispatchToProps = { getArticleDetail, deleteEvent, getAllComments };
+const mapDispatchToProps = {
+  getArticleDetail,
+  deleteEvent,
+  getAllComments,
+  getUserDetail,
+};
 
-// connect 第一引数はcomponentに渡すpropsを制御する
-// 第二引数はreducerを呼び出して、reduxで管理しているstateを更新する
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
-  // enableReinitialize: When set to true, the form will reinitialize
-  // every time the initialValues prop change. Defaults to false.
-  // titleとbody属性を表示するときに使う
-  // 直接詳細画面へアクセスしたとき(本来なら最初に記事一覧を取得して、それらの情報がブラウザのメモリに残った状態で、
-  // 詳細へ行くとメモリから詳細を取得する)適宜、該当のイベントをAPIサーバから取得する
-  // formにはユニークな名前を渡す
-  reduxForm({ form: "articleShowForm", enableReinitialize: true })(ArticleShow)
-);
+const styles = () => ({
+  likeBox: {
+    marginTop: "20px",
+    float: "left",
+  },
+  postedUserInfo: {
+    float: "left",
+    marginLeft: "45px",
+  },
+  userIcon: {
+    width: "40px",
+    height: "40px",
+    display: "table-cell",
+    verticalAlign: "middle",
+  },
+  userName: {
+    fontSize: "17px",
+    paddingLeft: "10px",
+    display: "table-cell",
+    verticalAlign: "middle",
+  },
+  articleContent: {
+    fontSize: "18px",
+    minHeight: "30px",
+    whiteSpace: "pre-wrap",
+  },
+  auth: {
+    clear: "both",
+  },
+  allComments: {
+    clear: "both",
+    marginTop: "40px",
+  },
+  deleteButton: {
+    float: "left",
+  },
+  editButton: {
+    float: "left",
+    marginRight: "5px",
+  },
+  authButtons: {
+    float: "left",
+    marginTop: "30px",
+    marginBottom: "100px",
+  },
+});
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({ form: "articleShowForm", enableReinitialize: true }),
+  withStyles(styles)
+)(ArticleShow);
