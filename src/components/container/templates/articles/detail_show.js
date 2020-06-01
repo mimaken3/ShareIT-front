@@ -81,6 +81,10 @@ class ArticleShow extends Component {
       const theme = createMuiTheme({
         overrides: {
           MuiButton: {
+            // 文字が大文字になるのを防ぐ
+            root: {
+              textTransform: "none",
+            },
             // 作成日の直下に投稿ユーザ情報を配置するため
             text: {
               display: "block",
