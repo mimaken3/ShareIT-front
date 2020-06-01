@@ -116,7 +116,7 @@ class ArticleShow extends Component {
 
             <div className={this.props.classes.postedUserInfo}>
               <span>
-                作成日{" "}
+                作成日時{" "}
                 <CreatedDate createdDate={this.props.article.created_date} />
               </span>
               <Button

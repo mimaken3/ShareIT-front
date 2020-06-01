@@ -182,7 +182,7 @@ class UserUpdateShow extends Component {
               <div className={this.props.classes.stopFloat}></div>
 
               <div>
-                <span>作成日 </span>
+                <span>作成日時 </span>
                 <CreatedDate createdDate={this.props.user.created_date} />
               </div>
 

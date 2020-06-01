@@ -235,7 +235,7 @@ class ArticleUpdate extends Component {
                 </div>
 
                 <div style={{ marginTop: "20px", marginLeft: "8px" }}>
-                  <span>作成日 </span>
+                  <span>作成日時 </span>
                   <CreatedDate createdDate={this.props.article.created_date} />
                 </div>
 
