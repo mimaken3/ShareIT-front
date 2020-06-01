@@ -13,6 +13,7 @@ const ToAllArticlesButton = withRouter((props) => {
     props.callback();
 
     if (props.history.location.pathname === "/api/articles") {
+      // 記事一覧にいる状態で「記事一覧」を押したらリロード
       window.location.reload(false);
     } else {
       props.emptyArticles();
