@@ -92,6 +92,7 @@ export const getUserDetail = (userId) => async (dispatch) => {
       dispatch({ type: SHOW_USER_DETAIL, response });
     })
     .catch((e) => {
+      console.log("user not found");
       dispatch({ type: USER_NOT_EXIST });
     });
 };

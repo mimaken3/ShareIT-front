@@ -61,7 +61,10 @@ class UserShow extends Component {
   shouldComponentUpdate(nextProps) {
     return (
       this.state.loading || // 初回
-      (!this.state.loading && typeof this.props.user === "undefined") || // ユーザA -> ヘッダーのユーザB
+      // ユーザA -> ヘッダーのユーザB + not found user
+      (!this.state.loading &&
+        typeof this.props.user === "undefined" &&
+        !this.props.isEmpty) ||
       this.props.location.pathname !== nextProps.location.pathname // ユーザA -> ヘッダーのユーザB
     );
   }
