@@ -87,7 +87,7 @@ const User = withRouter((props) => {
   );
 
   function handleEvent() {
-    props.history.push("/api/users/" + props.user.user_id);
+    props.history.push("/users/" + props.user.user_id);
   }
 });
 

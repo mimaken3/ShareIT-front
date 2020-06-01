@@ -18,11 +18,11 @@ const ShareIT = withRouter((props) => {
   const classes = useStyles();
 
   function toAllArticlesPage() {
-    if (props.history.location.pathname === "/api/articles") {
+    if (props.history.location.pathname === "/articles") {
       window.location.reload(false);
     } else {
       props.emptyArticles();
-      props.history.push("/api/articles");
+      props.history.push("/articles");
     }
   }
 
@@ -33,7 +33,7 @@ const ShareIT = withRouter((props) => {
           color="inherit"
           className={classes.shareIT}
           onClick={() => {
-            if (props.history.location.pathname !== "/api/articles") {
+            if (props.history.location.pathname !== "/articles") {
               scroll({ x: 0, y: 0 });
             }
             toAllArticlesPage();

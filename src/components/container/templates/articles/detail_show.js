@@ -51,11 +51,11 @@ class ArticleShow extends Component {
   async onDeleteClick() {
     const article_id = this.props.match.params.articleId;
     await this.props.deleteEvent(article_id);
-    this.props.history.push("/api/articles");
+    this.props.history.push("/articles");
   }
 
   toUserShowPage(userID) {
-    this.props.history.push("/api/users/" + userID);
+    this.props.history.push("/users/" + userID);
   }
 
   render() {

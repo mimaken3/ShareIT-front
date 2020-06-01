@@ -26,7 +26,7 @@ class SearchArticles extends Component {
 
     this.props.searchArticles(values);
 
-    this.props.history.push("/api/articles");
+    this.props.history.push("/articles");
   }
 
   render() {

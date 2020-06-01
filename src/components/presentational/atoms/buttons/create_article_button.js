@@ -27,7 +27,7 @@ const CreateArticleButton = withRouter((props) => {
   function handlePost() {
     const loginUserInfo = getLoginUserInfo();
     const loginUserID = loginUserInfo.userID;
-    props.history.push("/api/users/" + loginUserID + "/article");
+    props.history.push("/users/" + loginUserID + "/article");
   }
 });
 

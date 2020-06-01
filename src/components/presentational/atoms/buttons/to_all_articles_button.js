@@ -12,12 +12,12 @@ const ToAllArticlesButton = withRouter((props) => {
     // メニューバーを閉じる
     props.callback();
 
-    if (props.history.location.pathname === "/api/articles") {
+    if (props.history.location.pathname === "/articles") {
       // 記事一覧にいる状態で「記事一覧」を押したらリロード
       window.location.reload(false);
     } else {
       props.emptyArticles();
-      props.history.push("/api/articles");
+      props.history.push("/articles");
     }
   }
 

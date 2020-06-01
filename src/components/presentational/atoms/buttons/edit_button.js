@@ -19,7 +19,7 @@ const EditButton = withRouter((props) => {
 
   // 編集画面へ
   function Edit() {
-    props.history.push("/api/" + props.path + "/" + props.id + "/edit");
+    props.history.push("/" + props.path + "/" + props.id + "/edit");
   }
 });
 

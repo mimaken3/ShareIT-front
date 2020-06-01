@@ -25,7 +25,7 @@ class Article extends Component {
   }
 
   handleEvent() {
-    this.props.history.push("/api/articles/" + this.props.article.article_id);
+    this.props.history.push("/articles/" + this.props.article.article_id);
   }
 
   unLikeEvent() {
@@ -71,7 +71,7 @@ class Article extends Component {
     const loginUserID = loginUser.userID;
 
     let LikeCom;
-    if (this.props.history.location.pathname === "/api/users/" + loginUserID) {
+    if (this.props.history.location.pathname === "/users/" + loginUserID) {
       LikeCom = (
         <Like
           articleID={this.props.article.article_id}

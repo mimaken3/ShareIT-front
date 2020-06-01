@@ -100,7 +100,7 @@ class articleNew extends Component {
       await this.props.postArticleEvent(article),
     ]).then(() => {
       // ボタンを押した後に遷移するURL
-      this.props.history.push("/api/users/" + this.props.userID);
+      this.props.history.push("/users/" + this.props.userID);
     });
   }
 
@@ -136,7 +136,7 @@ class articleNew extends Component {
     if (loginUserID !== this.props.userID) {
       return (
         <React.Fragment>
-          <Redirect to={"/api/users/" + loginUserID + "/article"} />
+          <Redirect to={"/users/" + loginUserID + "/article"} />
         </React.Fragment>
       );
     } else if (Object.values(this.props.allTopics).length !== 0) {

@@ -12,12 +12,12 @@ const ToAllUsersButton = withRouter((props) => {
     // メニューバーを閉じる
     props.callback();
 
-    if (props.history.location.pathname === "/api/users") {
+    if (props.history.location.pathname === "/users") {
       // ユーザ一覧にいる状態で「ユーザ一覧」を押したらリロード
       window.location.reload(false);
     } else {
       props.emptyUsers();
-      props.history.push("/api/users");
+      props.history.push("/users");
     }
   }
 
