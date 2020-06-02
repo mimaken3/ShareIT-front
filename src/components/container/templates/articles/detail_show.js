@@ -99,7 +99,7 @@ class ArticleShow extends Component {
             <ScrollToTopOnMount />
             <CssBaseline />
 
-            <div>
+            <div className={this.props.classes.articleTitle}>
               <h2>{this.props.article.article_title}</h2>
             </div>
             <TopicTags topics={this.props.article.article_topics} />
@@ -218,10 +218,14 @@ const styles = () => ({
     display: "table-cell",
     verticalAlign: "middle",
   },
+  articleTitle: {
+    wordBreak: "break-word",
+  },
   articleContent: {
     fontSize: "18px",
     minHeight: "30px",
     whiteSpace: "pre-wrap",
+    wordBreak: "break-word",
   },
   auth: {
     clear: "both",
