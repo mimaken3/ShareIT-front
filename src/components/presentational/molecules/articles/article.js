@@ -17,6 +17,8 @@ import { ScrollTo } from "react-scroll-to";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import { deleteUnlikeArticleEvent } from "Actions/article";
 import { connect } from "react-redux";
+import Avatar from "@material-ui/core/Avatar";
+import UserIcon from "Atoms/user_icon";
 
 class Article extends Component {
   constructor(props) {
@@ -105,6 +107,11 @@ class Article extends Component {
                 }}
               >
                 <CardHeader
+                  avatar={
+                    <Avatar aria-label="recipe">
+                      <UserIcon iconData={this.props.article.icon_name} />
+                    </Avatar>
+                  }
                   titleTypographyProps={{ variant: "h6" }}
                   title={
                     <div className={this.props.classes.articleTitle}>
