@@ -158,6 +158,7 @@ const styles = (theme) => ({
     WebkitBoxOrient: "vertical",
     overflow: "hidden",
     textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
   },
   // 記事の内容の文字列を...で省略
   content: {
