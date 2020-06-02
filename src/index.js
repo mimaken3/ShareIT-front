@@ -80,35 +80,27 @@ class App extends Component {
                   <Auth>
                     <Switch>
                       <Route exact path="/" component={ArticlesIndex} />
+                      <Route exact path="/users/:userId" component={UserShow} />
+                      <Route exact path="/users" component={UsersIndex} />
                       <Route
                         exact
-                        path="/api/users/:userId"
-                        component={UserShow}
-                      />
-                      <Route exact path="/api/users" component={UsersIndex} />
-                      <Route
-                        exact
-                        path="/api/users/:userId/article"
+                        path="/users/:userId/article"
                         component={ArticleNew}
                       />
+                      <Route exact path="/articles" component={ArticlesIndex} />
                       <Route
                         exact
-                        path="/api/articles"
-                        component={ArticlesIndex}
-                      />
-                      <Route
-                        exact
-                        path="/api/articles/:articleId"
+                        path="/articles/:articleId"
                         component={ArticleShow}
                       />
                       <Route
                         exact
-                        path="/api/articles/:articleId/edit"
+                        path="/articles/:articleId/edit"
                         component={ArticleUpdate}
                       />
                       <Route
                         exact
-                        path="/api/users/:userId/edit"
+                        path="/users/:userId/edit"
                         component={UserUpdateShow}
                       />
                       <Route path="*" component={NotFoundPage} />

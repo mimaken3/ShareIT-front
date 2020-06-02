@@ -17,6 +17,8 @@ import { ScrollTo } from "react-scroll-to";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import { deleteUnlikeArticleEvent } from "Actions/article";
 import { connect } from "react-redux";
+import Avatar from "@material-ui/core/Avatar";
+import UserIcon from "Atoms/user_icon";
 
 class Article extends Component {
   constructor(props) {
@@ -25,7 +27,7 @@ class Article extends Component {
   }
 
   handleEvent() {
-    this.props.history.push("/api/articles/" + this.props.article.article_id);
+    this.props.history.push("/articles/" + this.props.article.article_id);
   }
 
   unLikeEvent() {
@@ -36,19 +38,19 @@ class Article extends Component {
   render() {
     const theme = createMuiTheme({
       overrides: {
-        // 記事のタイトル文字列を...で省略
+        // 記事のタイトルを太くする
         MuiTypography: {
           displayBlock: {
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-            WebkitLineClamp: 1,
-            overflow: "hidden",
             fontWeight: "bold",
           },
         },
         MuiCardHeader: {
           root: {
             padding: "16px 16px 5px",
+          },
+          content: {
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           },
         },
         MuiCardActions: {
@@ -71,7 +73,7 @@ class Article extends Component {
     const loginUserID = loginUser.userID;
 
     let LikeCom;
-    if (this.props.history.location.pathname === "/api/users/" + loginUserID) {
+    if (this.props.history.location.pathname === "/users/" + loginUserID) {
       LikeCom = (
         <Like
           articleID={this.props.article.article_id}
@@ -105,8 +107,17 @@ class Article extends Component {
                 }}
               >
                 <CardHeader
+                  avatar={
+                    <Avatar aria-label="recipe">
+                      <UserIcon iconData={this.props.article.icon_name} />
+                    </Avatar>
+                  }
                   titleTypographyProps={{ variant: "h6" }}
-                  title={this.props.article.article_title}
+                  title={
+                    <div className={this.props.classes.articleTitle}>
+                      {this.props.article.article_title}
+                    </div>
+                  }
                   subheader={
                     <CreatedDate
                       createdDate={this.props.article.created_date}
@@ -141,6 +152,12 @@ const styles = (theme) => ({
   },
   cardContent: {
     fontSize: "18px",
+  },
+  // 記事のタイトルを... で省略
+  articleTitle: {
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
   // 記事の内容の文字列を...で省略
   content: {

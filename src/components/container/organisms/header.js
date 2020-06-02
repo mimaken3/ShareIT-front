@@ -137,7 +137,7 @@ const Header = withRouter((props) => {
                   onClick={() => {
                     if (
                       props.history.location.pathname !==
-                      "/api/users/" + loginUser.userID
+                      "/users/" + loginUser.userID
                     ) {
                       scroll({ x: 0, y: 0 });
                     }
@@ -180,7 +180,7 @@ const Header = withRouter((props) => {
                     onClick={() => {
                       if (
                         props.history.location.pathname !==
-                        "/api/users/" + loginUser.userID
+                        "/users/" + loginUser.userID
                       ) {
                         scroll({ x: 0, y: 0 });
                       }
@@ -278,7 +278,7 @@ const Header = withRouter((props) => {
   // ユーザ詳細画面へ
   function toUserShowPage(loginUserID) {
     handleMobileMenuClose();
-    if (props.history.location.pathname === "/api/users/" + loginUserID) {
+    if (props.history.location.pathname === "/users/" + loginUserID) {
       window.location.reload(false);
     } else {
       props.emptyArticles();
@@ -286,7 +286,7 @@ const Header = withRouter((props) => {
       props.emptyUsers();
       props.getUserDetail(loginUserID);
 
-      props.history.push("/api/users/" + loginUserID);
+      props.history.push("/users/" + loginUserID);
     }
   }
 

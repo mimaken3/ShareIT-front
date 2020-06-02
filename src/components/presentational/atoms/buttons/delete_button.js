@@ -37,7 +37,7 @@ class DeleteButton extends Component {
       // 記事を削除
       const articleID = this.props.sendObj.articleID;
       this.props.deleteEvent(articleID).then(() => {
-        this.props.history.push("/api/articles");
+        this.props.history.push("/articles");
       });
     }
   }

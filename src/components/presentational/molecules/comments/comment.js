@@ -20,7 +20,7 @@ class Comment extends Component {
   }
 
   toUserShowPage(userID) {
-    this.props.history.push("/api/users/" + userID);
+    this.props.history.push("/users/" + userID);
   }
 
   editComment() {

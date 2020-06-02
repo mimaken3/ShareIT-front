@@ -74,7 +74,7 @@ class UserUpdateShow extends Component {
     await this.props.putUserEvent(user, iconImage);
 
     // 更新ボタンを押した後に遷移するURL
-    this.props.history.push("/api/users/" + this.props.user.user_id);
+    this.props.history.push("/users/" + this.props.user.user_id);
   }
 
   // プロフィールの入力チェック
@@ -115,7 +115,7 @@ class UserUpdateShow extends Component {
         const sendObj = { user: this.props.user };
 
         // 戻る先のURL
-        const backURL = "/api/users/" + this.props.user.user_id;
+        const backURL = "/users/" + this.props.user.user_id;
 
         const theme = createMuiTheme({
           palette: {
@@ -182,7 +182,7 @@ class UserUpdateShow extends Component {
               <div className={this.props.classes.stopFloat}></div>
 
               <div>
-                <span>作成日 </span>
+                <span>作成日時 </span>
                 <CreatedDate createdDate={this.props.user.created_date} />
               </div>
 

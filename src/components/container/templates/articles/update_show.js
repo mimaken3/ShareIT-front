@@ -121,7 +121,7 @@ class ArticleUpdate extends Component {
 
     await this.props.putEvent(article);
     // 更新ボタンを押したとに表示するPATH
-    this.props.history.push("/api/articles/" + this.props.article.article_id);
+    this.props.history.push("/articles/" + this.props.article.article_id);
   }
 
   render() {
@@ -176,7 +176,7 @@ class ArticleUpdate extends Component {
 
           const sendObjArticleID = { articleID: this.props.article.article_id };
 
-          const backURL = "/api/articles/" + this.props.article.article_id;
+          const backURL = "/articles/" + this.props.article.article_id;
 
           return (
             <ThemeProvider theme={theme}>
@@ -235,7 +235,7 @@ class ArticleUpdate extends Component {
                 </div>
 
                 <div style={{ marginTop: "20px", marginLeft: "8px" }}>
-                  <span>作成日 </span>
+                  <span>作成日時 </span>
                   <CreatedDate createdDate={this.props.article.created_date} />
                 </div>
 
