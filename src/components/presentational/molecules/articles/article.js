@@ -36,19 +36,19 @@ class Article extends Component {
   render() {
     const theme = createMuiTheme({
       overrides: {
-        // 記事のタイトル文字列を...で省略
+        // 記事のタイトルを太くする
         MuiTypography: {
           displayBlock: {
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-            WebkitLineClamp: 1,
-            overflow: "hidden",
             fontWeight: "bold",
           },
         },
         MuiCardHeader: {
           root: {
             padding: "16px 16px 5px",
+          },
+          content: {
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           },
         },
         MuiCardActions: {
@@ -106,7 +106,11 @@ class Article extends Component {
               >
                 <CardHeader
                   titleTypographyProps={{ variant: "h6" }}
-                  title={this.props.article.article_title}
+                  title={
+                    <div className={this.props.classes.articleTitle}>
+                      {this.props.article.article_title}
+                    </div>
+                  }
                   subheader={
                     <CreatedDate
                       createdDate={this.props.article.created_date}
@@ -141,6 +145,12 @@ const styles = (theme) => ({
   },
   cardContent: {
     fontSize: "18px",
+  },
+  // 記事のタイトルを... で省略
+  articleTitle: {
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
   // 記事の内容の文字列を...で省略
   content: {
