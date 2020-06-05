@@ -1,0 +1,180 @@
+import React from "react";
+import Button from "@material-ui/core/Button";
+import UserIcon from "Atoms/user_icon";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import { withRouter } from "react-router";
+import { connect } from "react-redux";
+import { reduxForm } from "redux-form";
+import { emptyLikedArticles, getArticleDetail } from "Actions/article";
+import { getUserDetail } from "Actions/user";
+import { getAllNotifications, changeNonReadToRead } from "Actions/notification";
+import AgoCreatedDate from "Atoms/ago_created_date";
+
+// 通知一覧に表示する通知
+const Notification = withRouter((props) => {
+  let destinationPath;
+  if (props.notification.destination_type_id === 1) {
+    // 記事にいいね => 記事詳細画面へ
+    destinationPath =
+      "/articles/" + props.notification.destination_type_name_id;
+  } else if (props.notification.destination_type_id === 2) {
+    // 記事にコメント => 記事詳細画面へ
+    destinationPath =
+      "/articles/" + props.notification.destination_type_name_id;
+  }
+
+  // 通知元の画面へ
+  function toSomethingPage() {
+    // 未読だったら既読にする
+    if (props.notification.is_read === 0) {
+      props.changeNonReadToRead(props.notification);
+    }
+
+    if (props.history.location.pathname === destinationPath) {
+      // 今いるページと通知元が同じだった場合
+      window.location.reload(false);
+    } else {
+      if (props.notification.destination_type_id === 1) {
+        // 記事にいいね => 記事詳細画面へ
+        props.getArticleDetail(props.notification.destination_type_name_id);
+      } else if (props.notification.destination_type_id === 2) {
+        // 記事にコメント => 記事詳細画面へ
+        props.getArticleDetail(props.notification.destination_type_name_id);
+      }
+
+      props.history.push(destinationPath);
+    }
+  }
+
+  let behavior;
+  if (props.notification.behavior_type_id === 1) {
+    behavior = (
+      <React.Fragment>
+        <div style={{ float: "left" }}>
+          {props.notification.source_user_name}さん
+        </div>
+        <div style={{ float: "left" }}>がいいねしました</div>
+      </React.Fragment>
+    );
+  } else if (props.notification.behavior_type_id === 2) {
+    behavior = (
+      <React.Fragment>
+        <div style={{ float: "left" }}>
+          {props.notification.source_user_name}さん
+        </div>
+        <div style={{ float: "left" }}>がコメントしました</div>
+      </React.Fragment>
+    );
+  }
+
+  let _notification;
+  if (props.notification.is_read) {
+    // 既読
+    _notification = (
+      <React.Fragment>
+        <Button
+          onClick={() => {
+            props.handleNotificationMenuClose();
+            toSomethingPage();
+          }}
+        >
+          <div
+            style={{
+              width: "30px",
+              height: "30px",
+              float: "left",
+              marginRight: "10px",
+            }}
+          >
+            <UserIcon
+              iconData={props.notification.source_user_icon_name}
+              iconStyle={{
+                width: "30px",
+                height: "30px",
+              }}
+            />
+          </div>
+          <div style={{ float: "left", maxWidth: "82%" }}>
+            <div style={{ fontSize: "12px", float: "left" }}>
+              <AgoCreatedDate date={props.notification.created_date} />
+            </div>
+            <div style={{ float: "left", clear: "both" }}>{behavior}</div>
+          </div>
+        </Button>
+      </React.Fragment>
+    );
+  } else {
+    // 未読
+    _notification = (
+      <React.Fragment>
+        <div style={{ backgroundColor: "#EEFFFF" }}>
+          <Button
+            onClick={() => {
+              props.handleNotificationMenuClose();
+              toSomethingPage();
+            }}
+          >
+            <div
+              style={{
+                width: "30px",
+                height: "30px",
+                float: "left",
+                marginRight: "10px",
+              }}
+            >
+              <UserIcon
+                iconData={props.notification.source_user_icon_name}
+                iconStyle={{
+                  width: "30px",
+                  height: "30px",
+                }}
+              />
+            </div>
+
+            <div style={{ float: "left", maxWidth: "82%" }}>
+              <div style={{ fontSize: "12px", float: "left" }}>
+                <AgoCreatedDate date={props.notification.created_date} />
+              </div>
+              <div style={{ float: "left", clear: "both" }}>{behavior}</div>
+            </div>
+          </Button>
+        </div>
+      </React.Fragment>
+    );
+  }
+
+  const theme = createMuiTheme({
+    overrides: {
+      MuiButton: {
+        root: {
+          textTransform: "none", // 大文字になるのを防ぐ
+          width: "100%", // ボタンの反応する幅を横幅マックス
+        },
+        // 通知の文字を左寄せ && 画像を上下中央
+        label: {
+          justifyContent: "left",
+          display: "flex",
+          alignItems: "center",
+        },
+      },
+    },
+  });
+
+  return <ThemeProvider theme={theme}>{_notification}</ThemeProvider>;
+});
+
+const mapDispatchToProps = {
+  emptyLikedArticles,
+  getUserDetail,
+  getAllNotifications,
+  getArticleDetail,
+  changeNonReadToRead,
+};
+
+const mapStateToProps = "";
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(reduxForm({ form: "NotificationForm" })(Notification));
