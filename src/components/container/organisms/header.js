@@ -25,7 +25,6 @@ import ShareIT from "Atoms/buttons/share_it";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import Badge from "@material-ui/core/Badge";
 import NotificationMenu from "Atoms/header/notification_menu";
-import _ from "lodash";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -140,7 +139,6 @@ const Header = withRouter((props) => {
     setNotificationMenu(null);
   };
 
-  // const loginUser = getLoginUserInfo();
   var Display;
   if (loginUser !== null) {
     // ログイン状態

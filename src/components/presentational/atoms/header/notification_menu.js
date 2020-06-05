@@ -25,7 +25,7 @@ const NotificationMenu = (props) => {
       MuiPopover: {
         paper: {
           maxWidth: "calc(100% - 132px)",
-          minWidth: "180px", // 「通知はありません」を１行で表示できる幅
+          minWidth: "280px", // 「通知はありません」を１行で表示できる幅 && いい感じの幅
         },
       },
     },
@@ -36,7 +36,10 @@ const NotificationMenu = (props) => {
       <ThemeProvider theme={theme}>
         <Menu
           anchorEl={props.notificationMoreAnchorEl} // anchorEl: 表示させるメニューをどこに表示させるか
-          anchorOrigin={{ vertical: "top", horizontal: "right" }} // メニューを表示する位置を指定
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }} // メニューを表示する位置を指定
           keepMounted
           transformOrigin={{ vertical: "top", horizontal: "right" }}
           open={props.isNotificationMenuOpen}
@@ -44,17 +47,20 @@ const NotificationMenu = (props) => {
         >
           <div
             style={{
-              paddingLeft: "20px",
-              paddingRight: "20px",
-              paddingTop: "10px",
-              paddingBottom: "30px",
+              width: "140px",
+              marginTop: "30px",
+              marginBottom: "30px",
+              marginLeft: "auto",
+              marginRight: "auto",
             }}
           >
             <div>
-              <div style={{ float: "left" }}>
+              <div style={{ display: "table-cell", verticalAlign: "middle" }}>
                 <NotificationsIcon />
               </div>
-              <h4>通知はありません</h4>
+              <h4 style={{ display: "table-cell", verticalAlign: "middle" }}>
+                通知はありません
+              </h4>
             </div>
           </div>
         </Menu>
