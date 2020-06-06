@@ -8,6 +8,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 
 const NotificationMenu = (props) => {
+  console.log(props.notificationMoreAnchorEl);
   const theme = createMuiTheme({
     overrides: {
       MuiList: {
@@ -28,6 +29,11 @@ const NotificationMenu = (props) => {
           minWidth: "280px", // 「通知はありません」を１行で表示できる幅 && いい感じの幅
         },
       },
+      //   MuiPaper: {
+      //     root: {
+      //       top: "180px",
+      //     },
+      //   },
     },
   });
 
@@ -88,6 +94,12 @@ const NotificationMenu = (props) => {
           transformOrigin={{ vertical: "top", horizontal: "right" }}
           open={props.isNotificationMenuOpen}
           onClose={props.handleNotificationMenuClose}
+          getContentAnchorEl={null} // スクロールしても再度開いたとき、上に固定
+          PaperProps={{
+            style: {
+              width: "20ch", // いい感じの幅に
+            },
+          }}
         >
           <div
             style={{
