@@ -29,11 +29,6 @@ const NotificationMenu = (props) => {
           minWidth: "280px", // 「通知はありません」を１行で表示できる幅 && いい感じの幅
         },
       },
-      //   MuiPaper: {
-      //     root: {
-      //       top: "180px",
-      //     },
-      //   },
     },
   });
 
