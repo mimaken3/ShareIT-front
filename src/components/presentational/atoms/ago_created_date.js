@@ -27,7 +27,12 @@ const AgoCreatedDate = (props) => {
   } else if ((nowDate - createdDate) / minute > 1) {
     display = Math.floor((nowDate - createdDate) / minute) + "分前";
   } else if ((nowDate - createdDate) / second > 1) {
-    display = Math.floor((nowDate - createdDate) / second) + "秒前";
+    const timeSecond = Math.floor((nowDate - createdDate) / second);
+    if (timeSecond === 0) {
+      display = "たった今";
+    } else {
+      display = timeSecond + "秒前";
+    }
   }
 
   return <React.Fragment>{display}</React.Fragment>;
