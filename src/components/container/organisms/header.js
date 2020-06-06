@@ -248,7 +248,11 @@ const Header = withRouter((props) => {
               aria-haspopup="true"
               onClick={handleNotificationMenuOpen}
             >
-              <Badge badgeContent={notificationCount} color="secondary">
+              <Badge
+                badgeContent={notificationCount}
+                color="secondary"
+                max={99}
+              >
                 <NotificationsIcon />
               </Badge>
             </IconButton>
