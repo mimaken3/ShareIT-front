@@ -6,9 +6,40 @@ import Notification from "Atoms/header/notification";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import NotificationsIcon from "@material-ui/icons/Notifications";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  // 通知なし
+  nonNotificationBox: {
+    width: "140px",
+    marginTop: "30px",
+    marginBottom: "30px",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  nonNotificationsIcon: {
+    display: "table-cell",
+    verticalAlign: "middle",
+  },
+  nonNotificationText: {
+    display: "table-cell",
+    verticalAlign: "middle",
+  },
+  // 通知あり
+  notificationBox: {
+    height: "50px",
+    display: "flex",
+    justifyContent: "left",
+    alignItems: "center",
+    marginLeft: "10px",
+  },
+  notificationText: {
+    marginLeft: "5px",
+  },
+}));
 
 const NotificationMenu = (props) => {
-  console.log(props.notificationMoreAnchorEl);
+  const classes = useStyles();
   const theme = createMuiTheme({
     overrides: {
       MuiList: {
@@ -46,22 +77,12 @@ const NotificationMenu = (props) => {
           open={props.isNotificationMenuOpen}
           onClose={props.handleNotificationMenuClose}
         >
-          <div
-            style={{
-              width: "140px",
-              marginTop: "30px",
-              marginBottom: "30px",
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
+          <div className={classes.nonNotificationBox}>
             <div>
-              <div style={{ display: "table-cell", verticalAlign: "middle" }}>
+              <div className={classes.nonNotificationsIcon}>
                 <NotificationsIcon />
               </div>
-              <h4 style={{ display: "table-cell", verticalAlign: "middle" }}>
-                通知はありません
-              </h4>
+              <h4 className={classes.nonNotificationText}>通知はありません</h4>
             </div>
           </div>
         </Menu>
@@ -96,17 +117,9 @@ const NotificationMenu = (props) => {
             },
           }}
         >
-          <div
-            style={{
-              height: "50px",
-              display: "flex",
-              justifyContent: "left",
-              alignItems: "center",
-              marginLeft: "10px",
-            }}
-          >
+          <div className={classes.notificationBox}>
             <NotificationsIcon />
-            <h3 style={{ marginLeft: "5px" }}>通知</h3>
+            <h3 className={classes.notificationText}>通知</h3>
           </div>
           <div>{renderNotifications}</div>
         </Menu>

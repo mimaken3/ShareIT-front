@@ -10,9 +10,38 @@ import { emptyLikedArticles, getArticleDetail } from "Actions/article";
 import { getUserDetail } from "Actions/user";
 import { getAllNotifications, changeNonReadToRead } from "Actions/notification";
 import AgoCreatedDate from "Atoms/ago_created_date";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  sourceUserName: {
+    float: "left",
+  },
+  behavior: {
+    float: "left",
+  },
+  sourceUserIcon: {
+    width: "30px",
+    height: "30px",
+    float: "left",
+    marginRight: "10px",
+  },
+  sourceUserBox: {
+    float: "left",
+    maxWidth: "82%",
+  },
+  createdDate: {
+    fontSize: "12px",
+    float: "left",
+  },
+  divBehavior: {
+    float: "left",
+    clear: "both",
+  },
+}));
 
 // 通知一覧に表示する通知
 const Notification = withRouter((props) => {
+  const classes = useStyles();
   let destinationPath;
   if (props.notification.destination_type_id === 1) {
     // 記事にいいね => 記事詳細画面へ
@@ -51,19 +80,19 @@ const Notification = withRouter((props) => {
   if (props.notification.behavior_type_id === 1) {
     behavior = (
       <React.Fragment>
-        <div style={{ float: "left" }}>
+        <div className={classes.sourceUserName}>
           {props.notification.source_user_name}さん
         </div>
-        <div style={{ float: "left" }}>がいいねしました</div>
+        <div className={classes.behavior}>がいいねしました</div>
       </React.Fragment>
     );
   } else if (props.notification.behavior_type_id === 2) {
     behavior = (
       <React.Fragment>
-        <div style={{ float: "left" }}>
+        <div className={classes.sourceUserName}>
           {props.notification.source_user_name}さん
         </div>
-        <div style={{ float: "left" }}>がコメントしました</div>
+        <div className={classes.behavior}>がコメントしました</div>
       </React.Fragment>
     );
   }
@@ -79,14 +108,7 @@ const Notification = withRouter((props) => {
             toSomethingPage();
           }}
         >
-          <div
-            style={{
-              width: "30px",
-              height: "30px",
-              float: "left",
-              marginRight: "10px",
-            }}
-          >
+          <div className={classes.sourceUserIcon}>
             <UserIcon
               iconData={props.notification.source_user_icon_name}
               iconStyle={{
@@ -95,11 +117,11 @@ const Notification = withRouter((props) => {
               }}
             />
           </div>
-          <div style={{ float: "left", maxWidth: "82%" }}>
-            <div style={{ fontSize: "12px", float: "left" }}>
+          <div className={classes.sourceUserBox}>
+            <div className={classes.createdDate}>
               <AgoCreatedDate date={props.notification.created_date} />
             </div>
-            <div style={{ float: "left", clear: "both" }}>{behavior}</div>
+            <div className={classes.divBehavior}>{behavior}</div>
           </div>
         </Button>
       </React.Fragment>
@@ -115,14 +137,7 @@ const Notification = withRouter((props) => {
               toSomethingPage();
             }}
           >
-            <div
-              style={{
-                width: "30px",
-                height: "30px",
-                float: "left",
-                marginRight: "10px",
-              }}
-            >
+            <div className={classes.sourceUserIcon}>
               <UserIcon
                 iconData={props.notification.source_user_icon_name}
                 iconStyle={{
@@ -132,11 +147,11 @@ const Notification = withRouter((props) => {
               />
             </div>
 
-            <div style={{ float: "left", maxWidth: "82%" }}>
-              <div style={{ fontSize: "12px", float: "left" }}>
+            <div className={classes.sourceUserBox}>
+              <div className={classes.createdDate}>
                 <AgoCreatedDate date={props.notification.created_date} />
               </div>
-              <div style={{ float: "left", clear: "both" }}>{behavior}</div>
+              <div className={classes.divBehavior}>{behavior}</div>
             </div>
           </Button>
         </div>
