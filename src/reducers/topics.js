@@ -1,6 +1,4 @@
 import { GET_ALL_TOPICS } from "Actions/topic";
-// 配列のデータを編集するのが得意なパッケージ
-// import _ from "lodash";
 
 // reducers/index.jsに渡すためのexport
 // reducerは関数として定義(引数は2つ)
@@ -11,6 +9,7 @@ export default (topics = {}, action) => {
     case GET_ALL_TOPICS:
       // return _.mapKeys(action.response.data, "topic_id");
       return action.response.data;
+
     default:
       return topics;
   }

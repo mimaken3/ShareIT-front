@@ -25,6 +25,7 @@ import ShareIT from "Atoms/buttons/share_it";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import Badge from "@material-ui/core/Badge";
 import NotificationMenu from "Atoms/header/notification_menu";
+import ToTopicManagementButton from "Atoms/buttons/to_topic_management";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -188,6 +189,10 @@ const Header = withRouter((props) => {
           <ToAllArticlesButton handleMobileMenuClose={handleMobileMenuClose} />
 
           <ToAllUsersButton handleMobileMenuClose={handleMobileMenuClose} />
+
+          <ToTopicManagementButton
+            handleMobileMenuClose={handleMobileMenuClose}
+          />
 
           <Logout
             fontColor="black"

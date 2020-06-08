@@ -7,6 +7,7 @@ import auth from "./auth";
 import selectUser from "./select_user";
 import likeArticles from "./like_articles";
 import notifications from "./notifications";
+import topicManagement from "./topic_management";
 import { reducer as form } from "redux-form";
 
 const appReducer = combineReducers({
@@ -19,6 +20,7 @@ const appReducer = combineReducers({
   selectUser,
   likeArticles,
   notifications,
+  topicManagement,
 });
 
 const rootReducer = (state, action) => {

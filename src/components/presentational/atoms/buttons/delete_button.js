@@ -39,6 +39,8 @@ class DeleteButton extends Component {
       this.props.deleteEvent(articleID).then(() => {
         this.props.history.push("/articles");
       });
+    } else if (this.props.param === "topic") {
+      // トピックを削除
     }
   }
 
@@ -60,6 +62,8 @@ class DeleteButton extends Component {
       param = "ユーザ";
     } else if (this.props.param === "article") {
       param = "記事";
+    } else if (this.props.param === "topic") {
+      param = "トピック";
     }
     return (
       <div>
