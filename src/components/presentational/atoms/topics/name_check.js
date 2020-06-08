@@ -1,25 +1,25 @@
 import React from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  duplicationMessage: {
+    color: "red",
+  },
+  duplicatedTopicName: {
+    marginLeft: "4px",
+  },
+  duplicationOkayCircle: {
+    color: "#00EE00",
+  },
+}));
 
 // トピック名の重複チェックの結果
 const ResultTopicNameDuplicationCheck = (props) => {
   const { isDuplicated, message, checkLoading } = props;
-  //   if (props.result !== 2) {
-  //     if (props.result === 1) {
-  //       // 重複していた場合
-  //       return (
-  //         <div style={{ color: "red" }}>このユーザ名は既に使われています...</div>
-  //       );
-  //     } else if (props.result === 0) {
-  //       // 重複していなかった場合
-  //       return (
-  //         <div style={{ color: "#00EE00" }}>
-  //           <CheckCircleOutlineIcon />
-  //         </div>
-  //       );
-  //     }
-  //   } else {
+  const classes = useStyles();
+
   if (checkLoading) {
     return (
       <React.Fragment>
@@ -36,20 +36,21 @@ const ResultTopicNameDuplicationCheck = (props) => {
     if (isDuplicated) {
       return (
         <>
-          <span style={{ color: "red" }}>次の名前で重複してます</span>
-          <span style={{ marginLeft: "4px" }}>{message}</span>
+          <span className={classes.duplicationMessage}>
+            次の名前で重複してます
+          </span>
+          <span className={classes.duplicatedTopicName}>{message}</span>
         </>
       );
     } else {
       // 重複していなかった場合
       return (
-        <div style={{ color: "#00EE00" }}>
+        <div className={classes.duplicationOkayCircle}>
           <CheckCircleOutlineIcon />
         </div>
       );
     }
   }
 };
-// };
 
 export default ResultTopicNameDuplicationCheck;
