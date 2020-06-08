@@ -56,18 +56,22 @@ class TopicsIndex extends Component {
     });
 
     const topic = e.target.value;
-    if (topic === "") {
+
+    if (!topic.match(/\S/g)) {
+      // \S は空白以外の文字
+      // 空、もしくはスペースのみ
       this.setState({ isInputTopicNameEmpty: true, inputTopicName: topic });
-    } else if (topic.match(/\S/g) && topic.length >= 30) {
-      this.setState({
-        inputTopicName: topic,
-        topicNameError: "トピック名は30文字以内です",
-      });
-    } else {
+    } else if (topic.match(/\S/g) && topic.length <= 30) {
+      // 空白以外の文字が含まれる かつ 30文字以内
       this.setState({ topicNameError: "" });
       // トピック名の重複チェック
       this.setState({ inputTopicName: topic }, () => {
         this.topicNameDuplicationCheck();
+      });
+    } else if (topic.length > 30) {
+      this.setState({
+        inputTopicName: topic,
+        topicNameError: "トピック名は30文字以内です",
       });
     }
   }
@@ -174,7 +178,13 @@ class TopicsIndex extends Component {
         let topicNameResult;
         if (this.state.topicNameTouched && !this.state.isInputTopicNameEmpty) {
           if (this.state.topicNameError) {
-            topicNameResult = <>{this.state.topicNameError}</>;
+            topicNameResult = (
+              <>
+                <span style={{ color: "red" }}>
+                  {this.state.topicNameError}
+                </span>
+              </>
+            );
           } else {
             topicNameResult = (
               <div>
@@ -214,6 +224,9 @@ class TopicsIndex extends Component {
               >
                 作成
               </Button>
+              <span style={{ marginRight: "5px", float: "right" }}>
+                <Count text={this.state.inputTopicName} param="topic" />
+              </span>
             </form>
             {topicNameResult}
           </>

@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
 // 入力された文字数表示
 const Count = (props) => {
   const classes = useStyles();
+
   let Count;
   if (props.param === "profile") {
     // ユーザのプロフィール
@@ -62,6 +63,20 @@ const Count = (props) => {
     } else {
       Count = Count = (
         <div className={classes.box}>{props.text.length}/999 文字</div>
+      );
+    }
+  } else if (props.param === "topic") {
+    // トピック名
+    if (props.text.length > 30) {
+      Count = (
+        <div className={classes.box}>
+          <span className={classes.errCount}>{props.text.length}</span>
+          /30 文字
+        </div>
+      );
+    } else {
+      Count = Count = (
+        <div className={classes.box}>{props.text.length}/30 文字</div>
       );
     }
   }
