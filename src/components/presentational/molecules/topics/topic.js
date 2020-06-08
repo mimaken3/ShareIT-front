@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
   editButton: {
     float: "right",
   },
+  topicName: {
+    wordBreak: "break-word",
+  },
 }));
 
 // トピック管理のトピック
@@ -28,7 +31,9 @@ const Topic = (props) => {
   return (
     <React.Fragment>
       <TableCell align="right">{topicID}</TableCell>
-      <TableCell align="left">{topicName}</TableCell>
+      <TableCell align="left">
+        <span className={classes.topicName}>{topicName}</span>
+      </TableCell>
       <TableCell align="left">{createdDate}</TableCell>
       <TableCell align="left">{updatedDateRender}</TableCell>
       <TableCell align="right">
