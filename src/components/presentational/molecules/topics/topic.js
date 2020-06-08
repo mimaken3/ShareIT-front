@@ -20,12 +20,17 @@ const Topic = (props) => {
   const { topicID, topicName, createdDate, updatedDate } = props;
   const classes = useStyles();
 
+  let updatedDateRender;
+  if (createdDate !== updatedDate) {
+    updatedDateRender = <span>{updatedDate}</span>;
+  }
+
   return (
     <React.Fragment>
       <TableCell align="right">{topicID}</TableCell>
       <TableCell align="left">{topicName}</TableCell>
       <TableCell align="left">{createdDate}</TableCell>
-      <TableCell align="left">{updatedDate}</TableCell>
+      <TableCell align="left">{updatedDateRender}</TableCell>
       <TableCell align="right">
         <div className={classes.deleteButton}>
           <DeleteButton param="topic" />

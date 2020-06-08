@@ -28,7 +28,7 @@ const ResultTopicNameDuplicationCheck = (props) => {
           disableShrink
           size={18}
           thickness={4}
-          style={{ color: "grey" }}
+          style={{ color: "grey", marginTop: "2px" }}
         />
       </React.Fragment>
     );
@@ -37,9 +37,9 @@ const ResultTopicNameDuplicationCheck = (props) => {
       return (
         <>
           <span className={classes.duplicationMessage}>
-            次の名前で重複してます
+            既に次の名前で登録されてます
           </span>
-          <span className={classes.duplicatedTopicName}>{message}</span>
+          <span className={classes.duplicatedTopicName}>「{message}」</span>
         </>
       );
     } else {
