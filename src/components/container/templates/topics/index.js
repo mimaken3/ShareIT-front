@@ -8,26 +8,16 @@ import ScrollToTopOnMount from "Atoms/scroll_to_top_on_mount";
 import UnauthorizedPage from "Atoms/unauthorized_page";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import { getTopicsByUserID, postTopic } from "Actions/topic";
-import _ from "lodash";
 import Button from "@material-ui/core/Button";
-import EditIcon from "@material-ui/icons/Edit";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import DeleteButton from "Atoms/buttons/delete_button";
 import SendIcon from "@material-ui/icons/Send";
 import Count from "Atoms/count";
-import UserIcon from "Atoms/user_icon";
 import TextField from "@material-ui/core/TextField";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import axios from "axios";
 import env from "env";
 import ResultTopicNameDuplicationCheck from "Atoms/topics/name_check";
+import TopicTable from "Organisms/topics/table";
 
 const ROOT_URL = env.ROOT_URL;
 
@@ -94,7 +84,6 @@ class TopicsIndex extends Component {
     }
 
     const loginUserInfo = getLoginUserInfo();
-
     axios
       .post(
         `${ROOT_URL}/api/topics/check`,
@@ -231,6 +220,7 @@ class TopicsIndex extends Component {
         );
 
         if (this.props.isEmpty) {
+          // 管理するトピックがない場合
           return (
             <ThemeProvider theme={theme}>
               <CssBaseline />
@@ -241,51 +231,12 @@ class TopicsIndex extends Component {
             </ThemeProvider>
           );
         } else {
-          let renderTopics = _.map(this.props.topics, (topic) => (
-            <TableRow key={topic.topic_id}>
-              <TableCell align="right">{topic.topic_id}</TableCell>
-              <TableCell align="left">{topic.topic_name}</TableCell>
-              <TableCell align="left">{topic.created_date}</TableCell>
-              <TableCell align="left">{topic.updated_date}</TableCell>
-              <TableCell align="right">
-                <div style={{ float: "right", marginLeft: "5px" }}>
-                  <DeleteButton param="topic" />
-                </div>
-                <div style={{ float: "right" }}>
-                  <Button variant="outlined" startIcon={<EditIcon />}>
-                    編集
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
-          ));
-
           return (
             <ThemeProvider theme={theme}>
               {/* <Container component="main" maxWidth="sm"> */}
               <CssBaseline />
               <div style={{ marginTop: "10px" }}>
-                <TableContainer component={Paper}>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell style={{ width: "50px" }}>ID</TableCell>
-                        <TableCell align="left" style={{ width: "150px" }}>
-                          トピック名
-                        </TableCell>
-                        <TableCell align="left" style={{ width: "200px" }}>
-                          作成日時
-                        </TableCell>
-                        <TableCell align="left" style={{ width: "200px" }}>
-                          最終更新日時
-                        </TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                    </TableHead>
-
-                    <TableBody>{renderTopics}</TableBody>
-                  </Table>
-                </TableContainer>
+                <TopicTable topics={this.props.topics} />
               </div>
               <div style={{ marginTop: "30px" }}>{createTopic}</div>
               {/* </Container> */}
