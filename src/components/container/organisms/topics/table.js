@@ -23,6 +23,7 @@ const TopicTable = (props) => {
       />
     </TableRow>
   ));
+
   return (
     <>
       <TableContainer component={Paper}>

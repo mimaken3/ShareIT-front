@@ -4,6 +4,7 @@ import getLoginUserInfo from "Modules/getLoginUserInfo";
 export const GET_ALL_TOPICS = "GET_ALL_TOPICS_EVENT";
 export const GET_TOPICS_BY_USER_ID = "GET_TOPICS_BY_USER_ID";
 export const CREATE_TOPIC_EVENT = "CREATE_TOPIC_EVENT";
+export const UPDATE_TOPIC_NAME = "UPDATE_TOPIC_NAME";
 const ROOT_URL = env.ROOT_URL;
 
 // 全トピックを取得
@@ -32,4 +33,17 @@ export const getTopicsByUserID = (userID) => async (dispatch) => {
     loginUserInfo.sendConfig
   );
   dispatch({ type: GET_TOPICS_BY_USER_ID, response });
+};
+
+// トピック名を更新
+export const updateTopicName = (topicObj) => async (dispatch) => {
+  const loginUserInfo = getLoginUserInfo();
+
+  const response = await axios.put(
+    `${ROOT_URL}/api/topics/${topicObj.topic_id}`,
+    topicObj,
+    loginUserInfo.sendConfig
+  );
+
+  dispatch({ type: UPDATE_TOPIC_NAME, response });
 };

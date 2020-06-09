@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 // トピック名の重複チェックの結果
 const ResultTopicNameDuplicationCheck = (props) => {
-  const { isDuplicated, message, checkLoading } = props;
+  const { isDuplicated, message, checkLoading, styles } = props;
   const classes = useStyles();
 
   if (checkLoading) {
@@ -36,7 +36,7 @@ const ResultTopicNameDuplicationCheck = (props) => {
     if (isDuplicated) {
       return (
         <>
-          <span className={classes.duplicationMessage}>
+          <span className={classes.duplicationMessage} style={{ ...styles }}>
             既に次の名前で登録されてます
           </span>
           <span className={classes.duplicatedTopicName}>「{message}」</span>

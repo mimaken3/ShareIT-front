@@ -1,4 +1,8 @@
-import { GET_TOPICS_BY_USER_ID, CREATE_TOPIC_EVENT } from "Actions/topic";
+import {
+  GET_TOPICS_BY_USER_ID,
+  CREATE_TOPIC_EVENT,
+  UPDATE_TOPIC_NAME,
+} from "Actions/topic";
 import _ from "lodash";
 import getJSTCreatedDateArr from "Modules/getJST_created_date_arr";
 import getJSTUpdatedDateArr from "Modules/get_jst_updated_date";
@@ -22,7 +26,9 @@ export default (topicManagement = initialState, action) => {
         is_empty: action.response.data.is_empty,
         topics: _.mapKeys(topics, "topic_id"),
       };
+
     case CREATE_TOPIC_EVENT:
+    case UPDATE_TOPIC_NAME:
       // 作成日を年月日時分に変換
       const _createdTopic = action.response.data;
       const _createdTopic2 = getJSTCreatedDateArr(_createdTopic);
@@ -31,14 +37,18 @@ export default (topicManagement = initialState, action) => {
       const createdTopic = getJSTUpdatedDateArr(_createdTopic2);
 
       // イテレータ付きのオブジェクト配列を返す
-      const iteratoredCreateTopicsObj = getIteratoredObjArr(
-        topicManagement.topics
-      );
+      // const iteratoredCreateTopicsObj = getIteratoredObjArr(
+      //   topicManagement.topics
+      // );
 
       return {
         is_empty: false,
-        topics: [...iteratoredCreateTopicsObj, createdTopic],
+        topics: {
+          ...topicManagement.topics,
+          [createdTopic.topic_id]: createdTopic,
+        },
       };
+
     default:
       return topicManagement;
   }
