@@ -130,6 +130,12 @@ class CreateTopic extends Component {
     });
   }
 
+  // トピック名の入力欄をEnterすると送信ボタンにフォーカス
+  submitHandler = (e) => {
+    e.preventDefault();
+    this.btn.focus();
+  };
+
   render() {
     // トピック名の入力 or 重複チェックの結果
     let topicNameResult;
@@ -156,7 +162,7 @@ class CreateTopic extends Component {
     return (
       <>
         <span style={{ fontSize: "initial" }}>トピックを作成</span>
-        <form id="create-topic-form">
+        <form id="create-topic-form" onSubmit={this.submitHandler}>
           <TextField
             id="standard-multiline-flexible"
             label="トピック名を入力して下さい"
@@ -177,6 +183,9 @@ class CreateTopic extends Component {
             }
             onClick={this.onSubmit}
             startIcon={<SendIcon />}
+            ref={(ref) => {
+              this.btn = ref;
+            }}
           >
             作成
           </Button>
