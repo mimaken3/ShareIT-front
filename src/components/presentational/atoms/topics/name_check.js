@@ -6,9 +6,11 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   duplicationMessage: {
     color: "red",
+    float: "left",
   },
   duplicatedTopicName: {
     marginLeft: "4px",
+    float: "left",
   },
   duplicationOkayCircle: {
     color: "#00EE00",

@@ -11,6 +11,9 @@ import Topic from "Molecules/topics/topic";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
+  tableContainer: {
+    minWidth: "745px",
+  },
   id: {
     width: "50px",
   },
@@ -40,7 +43,7 @@ const TopicTable = (props) => {
 
   return (
     <>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} className={classes.tableContainer}>
         <Table>
           <TableHead>
             <TableRow>
