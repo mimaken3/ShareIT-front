@@ -97,64 +97,41 @@ const Notification = withRouter((props) => {
     );
   }
 
+  let userBox = (
+    <Button
+      onClick={() => {
+        props.handleNotificationMenuClose();
+        toSomethingPage();
+      }}
+    >
+      <div className={classes.sourceUserIcon}>
+        <UserIcon
+          iconData={props.notification.source_user_icon_name}
+          iconStyle={{
+            borderRadius: "50%",
+            width: "30px",
+            height: "30px",
+          }}
+        />
+      </div>
+      <div className={classes.sourceUserBox}>
+        <div className={classes.createdDate}>
+          <AgoCreatedDate date={props.notification.created_date} />
+        </div>
+        <div className={classes.divBehavior}>{behavior}</div>
+      </div>
+    </Button>
+  );
+
   let _notification;
   if (props.notification.is_read) {
     // 既読
-    _notification = (
-      <React.Fragment>
-        <Button
-          onClick={() => {
-            props.handleNotificationMenuClose();
-            toSomethingPage();
-          }}
-        >
-          <div className={classes.sourceUserIcon}>
-            <UserIcon
-              iconData={props.notification.source_user_icon_name}
-              iconStyle={{
-                width: "30px",
-                height: "30px",
-              }}
-            />
-          </div>
-          <div className={classes.sourceUserBox}>
-            <div className={classes.createdDate}>
-              <AgoCreatedDate date={props.notification.created_date} />
-            </div>
-            <div className={classes.divBehavior}>{behavior}</div>
-          </div>
-        </Button>
-      </React.Fragment>
-    );
+    _notification = <React.Fragment>{userBox}</React.Fragment>;
   } else {
     // 未読
     _notification = (
       <React.Fragment>
-        <div style={{ backgroundColor: "#EEFFFF" }}>
-          <Button
-            onClick={() => {
-              props.handleNotificationMenuClose();
-              toSomethingPage();
-            }}
-          >
-            <div className={classes.sourceUserIcon}>
-              <UserIcon
-                iconData={props.notification.source_user_icon_name}
-                iconStyle={{
-                  width: "30px",
-                  height: "30px",
-                }}
-              />
-            </div>
-
-            <div className={classes.sourceUserBox}>
-              <div className={classes.createdDate}>
-                <AgoCreatedDate date={props.notification.created_date} />
-              </div>
-              <div className={classes.divBehavior}>{behavior}</div>
-            </div>
-          </Button>
-        </div>
+        <div style={{ backgroundColor: "#EEFFFF" }}>{userBox}</div>
       </React.Fragment>
     );
   }
