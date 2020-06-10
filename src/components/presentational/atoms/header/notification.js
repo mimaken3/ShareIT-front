@@ -131,7 +131,7 @@ const Notification = withRouter((props) => {
     // 未読
     _notification = (
       <React.Fragment>
-        <div style={{ backgroundColor: "#EEFFFF" }}>{userBox}</div>
+        <div style={{ backgroundColor: "#ECF3FF" }}>{userBox}</div>
       </React.Fragment>
     );
   }
