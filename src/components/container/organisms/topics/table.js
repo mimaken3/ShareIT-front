@@ -8,9 +8,23 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Topic from "Molecules/topics/topic";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  id: {
+    width: "50px",
+  },
+  topicNameCell: {
+    width: "150px",
+  },
+  date: {
+    width: "200px",
+  },
+}));
 
 const TopicTable = (props) => {
   const { topics } = props;
+  const classes = useStyles();
 
   // 管理するトピックがある場合
   let renderTopics = _.map(topics, (topic) => (
@@ -30,16 +44,12 @@ const TopicTable = (props) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell style={{ width: "50px" }}>ID</TableCell>
-              <TableCell align="left" style={{ width: "150px" }}>
+              <TableCell className={classes.id}>ID</TableCell>
+              <TableCell className={classes.topicNameCell}>
                 トピック名
               </TableCell>
-              <TableCell align="left" style={{ width: "200px" }}>
-                作成日時
-              </TableCell>
-              <TableCell align="left" style={{ width: "200px" }}>
-                最終更新日時
-              </TableCell>
+              <TableCell className={classes.date}>作成日時</TableCell>
+              <TableCell className={classes.date}>最終更新日時</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>

@@ -75,7 +75,7 @@ class TopicsIndex extends Component {
             <ThemeProvider theme={theme}>
               <CssBaseline />
               <div style={{ marginTop: "10px", textAlign: "center" }}>
-                <h3>自分自身でトピックを作成して管理することができます</h3>
+                <h3>自分でトピックを作成して管理することができます</h3>
               </div>
               {createTopicRender}
             </ThemeProvider>

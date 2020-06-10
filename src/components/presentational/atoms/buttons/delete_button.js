@@ -4,6 +4,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import { deleteComment } from "Actions/comment";
+import { deleteTopic } from "Actions/topic";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
@@ -40,7 +41,12 @@ class DeleteButton extends Component {
         this.props.history.push("/articles");
       });
     } else if (this.props.param === "topic") {
+      const topicID = this.props.sendObj.topicID;
+
       // トピックを削除
+      this.props.deleteTopic(topicID).then(() => {
+        this.setState({ open: false });
+      });
     }
   }
 
@@ -105,7 +111,12 @@ class DeleteButton extends Component {
   }
 }
 
-const mapDispatchToProps = { deleteComment, deleteUserEvent, deleteEvent };
+const mapDispatchToProps = {
+  deleteComment,
+  deleteUserEvent,
+  deleteEvent,
+  deleteTopic,
+};
 
 const mapStateToProps = "";
 

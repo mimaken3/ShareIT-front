@@ -2,6 +2,7 @@ import {
   GET_TOPICS_BY_USER_ID,
   CREATE_TOPIC_EVENT,
   UPDATE_TOPIC_NAME,
+  DELETE_TOPIC_EVENT,
 } from "Actions/topic";
 import _ from "lodash";
 import getJSTCreatedDateArr from "Modules/getJST_created_date_arr";
@@ -47,6 +48,23 @@ export default (topicManagement = initialState, action) => {
           ...topicManagement.topics,
           [createdTopic.topic_id]: createdTopic,
         },
+      };
+
+    case DELETE_TOPIC_EVENT:
+      const res = action.response;
+
+      if (res.status === 200) {
+        // サーバ側でトピックの削除に成功したら
+        delete topicManagement.topics[action.topicID];
+      }
+
+      // イテレータ付きのオブジェクト配列を返す
+      const iteratoredTopicsObj = getIteratoredObjArr(topicManagement.topics);
+
+      return {
+        is_empty:
+          Object.values(topicManagement.topics).length > 0 ? false : true,
+        topics: _.mapKeys(iteratoredTopicsObj, "topic_id"),
       };
 
     default:

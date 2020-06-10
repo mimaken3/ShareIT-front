@@ -5,6 +5,7 @@ export const GET_ALL_TOPICS = "GET_ALL_TOPICS_EVENT";
 export const GET_TOPICS_BY_USER_ID = "GET_TOPICS_BY_USER_ID";
 export const CREATE_TOPIC_EVENT = "CREATE_TOPIC_EVENT";
 export const UPDATE_TOPIC_NAME = "UPDATE_TOPIC_NAME";
+export const DELETE_TOPIC_EVENT = "DELETE_TOPIC_EVENT";
 const ROOT_URL = env.ROOT_URL;
 
 // 全トピックを取得
@@ -46,4 +47,15 @@ export const updateTopicName = (topicObj) => async (dispatch) => {
   );
 
   dispatch({ type: UPDATE_TOPIC_NAME, response });
+};
+
+// トピックを削除
+export const deleteTopic = (topicID) => async (dispatch) => {
+  const loginUserInfo = getLoginUserInfo();
+  const response = await axios.delete(
+    `${ROOT_URL}/api/topics/${topicID}`,
+    loginUserInfo.sendConfig
+  );
+
+  dispatch({ type: DELETE_TOPIC_EVENT, response, topicID });
 };

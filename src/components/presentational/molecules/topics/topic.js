@@ -123,10 +123,11 @@ const Topic = (props) => {
         <span className={classes.topicName}>{topicName}</span>
       </>
     );
+    const sendObj = { topicID: topicID };
     editBox = (
       <>
         <div className={classes.deleteButton}>
-          <DeleteButton param="topic" />
+          <DeleteButton param="topic" sendObj={sendObj} />
         </div>
         <div className={classes.editButton}>
           <Button
