@@ -29,6 +29,7 @@ class articleNew extends Component {
       isContentError: true,
 
       submitting: false,
+      loading: true,
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.childRef = React.createRef();
@@ -37,7 +38,9 @@ class articleNew extends Component {
 
   componentDidMount() {
     // 全トピックの取得
-    this.props.getAllTopics();
+    this.props.getAllTopics().then(() => {
+      this.setState({ loading: false });
+    });
   }
 
   // タイトルの入力チェック
@@ -139,7 +142,10 @@ class articleNew extends Component {
           <Redirect to={"/users/" + loginUserID + "/article"} />
         </React.Fragment>
       );
-    } else if (Object.values(this.props.allTopics).length !== 0) {
+    } else if (
+      Object.values(this.props.allTopics).length !== 0 &&
+      !this.state.loading
+    ) {
       // 全トピック
       const allTopics = this.props.allTopics;
 
