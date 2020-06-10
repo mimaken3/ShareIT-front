@@ -16,6 +16,7 @@ export const DELETE_USER_EVENT = "DELETE_USER_EVENT";
 export const USER_NOT_EXIST = "USER_NOT_EXIST";
 export const LOGIN_FAILED = "LOGIN_FAILED";
 export const EMPTY_USERS = "EMPTY_USERS";
+export const GET_LIKED_USERS_BY_ARTICLE_ID = "GET_LIKED_USERS_BY_ARTICLE_ID";
 
 const ROOT_URL = env.ROOT_URL;
 
@@ -143,6 +144,18 @@ export const deleteUserEvent = (user) => async (dispatch) => {
   );
 
   dispatch({ type: DELETE_USER_EVENT, response });
+};
+
+// 記事にいいねした全ユーザを取得
+export const getLikedUsersByArticleID = (articleID) => async (dispatch) => {
+  const loginUserInfo = getLoginUserInfo();
+
+  const response = await axios.get(
+    `${ROOT_URL}/api/articles/${articleID}/users`,
+    loginUserInfo.sendConfig
+  );
+
+  dispatch({ type: GET_LIKED_USERS_BY_ARTICLE_ID, response });
 };
 
 // storeのusersを空に

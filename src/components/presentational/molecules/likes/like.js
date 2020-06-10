@@ -7,6 +7,9 @@ import LikeNum from "Atoms/likes/sum_num";
 import LikeObj from "Atoms/likes/obj";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "redux";
+import LikedUsersMenu from "Atoms/users/liked_users_menu";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
 
 class Like extends Component {
   constructor(props) {
@@ -14,8 +17,19 @@ class Like extends Component {
     this.state = {
       isLiked: this.props.isLiked,
       likeNum: this.props.likeNum,
+      likedUsersAnchorEl: null,
     };
   }
+
+  // いいねしたユーザ一覧をポップアップ表示
+  handleLikedUsersMenuOpen = (event) => {
+    this.setState({ likedUsersAnchorEl: event.currentTarget });
+  };
+
+  // いいねしたユーザ一覧を非表示
+  handleLikedUsersMenuClose = () => {
+    this.setState({ likedUsersAnchorEl: null });
+  };
 
   // いいね済みに
   onLike() {
@@ -52,8 +66,9 @@ class Like extends Component {
   render() {
     var isLiked;
     if (this.state.isLiked) {
+      // いいね済み
       isLiked = (
-        <React.Fragment>
+        <>
           <Button
             onClick={() => {
               this.offLike();
@@ -62,9 +77,10 @@ class Like extends Component {
           >
             <LikeObj obj={true} />
           </Button>
-        </React.Fragment>
+        </>
       );
     } else {
+      // 未いいね
       isLiked = (
         <React.Fragment>
           <Button
@@ -77,12 +93,48 @@ class Like extends Component {
       );
     }
 
+    const islikedUsersOpen = Boolean(this.state.likedUsersAnchorEl);
+
+    // 通知一覧に表示する通知
+    let renderlikedUsers = (
+      <LikedUsersMenu
+        likedUsersAnchorEl={this.state.likedUsersAnchorEl}
+        likedUsers={this.props.likedUsers}
+        islikedUsersOpen={islikedUsersOpen}
+        handleLikedUsersMenuClose={this.handleLikedUsersMenuClose}
+      />
+    );
+
+    const theme = createMuiTheme({
+      overrides: {
+        MuiButton: {
+          root: {
+            minWidth: "30px",
+            lineHeight: "normal",
+          },
+        },
+      },
+    });
+
+    let likeNum;
+    if (this.props.param === "articleDetail" && !this.props.isEmpty) {
+      // 記事詳細画面
+      likeNum = (
+        <ThemeProvider theme={theme}>
+          <Button onClick={(e) => this.handleLikedUsersMenuOpen(e)}>
+            <LikeNum likeNum={this.state.likeNum} />
+          </Button>
+          {renderlikedUsers}
+        </ThemeProvider>
+      );
+    } else {
+      likeNum = <LikeNum likeNum={this.state.likeNum} />;
+    }
+
     return (
       <React.Fragment>
-        <div style={{ float: "left" }}>{isLiked}</div>
-        <div style={{ float: "left" }} className={this.props.classes.likeNum}>
-          <LikeNum likeNum={this.state.likeNum} />
-        </div>
+        <div className={this.props.classes.isLiked}>{isLiked}</div>
+        <div className={this.props.classes.likeNum}>{likeNum}</div>
       </React.Fragment>
     );
   }
@@ -90,7 +142,12 @@ class Like extends Component {
 
 const mapDispatchToProps = { toggleLike };
 
-const mapStateToProps = "";
+const mapStateToProps = (state) => {
+  const isEmpty = state.likedUsers.is_empty;
+  const likedUsers = state.likedUsers.users;
+
+  return { isEmpty, likedUsers };
+};
 
 const styles = {
   button: {
@@ -102,6 +159,10 @@ const styles = {
   },
   likeNum: {
     marginLeft: "5px",
+    float: "left",
+  },
+  isLiked: {
+    float: "left",
   },
 };
 

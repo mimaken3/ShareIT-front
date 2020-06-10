@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { getArticleDetail, deleteEvent } from "Actions/article";
-import { getUserDetail } from "Actions/user";
+import { getUserDetail, getLikedUsersByArticleID } from "Actions/user";
 import { getAllComments } from "Actions/comment";
 import CreatedDate from "Atoms/created_date.js";
 import Loading from "Templates/loading";
@@ -37,6 +37,7 @@ class ArticleShow extends Component {
       Promise.all([
         this.props.getAllComments(articleId),
         this.props.getArticleDetail(articleId),
+        this.props.getLikedUsersByArticleID(articleId),
       ]).then(() => {
         this.props
           .getUserDetail(this.props.article.created_user_id)
@@ -115,12 +116,13 @@ class ArticleShow extends Component {
                 isLiked={this.props.article.is_liked}
                 likeNum={this.props.article.like_num}
                 loginUserID={loginUserID}
+                param="articleDetail"
               />
             </div>
 
             <div className={this.props.classes.postedUserInfo}>
               <span>
-                作成日時{" "}
+                作成日時
                 <CreatedDate createdDate={this.props.article.created_date} />
               </span>
               <Button
@@ -195,12 +197,15 @@ const mapDispatchToProps = {
   deleteEvent,
   getAllComments,
   getUserDetail,
+  getLikedUsersByArticleID,
 };
 
 const styles = () => ({
   likeBox: {
     marginTop: "20px",
     float: "left",
+    display: "flex",
+    alignItems: "center",
   },
   postedUserInfo: {
     float: "left",
