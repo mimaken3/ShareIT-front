@@ -12,6 +12,8 @@ import { reduxForm } from "redux-form";
 import { deleteUserEvent } from "Actions/user";
 import { deleteEvent } from "Actions/article";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { ThemeProvider } from "@material-ui/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
 
 // 削除ボタン
 class DeleteButton extends Component {
@@ -61,6 +63,8 @@ class DeleteButton extends Component {
   };
 
   render() {
+    const theme = createMuiTheme({});
+
     let param;
     if (this.props.param === "comment") {
       param = "コメント";
@@ -72,41 +76,39 @@ class DeleteButton extends Component {
       param = "トピック";
     }
     return (
-      <div>
-        <div>
-          <Button
-            variant="outlined"
-            startIcon={<DeleteIcon />}
-            onClick={() => this.handleClickOpen()}
-          >
-            削除
-          </Button>
-          <Dialog
-            open={this.state.open}
-            onClose={this.handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                {param}を削除してもよろしいですか？
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => this.handleClose()} color="primary">
-                いいえ
-              </Button>
-              <Button
-                onClick={() => this.onDeleteClick()}
-                color="primary"
-                autoFocus
-              >
-                はい
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </div>
-      </div>
+      <ThemeProvider theme={theme}>
+        <Button
+          variant="outlined"
+          startIcon={<DeleteIcon />}
+          onClick={() => this.handleClickOpen()}
+        >
+          削除
+        </Button>
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {param}を削除してもよろしいですか？
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => this.handleClose()} color="primary">
+              いいえ
+            </Button>
+            <Button
+              onClick={() => this.onDeleteClick()}
+              color="primary"
+              autoFocus
+            >
+              はい
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </ThemeProvider>
     );
   }
 }
