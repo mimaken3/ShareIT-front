@@ -66,6 +66,12 @@ class Article extends Component {
             padding: "5px 16px 24px",
           },
         },
+        // ユーザアイコンの背景を白にする
+        MuiAvatar: {
+          colorDefault: {
+            backgroundColor: "white",
+          },
+        },
       },
     });
 
