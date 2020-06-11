@@ -2,7 +2,7 @@ import axios from "axios";
 import getLoginUserInfo from "Modules/getLoginUserInfo";
 import env from "env";
 
-//reducerでもimortして使うので
+// reducerでもimortして使うので
 export const TOGGLE_LIKE = "TOGGLE_LIKE";
 
 const ROOT_URL = env.ROOT_URL;

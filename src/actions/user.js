@@ -17,6 +17,7 @@ export const USER_NOT_EXIST = "USER_NOT_EXIST";
 export const LOGIN_FAILED = "LOGIN_FAILED";
 export const EMPTY_USERS = "EMPTY_USERS";
 export const GET_LIKED_USERS_BY_ARTICLE_ID = "GET_LIKED_USERS_BY_ARTICLE_ID";
+export const TOGGLE_LIKE_AT_ARTICLE_DETAIL = "TOGGLE_LIKE_AT_ARTICLE_DETAIL";
 
 const ROOT_URL = env.ROOT_URL;
 
@@ -156,6 +157,21 @@ export const getLikedUsersByArticleID = (articleID) => async (dispatch) => {
   );
 
   dispatch({ type: GET_LIKED_USERS_BY_ARTICLE_ID, response });
+};
+
+// 自分が記事にLike or UnLikeした場合
+export const toggleLikeAtArticleDetail = (isLiked) => async (dispatch) => {
+  const loginUserInfo = getLoginUserInfo();
+  const loginUserIconURL = localStorage.getItem("login_user_icon_URL");
+  const userID = loginUserInfo.userID;
+  const userName = loginUserInfo.userName;
+  const userObj = {
+    user_id: userID,
+    user_name: userName,
+    icon_name: loginUserIconURL,
+  };
+
+  dispatch({ type: TOGGLE_LIKE_AT_ARTICLE_DETAIL, userObj, isLiked });
 };
 
 // storeのusersを空に

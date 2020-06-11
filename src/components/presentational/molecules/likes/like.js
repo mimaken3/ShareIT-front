@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import Button from "@material-ui/core/Button";
 import { toggleLike } from "Actions/like";
+import { toggleLikeAtArticleDetail } from "Actions/user";
 import LikeNum from "Atoms/likes/sum_num";
 import LikeObj from "Atoms/likes/obj";
 import { withStyles } from "@material-ui/core/styles";
@@ -33,6 +34,11 @@ class Like extends Component {
 
   // いいね済みに
   onLike() {
+    if (this.props.param === "articleDetail") {
+      // いいねしたユーザ一覧に自分を追加
+      this.props.toggleLikeAtArticleDetail(true);
+    }
+
     const likeArticle = {
       userID: this.props.loginUserID,
       articleID: this.props.articleID,
@@ -47,6 +53,11 @@ class Like extends Component {
 
   // 未いいねに
   offLike() {
+    if (this.props.param === "articleDetail") {
+      // いいねしたユーザ一覧から自分を削除
+      this.props.toggleLikeAtArticleDetail(false);
+    }
+
     if (this.props.unLikeEvent) {
       this.props.unLikeEvent();
     }
@@ -117,16 +128,34 @@ class Like extends Component {
     });
 
     let likeNum;
-    if (this.props.param === "articleDetail" && !this.props.isEmpty) {
+    if (this.props.param === "articleDetail") {
       // 記事詳細画面
-      likeNum = (
-        <ThemeProvider theme={theme}>
-          <Button onClick={(e) => this.handleLikedUsersMenuOpen(e)}>
-            <LikeNum likeNum={this.state.likeNum} />
-          </Button>
-          {renderlikedUsers}
-        </ThemeProvider>
-      );
+      if (!this.props.isEmpty) {
+        likeNum = (
+          <ThemeProvider theme={theme}>
+            <Button onClick={(e) => this.handleLikedUsersMenuOpen(e)}>
+              <LikeNum likeNum={this.state.likeNum} />
+            </Button>
+            {renderlikedUsers}
+          </ThemeProvider>
+        );
+      } else {
+        likeNum = (
+          <>
+            <div
+              style={{
+                display: "table-cell",
+                minHeight: "31px",
+                minWidth: "30px",
+                textAlign: "center",
+                marginLeft: "5px",
+              }}
+            >
+              <LikeNum likeNum={this.state.likeNum} />
+            </div>
+          </>
+        );
+      }
     } else {
       likeNum = <LikeNum likeNum={this.state.likeNum} />;
     }
@@ -140,7 +169,7 @@ class Like extends Component {
   }
 }
 
-const mapDispatchToProps = { toggleLike };
+const mapDispatchToProps = { toggleLike, toggleLikeAtArticleDetail };
 
 const mapStateToProps = (state) => {
   const isEmpty = state.likedUsers.is_empty;
