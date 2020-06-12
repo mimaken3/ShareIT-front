@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { withRouter } from "react-router";
+import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
@@ -9,7 +8,7 @@ import { emptyArticles, emptyLikedArticles } from "Actions/article";
 import { emptyUsers, getUserDetail } from "Actions/user";
 import { getAllNotifications } from "Actions/notification";
 import Logout from "Atoms/buttons/logout";
-import { makeStyles } from "@material-ui/core/styles";
+import { compose } from "redux";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -20,14 +19,292 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import CreateArticleButton from "Atoms/buttons/create_article_button";
 import ToAllUsersButton from "Atoms/buttons/to_all_users_button";
 import ToAllArticlesButton from "Atoms/buttons/to_all_articles_button";
-import { ScrollTo } from "react-scroll-to";
 import ShareIT from "Atoms/buttons/share_it";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import Badge from "@material-ui/core/Badge";
 import NotificationMenu from "Atoms/header/notification_menu";
 import ToTopicManagementButton from "Atoms/buttons/to_topic_management";
+import { withStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
+// ヘッダー
+class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { mobileMoreAnchorEl: null, notificationMoreAnchorEl: null };
+  }
+
+  componentDidMount() {
+    const loginUser = getLoginUserInfo();
+    if (loginUser !== null) {
+      const userID = loginUser.userID;
+      this.props.getAllNotifications(userID);
+    }
+  }
+
+  // メニューバーをポップアップ表示
+  handleMobileMenuOpen = (event) => {
+    this.setState({ mobileMoreAnchorEl: event.currentTarget });
+  };
+
+  // メニューバーを非表示
+  handleMobileMenuClose = () => {
+    this.setState({ mobileMoreAnchorEl: null });
+  };
+
+  // 通知のメニューバを表示
+  handleNotificationMenuOpen = (event) => {
+    this.setState({ notificationMoreAnchorEl: event.currentTarget });
+  };
+
+  // 通知のメニューバを非表示
+  handleNotificationMenuClose = () => {
+    this.setState({ notificationMoreAnchorEl: null });
+  };
+
+  // ログインページへ
+  toLoginPage = () => {
+    this.handleMobileMenuClose();
+    this.props.history.push("/login");
+  };
+
+  // ユーザ詳細画面へ
+  toUserShowPage = (loginUserID) => {
+    this.handleMobileMenuClose();
+    if (this.props.history.location.pathname === "/users/" + loginUserID) {
+      window.location.reload(false);
+    } else {
+      this.props.emptyArticles();
+      this.props.emptyLikedArticles();
+      this.props.emptyUsers();
+      this.props.getUserDetail(loginUserID);
+
+      this.rops.history.push("/users/" + loginUserID);
+    }
+  };
+
+  render() {
+    var Display;
+    const loginUser = getLoginUserInfo();
+    const isMobileMenuOpen = Boolean(this.state.mobileMoreAnchorEl);
+    const isNotificationMenuOpen = Boolean(this.state.notificationMoreAnchorEl);
+
+    if (loginUser !== null) {
+      // ログイン状態
+      const loginUserIconURL = localStorage.getItem("login_user_icon_URL");
+
+      const mobileMenuId = "primary-search-account-menu-mobile";
+
+      // 未読の通知数をカウント
+      let notificationCount = 0;
+      for (let key in this.props.notifications) {
+        if (this.props.notifications[key].is_read === 0) {
+          notificationCount++;
+        }
+      }
+
+      const renderMobileMenu = (
+        // デスクトップ用、メニューバー展開後の表示
+        <React.Fragment>
+          <Menu
+            anchorEl={this.state.mobileMoreAnchorEl}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            id={mobileMenuId}
+            keepMounted
+            transformOrigin={{ vertical: "top", horizontal: "right" }}
+            open={isMobileMenuOpen}
+            onClose={this.handleMobileMenuClose}
+          >
+            <div className={this.props.classes.sectionMobile}>
+              {/* モバイルサイズのみ表示 */}
+              <MenuItem
+                onClick={() => {
+                  if (
+                    this.props.history.location.pathname !==
+                    "/users/" + loginUser.userID
+                  ) {
+                    this.toUserShowPage(loginUser.userID);
+                  }
+                }}
+              >
+                <div className={this.props.classes.memuUserIcon}>
+                  <UserIcon iconData={loginUserIconURL} />
+                </div>
+                <div className={this.props.classes.memuUserName}>
+                  {loginUser.userName}
+                </div>
+              </MenuItem>
+            </div>
+
+            <ToAllArticlesButton
+              handleMobileMenuClose={this.handleMobileMenuClose}
+            />
+
+            <ToAllUsersButton
+              handleMobileMenuClose={this.handleMobileMenuClose}
+            />
+
+            <ToTopicManagementButton
+              handleMobileMenuClose={this.handleMobileMenuClose}
+            />
+
+            <Logout
+              fontColor="black"
+              handleMobileMenuClose={this.handleMobileMenuClose}
+            />
+          </Menu>
+        </React.Fragment>
+      );
+      const renderNotificationMenu = (
+        // 通知のメニューバー展開
+        <NotificationMenu
+          notificationMoreAnchorEl={this.state.notificationMoreAnchorEl}
+          isNotificationMenuOpen={isNotificationMenuOpen}
+          handleNotificationMenuClose={this.handleNotificationMenuClose}
+          notifications={this.props.notifications}
+          isEmpty={this.props.isNotificationEmpty}
+        />
+      );
+      Display = (
+        // デスクトップ用 バー
+        <div className={this.props.classes.root}>
+          <AppBar position="fixed" className={this.props.classes.appBar}>
+            <Toolbar className={this.props.classes.toolBar}>
+              <Typography className={this.props.classes.title}>
+                <ShareIT />
+              </Typography>
+              <div className={this.props.classes.grow} />
+              <CreateArticleButton />
+              <div className={this.props.classes.sectionDesktop}>
+                <Button
+                  onClick={() => {
+                    if (
+                      this.props.history.location.pathname !==
+                      "/users/" + loginUser.userID
+                    ) {
+                      this.toUserShowPage(loginUser.userID);
+                    }
+                  }}
+                >
+                  <div className={this.props.classes.userIcon}>
+                    <UserIcon iconData={loginUserIconURL} />
+                  </div>
+                  <div className={this.props.classes.userName}>
+                    {loginUser.userName}
+                  </div>
+                </Button>
+              </div>
+
+              <IconButton
+                color="inherit"
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={(e) => this.handleNotificationMenuOpen(e)}
+              >
+                <Badge
+                  badgeContent={notificationCount}
+                  color="secondary"
+                  max={99}
+                >
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+
+              <IconButton
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={(e) => this.handleMobileMenuOpen(e)}
+                color="inherit"
+                className={this.props.classes.moreIcon}
+              >
+                <MoreIcon />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+          {renderNotificationMenu}
+          {renderMobileMenu}
+        </div>
+      );
+    } else {
+      // 未ログイン状態
+      const mobileMenuId = "primary-search-account-menu-mobile";
+      const renderMobileMenu = (
+        <Menu
+          anchorEl={this.state.mobileMoreAnchorEl}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          id={mobileMenuId}
+          keepMounted
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          open={isMobileMenuOpen}
+          onClose={this.state.handleMobileMenuClose()}
+        >
+          <MenuItem
+            onClick={this.toLoginPage}
+            style={{ color: "black", fontSize: 17 }}
+          >
+            ログイン
+          </MenuItem>
+        </Menu>
+      );
+      Display = (
+        <div className={this.props.classes.root}>
+          <AppBar position="fixed" className={this.props.classes.appBar}>
+            <Toolbar className={this.props.classes.toolBar}>
+              <Typography className={this.props.classes.title}>
+                <ShareIT />
+              </Typography>
+
+              <div className={this.props.classes.grow} />
+              <div className={this.props.classes.guest}>ゲスト</div>
+              <div className={this.props.classes.sectionDesktop}>
+                <Button
+                  onClick={this.toLoginPage}
+                  style={{ color: "white", fontSize: 17, marginBottom: 0 }}
+                >
+                  <div>ログイン</div>
+                </Button>
+              </div>
+
+              <div className={this.props.classes.sectionMobile}>
+                <IconButton
+                  aria-label="show more"
+                  aria-controls={mobileMenuId}
+                  aria-haspopup="true"
+                  onClick={(e) => this.handleMobileMenuOpen(e)}
+                  color="inherit"
+                  className={this.props.classes.moreIcon}
+                >
+                  <MoreIcon />
+                </IconButton>
+              </div>
+            </Toolbar>
+          </AppBar>
+          {renderMobileMenu}
+        </div>
+      );
+      console.log("will return");
+    }
+    return <React.Fragment>{Display}</React.Fragment>;
+  }
+}
+
+const mapDispatchToProps = {
+  emptyArticles,
+  emptyLikedArticles,
+  emptyUsers,
+  getUserDetail,
+  getAllNotifications,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    notifications: state.notifications.notifications,
+    isNotificationEmpty: state.notifications.is_empty,
+  };
+};
+
+const styles = (theme) => ({
   grow: {
     flexGrow: 1,
   },
@@ -99,284 +376,10 @@ const useStyles = makeStyles((theme) => ({
   moreIcon: {
     marginRight: "0px", // 今後変更の可能性あり
   },
-}));
-
-// ヘッダー
-const Header = withRouter((props) => {
-  const { getAllNotifications } = props;
-  const loginUser = getLoginUserInfo();
-
-  useEffect(() => {
-    if (loginUser !== null) {
-      const userID = loginUser.userID;
-      getAllNotifications(userID);
-    }
-  }, []);
-
-  const classes = useStyles();
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-  const [notificationMoreAnchorEl, setNotificationMenu] = useState(null);
-
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const isNotificationMenuOpen = Boolean(notificationMoreAnchorEl);
-
-  // メニューバーをポップアップ表示
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  // メニューバーを非表示
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  // 通知のメニューバを表示
-  const handleNotificationMenuOpen = (event) => {
-    setNotificationMenu(event.currentTarget);
-  };
-
-  // 通知のメニューバを非表示
-  const handleNotificationMenuClose = () => {
-    setNotificationMenu(null);
-  };
-
-  var Display;
-  if (loginUser !== null) {
-    // ログイン状態
-    const loginUserIconURL = localStorage.getItem("login_user_icon_URL");
-
-    const mobileMenuId = "primary-search-account-menu-mobile";
-
-    // 未読の通知数をカウント
-    let notificationCount = 0;
-    for (let key in props.notifications) {
-      if (props.notifications[key].is_read === 0) {
-        notificationCount++;
-      }
-    }
-
-    const renderMobileMenu = (
-      // デスクトップ用、メニューバー展開後の表示
-      <React.Fragment>
-        <Menu
-          anchorEl={mobileMoreAnchorEl}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-          id={mobileMenuId}
-          keepMounted
-          transformOrigin={{ vertical: "top", horizontal: "right" }}
-          open={isMobileMenuOpen}
-          onClose={handleMobileMenuClose}
-        >
-          <div className={classes.sectionMobile}>
-            {/* モバイルサイズのみ表示 */}
-            <MenuItem
-              onClick={() => {
-                if (
-                  props.history.location.pathname !==
-                  "/users/" + loginUser.userID
-                ) {
-                }
-                toUserShowPage(loginUser.userID);
-              }}
-            >
-              <div className={classes.memuUserIcon}>
-                <UserIcon iconData={loginUserIconURL} />
-              </div>
-              <div className={classes.memuUserName}>{loginUser.userName}</div>
-            </MenuItem>
-          </div>
-
-          <ToAllArticlesButton handleMobileMenuClose={handleMobileMenuClose} />
-
-          <ToAllUsersButton handleMobileMenuClose={handleMobileMenuClose} />
-
-          <ToTopicManagementButton
-            handleMobileMenuClose={handleMobileMenuClose}
-          />
-
-          <Logout
-            fontColor="black"
-            handleMobileMenuClose={handleMobileMenuClose}
-          />
-        </Menu>
-      </React.Fragment>
-    );
-
-    const renderNotificationMenu = (
-      // 通知のメニューバー展開
-      <NotificationMenu
-        notificationMoreAnchorEl={notificationMoreAnchorEl}
-        isNotificationMenuOpen={isNotificationMenuOpen}
-        handleNotificationMenuClose={handleNotificationMenuClose}
-        notifications={props.notifications}
-        isEmpty={props.isNotificationEmpty}
-      />
-    );
-
-    Display = (
-      // デスクトップ用 バー
-      <div className={classes.root}>
-        <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar className={classes.toolBar}>
-            <Typography className={classes.title}>
-              <ShareIT />
-            </Typography>
-            <div className={classes.grow} />
-            <CreateArticleButton />
-            <div className={classes.sectionDesktop}>
-              <ScrollTo>
-                {({ scroll }) => (
-                  <Button
-                    onClick={() => {
-                      if (
-                        props.history.location.pathname !==
-                        "/users/" + loginUser.userID
-                      ) {
-                        scroll({ x: 0, y: 0 });
-                      }
-                      toUserShowPage(loginUser.userID);
-                    }}
-                  >
-                    <div className={classes.userIcon}>
-                      <UserIcon iconData={loginUserIconURL} />
-                    </div>
-                    <div className={classes.userName}>{loginUser.userName}</div>
-                  </Button>
-                )}
-              </ScrollTo>
-            </div>
-
-            <IconButton
-              color="inherit"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleNotificationMenuOpen}
-            >
-              <Badge
-                badgeContent={notificationCount}
-                color="secondary"
-                max={99}
-              >
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-              className={classes.moreIcon}
-            >
-              <MoreIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        {renderNotificationMenu}
-        {renderMobileMenu}
-      </div>
-    );
-  } else {
-    // 未ログイン状態
-    const mobileMenuId = "primary-search-account-menu-mobile";
-    const renderMobileMenu = (
-      <Menu
-        anchorEl={mobileMoreAnchorEl}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        id={mobileMenuId}
-        keepMounted
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-        open={isMobileMenuOpen}
-        onClose={handleMobileMenuClose}
-      >
-        <MenuItem
-          onClick={toLoginPage}
-          style={{ color: "black", fontSize: 17 }}
-        >
-          ログイン
-        </MenuItem>
-      </Menu>
-    );
-    Display = (
-      <div className={classes.root}>
-        <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar className={classes.toolBar}>
-            <Typography className={classes.title}>
-              <ShareIT />
-            </Typography>
-
-            <div className={classes.grow} />
-            <div className={classes.guest}>ゲスト</div>
-            <div className={classes.sectionDesktop}>
-              <Button
-                onClick={toLoginPage}
-                style={{ color: "white", fontSize: 17, marginBottom: 0 }}
-              >
-                <div>ログイン</div>
-              </Button>
-            </div>
-
-            <div className={classes.sectionMobile}>
-              <IconButton
-                aria-label="show more"
-                aria-controls={mobileMenuId}
-                aria-haspopup="true"
-                onClick={handleMobileMenuOpen}
-                color="inherit"
-                className={classes.moreIcon}
-              >
-                <MoreIcon />
-              </IconButton>
-            </div>
-          </Toolbar>
-        </AppBar>
-        {renderMobileMenu}
-      </div>
-    );
-  }
-
-  // ログインページへ
-  function toLoginPage() {
-    handleMobileMenuClose();
-    props.history.push("/login");
-  }
-
-  // ユーザ詳細画面へ
-  function toUserShowPage(loginUserID) {
-    handleMobileMenuClose();
-    if (props.history.location.pathname === "/users/" + loginUserID) {
-      window.location.reload(false);
-    } else {
-      props.emptyArticles();
-      props.emptyLikedArticles();
-      props.emptyUsers();
-      props.getUserDetail(loginUserID);
-
-      props.history.push("/users/" + loginUserID);
-    }
-  }
-
-  return <React.Fragment>{Display}</React.Fragment>;
 });
 
-const mapDispatchToProps = {
-  emptyArticles,
-  emptyLikedArticles,
-  emptyUsers,
-  getUserDetail,
-  getAllNotifications,
-};
-
-const mapStateToProps = (state) => {
-  return {
-    notifications: state.notifications.notifications,
-    isNotificationEmpty: state.notifications.is_empty,
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(reduxForm({ form: "HeaderForm" })(Header));
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({ form: "HeaderForm" }),
+  withStyles(styles)
+)(Header);
