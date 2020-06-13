@@ -25,9 +25,11 @@ import Badge from "@material-ui/core/Badge";
 import NotificationMenu from "Atoms/header/notification_menu";
 import ToTopicManagementButton from "Atoms/buttons/to_topic_management";
 import { withStyles } from "@material-ui/core/styles";
+import { withRouter } from "react-router";
 
 // ヘッダー
 class Header extends Component {
+  isNotificationCalled = false;
   constructor(props) {
     super(props);
     this.state = { mobileMoreAnchorEl: null, notificationMoreAnchorEl: null };
@@ -38,6 +40,29 @@ class Header extends Component {
     if (loginUser !== null) {
       const userID = loginUser.userID;
       this.props.getAllNotifications(userID);
+      this.isNotificationCalled = true;
+    }
+  }
+
+  componentDidUpdate() {
+    const loginUser = getLoginUserInfo();
+    if (loginUser !== null && !this.isNotificationCalled) {
+      const userID = loginUser.userID;
+      this.props.getAllNotifications(userID);
+      this.isNotificationCalled = true;
+    } else {
+      // ログアウトした or している状態の 場合
+      this.isNotificationCalled = false;
+    }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if (this.props.authMessage !== nextProps.authMessage) {
+      // ログイン成功時に通知を読み込む
+      return true;
+    } else {
+      // 👆以外でメニューを表示するときに使用
+      return true;
     }
   }
 
@@ -78,7 +103,7 @@ class Header extends Component {
       this.props.emptyUsers();
       this.props.getUserDetail(loginUserID);
 
-      this.rops.history.push("/users/" + loginUserID);
+      this.props.history.push("/users/" + loginUserID);
     }
   };
 
@@ -237,7 +262,7 @@ class Header extends Component {
           keepMounted
           transformOrigin={{ vertical: "top", horizontal: "right" }}
           open={isMobileMenuOpen}
-          onClose={this.state.handleMobileMenuClose()}
+          onClose={this.handleMobileMenuClose}
         >
           <MenuItem
             onClick={this.toLoginPage}
@@ -283,7 +308,6 @@ class Header extends Component {
           {renderMobileMenu}
         </div>
       );
-      console.log("will return");
     }
     return <React.Fragment>{Display}</React.Fragment>;
   }
@@ -301,6 +325,7 @@ const mapStateToProps = (state) => {
   return {
     notifications: state.notifications.notifications,
     isNotificationEmpty: state.notifications.is_empty,
+    authMessage: state.auth.message,
   };
 };
 
@@ -378,8 +403,10 @@ const styles = (theme) => ({
   },
 });
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({ form: "HeaderForm" }),
-  withStyles(styles)
-)(Header);
+export default withRouter(
+  compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    reduxForm({ form: "HeaderForm" }),
+    withStyles(styles)
+  )(Header)
+);
