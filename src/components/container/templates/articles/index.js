@@ -19,6 +19,10 @@ isBrowzerBack.current = false;
 
 // 記事一覧ページ
 class ArticlesIndex extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { loading: true };
+  }
   componentDidMount() {
     const loginUser = getLoginUserInfo();
     if (loginUser !== null) {
@@ -28,7 +32,9 @@ class ArticlesIndex extends Component {
         this.props.getAllUsersForSelectBox(loginUser.userID);
 
         // 記事一覧を取得
-        this.props.showAllArticles(1);
+        this.props.showAllArticles(1).then(() => {
+          this.setState({ loading: false });
+        });
       });
     }
   }
@@ -37,7 +43,8 @@ class ArticlesIndex extends Component {
     // セレクトボックスの中身が読み込まれたら表示
     if (
       Object.values(this.props.allUsers).length > 0 &&
-      Object.values(this.props.allTopics).length > 0
+      Object.values(this.props.allTopics).length > 0 &&
+      !this.state.loading
     ) {
       return (
         <Container component="main" maxWidth="sm">
