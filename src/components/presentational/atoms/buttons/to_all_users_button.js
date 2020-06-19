@@ -4,14 +4,10 @@ import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { withRouter } from "react-router";
 import MenuItem from "@material-ui/core/MenuItem";
-import { ScrollTo } from "react-scroll-to";
 
 // ユーザ一覧へのボタン
 const ToAllUsersButton = withRouter((props) => {
   function toAllUsersPage() {
-    // メニューバーを閉じる
-    props.callback();
-
     if (props.history.location.pathname === "/users") {
       // ユーザ一覧にいる状態で「ユーザ一覧」を押したらリロード
       window.location.reload(false);
@@ -23,19 +19,16 @@ const ToAllUsersButton = withRouter((props) => {
 
   return (
     <React.Fragment>
-      <ScrollTo>
-        {({ scroll }) => (
-          <MenuItem
-            onClick={() => {
-              scroll({ x: 0, y: 0 });
-              toAllUsersPage();
-            }}
-            style={{ fontSize: 17 }}
-          >
-            ユーザ一覧
-          </MenuItem>
-        )}
-      </ScrollTo>
+      <MenuItem
+        onClick={() => {
+          // メニューバーを閉じる
+          props.handleMobileMenuClose();
+          toAllUsersPage();
+        }}
+        style={{ fontSize: 17 }}
+      >
+        ユーザ一覧
+      </MenuItem>
     </React.Fragment>
   );
 });

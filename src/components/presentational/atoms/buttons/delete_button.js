@@ -4,6 +4,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import { deleteComment } from "Actions/comment";
+import { deleteTopic } from "Actions/topic";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
@@ -11,6 +12,8 @@ import { reduxForm } from "redux-form";
 import { deleteUserEvent } from "Actions/user";
 import { deleteEvent } from "Actions/article";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { ThemeProvider } from "@material-ui/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
 
 // 削除ボタン
 class DeleteButton extends Component {
@@ -39,6 +42,13 @@ class DeleteButton extends Component {
       this.props.deleteEvent(articleID).then(() => {
         this.props.history.push("/articles");
       });
+    } else if (this.props.param === "topic") {
+      const topicID = this.props.sendObj.topicID;
+
+      // トピックを削除
+      this.props.deleteTopic(topicID).then(() => {
+        this.setState({ open: false });
+      });
     }
   }
 
@@ -53,6 +63,8 @@ class DeleteButton extends Component {
   };
 
   render() {
+    const theme = createMuiTheme({});
+
     let param;
     if (this.props.param === "comment") {
       param = "コメント";
@@ -60,48 +72,53 @@ class DeleteButton extends Component {
       param = "ユーザ";
     } else if (this.props.param === "article") {
       param = "記事";
+    } else if (this.props.param === "topic") {
+      param = "トピック";
     }
     return (
-      <div>
-        <div>
-          <Button
-            variant="outlined"
-            startIcon={<DeleteIcon />}
-            onClick={() => this.handleClickOpen()}
-          >
-            削除
-          </Button>
-          <Dialog
-            open={this.state.open}
-            onClose={this.handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                {param}を削除してもよろしいですか？
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => this.handleClose()} color="primary">
-                いいえ
-              </Button>
-              <Button
-                onClick={() => this.onDeleteClick()}
-                color="primary"
-                autoFocus
-              >
-                はい
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </div>
-      </div>
+      <ThemeProvider theme={theme}>
+        <Button
+          variant="outlined"
+          startIcon={<DeleteIcon />}
+          onClick={() => this.handleClickOpen()}
+        >
+          削除
+        </Button>
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {param}を削除してもよろしいですか？
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => this.handleClose()} color="primary">
+              いいえ
+            </Button>
+            <Button
+              onClick={() => this.onDeleteClick()}
+              color="primary"
+              autoFocus
+            >
+              はい
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </ThemeProvider>
     );
   }
 }
 
-const mapDispatchToProps = { deleteComment, deleteUserEvent, deleteEvent };
+const mapDispatchToProps = {
+  deleteComment,
+  deleteUserEvent,
+  deleteEvent,
+  deleteTopic,
+};
 
 const mapStateToProps = "";
 

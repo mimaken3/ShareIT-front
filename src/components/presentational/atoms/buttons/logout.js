@@ -19,9 +19,6 @@ class Logout extends Component {
 
   // ログアウトを実行
   onLogoutClick() {
-    // メニューバーを閉じる
-    this.props.callback();
-
     this.props.LogoutUserEvent();
     this.props.history.push("/login");
   }
@@ -57,11 +54,22 @@ class Logout extends Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => this.handleClose()} color="primary">
+            <Button
+              onClick={() => {
+                // メニューバーを閉じる
+                this.props.handleMobileMenuClose();
+                this.handleClose();
+              }}
+              color="primary"
+            >
               いいえ
             </Button>
             <Button
-              onClick={() => this.onLogoutClick()}
+              onClick={() => {
+                // メニューバーを閉じる
+                this.props.handleMobileMenuClose();
+                this.onLogoutClick();
+              }}
               color="primary"
               autoFocus
             >

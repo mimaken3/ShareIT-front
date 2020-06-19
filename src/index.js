@@ -9,7 +9,7 @@ import { Route } from "react-router";
 import UsersIndex from "Templates/users/index";
 import UserShow from "Templates/users/detail_show";
 import UserUpdateShow from "Templates/users/update_show";
-
+import TopicsIndex from "Templates/topics/index";
 import ArticlesIndex from "Templates/articles/index";
 import ArticleShow from "Templates/articles/detail_show";
 import ArticleUpdate from "Templates/articles/update_show";
@@ -102,6 +102,11 @@ class App extends Component {
                         exact
                         path="/users/:userId/edit"
                         component={UserUpdateShow}
+                      />
+                      <Route
+                        exact
+                        path="/users/:userId/topics"
+                        component={TopicsIndex}
                       />
                       <Route path="*" component={NotFoundPage} />
                     </Switch>
