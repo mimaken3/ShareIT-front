@@ -6,6 +6,8 @@
 主にちょっとしたメモ程度で、投稿する敷居が低いものなので、アウトプットの場としてぜひ使ってみて下さい！<br>
 [ShareIT](https://shareit.fun)
 
+![GIF](https://user-images.githubusercontent.com/29462808/85257058-282c9980-b4a0-11ea-8266-0d6eba9a2a6e.gif)
+
 ## アーキテクチャ
 
 ![ShareIT-Architecture](https://user-images.githubusercontent.com/29462808/85223849-f57f9400-b400-11ea-8ff0-27418d34ccd1.png)
@@ -60,6 +62,9 @@ $ cd ShareIT-docker-dev
       <font color="red">※ オブジェクトが公開される状態になるので、ShareIT のローカル動作が終わったらバケットを削除するか、</font><br>
       <font color="red">`パブリックアクセスをすべてブロック`に変更するようにして下さい。</font>
     - `次ヘ`ボタンをクリック
+
+<br>
+<font color="red">test</font>
 
 5.  `確認`タブが開かれるので`バケットを作成`ボタンをクリック
 
