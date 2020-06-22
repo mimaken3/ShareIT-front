@@ -64,7 +64,8 @@ $ cd ShareIT-docker-dev
     - `次ヘ`ボタンをクリック
 
 <br>
-<font color="red">test</font>
+<font color="red">test</font><br>
+<span style="color: red"> Some green text </span>
 
 5.  `確認`タブが開かれるので`バケットを作成`ボタンをクリック
 
