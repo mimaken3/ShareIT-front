@@ -30,7 +30,7 @@ Git , Docker, Docker compose がインストールされてる前提で進めて
 3. 環境設定ファイルへの記述
 4. Docker compose で起動
 
-#### 1. GitHub のリポジトリから git clone する(本リポジトリのではなく別のリポジトリのを clone)
+#### 1. GitHub のリポジトリから git clone する(本リポジトリのではなく[別のリポジトリ](https://github.com/mimaken3/ShareIT-docker-dev)のを clone)
 
 ```bash
 $ git clone https://github.com/mimaken3/ShareIT-docker-dev
@@ -102,25 +102,25 @@ $ cd ShareIT-docker-dev
 
 S3 の情報を Golang(API サーバ用), React.js(AP サーバ用)の環境設定ファイルにそれぞれ記述します。
 
-- `ShareIT-docker-dev/docker/golang/`にある`.env`ファイルを開きます。
-
-手順 3 のステップ 2 で作成したバケット名、ステップ 11 で取得したアクセスキーを下記のダブルクオート内にそれぞれ記述。また、SECRET_KEY には任意の文字列を入力。
-
-```
-AWS_S3_BUCKET_NAME: "",
-AWS_S3_ACCESS_KEY_ID: "",
-AWS_S3_SECRET_ACCESS_KEY: "",
-SECRET_KEY = ""
-```
-
 - `ShareIT-docker-dev/docker/react-front/.env/`にある`dev.js`ファイルを開きます。
 
-先程と同様、バケット名とアクセスキーを下記に**ダブルクオートなし**でそれぞれ記述。
+先程と同様、バケット名とアクセスキーを下記のダブルクオート内にそれぞれ記述。
 
 ```
-DEV_BUCKET_NAME =
+AWS_S3_ACCESS_KEY_ID: "",
+AWS_S3_SECRET_ACCESS_KEY: "",
+AWS_S3_BUCKET_NAME: "",
+```
+
+- `ShareIT-docker-dev/docker/golang/`にある`.env`ファイルを開きます。
+
+手順 3 のステップ 2 で作成したバケット名、ステップ 11 で取得したアクセスキーを下記に**ダブルクオートなし**でそれぞれ記述。また、SECRET_KEY には任意の文字列を入力。
+
+```
 AWS_S3_ACCESS_KEY_ID =
 AWS_S3_SECRET_ACCESS_KEY =
+DEV_BUCKET_NAME =
+SECRET_KEY =
 ```
 
 #### 4. Docker compose で起動
