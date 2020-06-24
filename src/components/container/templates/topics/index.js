@@ -62,7 +62,13 @@ class TopicsIndex extends Component {
       if (this.state.isAuth) {
         let createTopicRender = (
           <>
-            <div style={{ marginTop: "30px" }}>
+            <div
+              style={{
+                marginTop: "30px",
+                marginLeft: "10px",
+                marginRight: "10px",
+              }}
+            >
               <CreateTopic />
             </div>
             <div style={{ clear: "both" }}></div>
