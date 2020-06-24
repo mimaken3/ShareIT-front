@@ -39,11 +39,16 @@ class ArticleShow extends Component {
         this.props.getArticleDetail(articleId),
         this.props.getLikedUsersByArticleID(articleId),
       ]).then(() => {
-        this.props
-          .getUserDetail(this.props.article.created_user_id)
-          .then(() => {
-            this.setState({ loading: false });
-          });
+        if (this.props.article === undefined) {
+          // 記事がない場合、404画面にする
+          this.setState({ loading: false });
+        } else {
+          this.props
+            .getUserDetail(this.props.article.created_user_id)
+            .then(() => {
+              this.setState({ loading: false });
+            });
+        }
       });
     }
   }
@@ -63,7 +68,19 @@ class ArticleShow extends Component {
     const loginUser = getLoginUserInfo();
     const loginUserID = loginUser.userID;
     const isAdmin = loginUser.admin;
-    if (this.props.article && !this.state.loading && this.props.postedUser) {
+    if (this.props.isEmpty && !this.state.loading) {
+      return (
+        <Container component="main" maxWidth="md">
+          <CssBaseline />
+          <ScrollToTopOnMount />
+          <NotFoundPage />
+        </Container>
+      );
+    } else if (
+      this.props.article &&
+      !this.state.loading &&
+      this.props.postedUser
+    ) {
       var AuthorizedEditButton;
       if (loginUserID === this.props.article.created_user_id || isAdmin) {
         const sendObj = { articleID: this.props.article.article_id };
@@ -150,14 +167,6 @@ class ArticleShow extends Component {
             </div>
           </Container>
         </ThemeProvider>
-      );
-    } else if (this.props.isEmpty && !this.state.loading) {
-      return (
-        <Container component="main" maxWidth="md">
-          <CssBaseline />
-          <ScrollToTopOnMount />
-          <NotFoundPage />
-        </Container>
       );
     } else {
       return (
