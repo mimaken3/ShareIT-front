@@ -7,8 +7,9 @@ import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { emptyLikedArticles, getArticleDetail } from "Actions/article";
-import { getUserDetail } from "Actions/user";
+import { getUserDetail, getLikedUsersByArticleID } from "Actions/user";
 import { getAllNotifications, changeNonReadToRead } from "Actions/notification";
+import { getAllComments } from "Actions/comment";
 import AgoCreatedDate from "Atoms/ago_created_date";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -66,9 +67,19 @@ const Notification = withRouter((props) => {
     } else {
       if (props.notification.destination_type_id === 1) {
         // 記事にいいね => 記事詳細画面へ
+        props.getAllComments(props.notification.destination_type_name_id);
+        props.getLikedUsersByArticleID(
+          props.notification.destination_type_name_id
+        );
+        props.getUserDetail(props.notification.user_id);
         props.getArticleDetail(props.notification.destination_type_name_id);
       } else if (props.notification.destination_type_id === 2) {
         // 記事にコメント => 記事詳細画面へ
+        props.getAllComments(props.notification.destination_type_name_id);
+        props.getLikedUsersByArticleID(
+          props.notification.destination_type_name_id
+        );
+        props.getUserDetail(props.notification.user_id);
         props.getArticleDetail(props.notification.destination_type_name_id);
       }
 
@@ -162,6 +173,8 @@ const mapDispatchToProps = {
   getAllNotifications,
   getArticleDetail,
   changeNonReadToRead,
+  getAllComments,
+  getLikedUsersByArticleID,
 };
 
 const mapStateToProps = "";
